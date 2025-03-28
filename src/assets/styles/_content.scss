@@ -1,0 +1,134 @@
+// c:\Users\Alex\Desktop\CDA Budget\Budget\src\assets\styles\_content.scss
+
+.table-container {
+  margin: 20px 15px 15px;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: flex-start;
+  justify-content: space-around;
+  flex-grow: 1;
+  width: 100%;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+table {
+  margin: 0 10px 20px 0;
+  width: 33.33%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  border-radius: 8px;
+  overflow: hidden;
+  border: none;
+
+  &:last-child {
+    margin-right: 0;
+  }
+
+  caption {
+    font-weight: 600;
+    text-align: center;
+    color: white;
+    padding: 12px;
+    font-size: 1.1em;
+    text-transform: uppercase;
+    border: none;
+  }
+
+  th,
+  td {
+    padding: 12px;
+    text-align: center;
+    border-bottom: 1px solid #eee;
+  }
+
+  th {
+    font-weight: 600;
+  }
+
+  td:first-child,
+  th:first-child,
+  td:last-child,
+  th:last-child {
+    width: auto;
+  }
+}
+
+#revenue-table,
+#depense-table {
+  @media (max-width: 768px) {
+    width: 95%;
+    margin: 10px 0;
+  }
+}
+
+#revenue-table caption {
+  background-color: #6bd9a5;
+}
+
+#depense-table caption {
+  background-color: #ff6b6b;
+}
+
+.revenu-thread,
+.depense-thread {
+  text-transform: uppercase;
+  background-color: #f8f8f8;
+}
+
+#calcul-table {
+  @extend table;
+  margin-right: 0;
+
+  @media (min-width: 650px) {
+    width: auto;
+    min-width: 400px;
+    max-width: calc(50% - 20px);
+  }
+  @media (max-width: 650px) {
+    
+  }
+
+  caption {
+    background-color: #6bd9a5;
+  }
+
+  tr {
+    border-bottom: 1px solid #eee;
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  td {
+    border: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    &:first-child {
+      font-weight: 700;
+      text-align: left;
+      max-width: 200px;
+    }
+  }
+
+  .revenue-section td {
+    background-color: #e2f5eb;
+    color: black;
+  }
+
+  .expenses-section td {
+    background-color: #ffe9e9;
+    color: black;
+  }
+}
+
+main {
+  flex-grow: 1;
+}

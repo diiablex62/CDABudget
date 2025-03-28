@@ -1,0 +1,23 @@
+// c:\Users\Alex\Desktop\CDA Budget\Budget\src\assets\styles\_footer.scss
+
+footer {
+    background-color: #000;
+    color: #fff;
+    text-align: center;
+    font-size: 14px;
+    width: 100%;
+    // margin-top: auto; // Remove this line
+    padding: 20px 0; // Add some padding for better visual appearance
+    position: relative;
+    bottom: 0;
+  }
+  
+  footer a {
+    color: #fff;
+    text-decoration: underline;
+  }
+  
+  footer a:hover {
+    color: #ddd;
+  }
+  

@@ -1,0 +1,215 @@
+.en-tete {
+  background-color: #ffffff;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#year-selector,
+#month-selector {
+  display: block;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+#year,
+#month {
+  display: inline-block;
+  width: 80px;
+  vertical-align: middle;
+  font-weight: 600;
+}
+
+#prev-year,
+#next-year,
+#prev-month,
+#next-month {
+  vertical-align: middle;
+}
+
+button {
+  background-color: #ffffff;
+  border: 2px solid #333;
+  color: #333;
+  padding: 1px 5px;
+  margin: 0 5px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  text-transform: uppercase;
+  border-radius: 20px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.delete-btn:hover {
+  background-color: #333;
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+}
+
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+}
+
+button:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+button:focus {
+  outline: none;
+}
+
+.arrow-btn {
+  background-color: transparent;
+  border: none;
+  color: #333;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 5px;
+  transition: all 0.3s ease;
+}
+
+.arrow-btn:hover {
+  transform: scale(1.2);
+}
+
+.previous-month-cell {
+  font-weight: 600;
+}
+
+.en-tete #recurrent-item-btn,
+.en-tete #add-item-btn,
+.en-tete #cancel-item-btn,
+.en-tete #sync-btn,
+.en-tete #paiement-xfois-btn {
+  color: black;
+  padding: 5px 10px;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.boutons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.en-tete #add-item-btn {
+  background-color: #79ecfe;
+}
+
+.en-tete #paiement-xfois-btn {
+  background-color: #f0e460;
+}
+
+.en-tete #recurrent-item-btn {
+  background-color: #84acf8;
+}
+
+.en-tete #cancel-item-btn {
+  background-color: #fed879;
+}
+
+.en-tete #sync-btn {
+  background-color: #ff6b6b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: transform 0.3s ease;
+}
+
+.en-tete #sync-btn svg {
+  width: 25px;
+  height: 25px;
+  transition: transform 0.3s ease;
+}
+
+.en-tete #sync-btn.syncing svg {
+  animation: rotateAndScale 0.8s linear forwards; 
+}
+
+@keyframes rotateAndScale {
+  0% {
+    transform: rotate(0deg) scale(1);
+  }
+  50% {
+    transform: rotate(180deg) scale(1.2);
+  }
+  100% {
+    transform: rotate(360deg) scale(1);
+  }
+}
+
+.souligne {
+  text-decoration: underline;
+  white-space: nowrap;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.add-btn {
+  background-color: #333;
+  color: #ffffff;
+  border: none;
+  padding: 12px 24px;
+  font-size: 18px;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.add-btn:hover {
+  background-color: #555;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+}
+
+#submit-btn,
+#recurrent-submit-btn,
+#update-total-btn,
+#paiement-xfois-submit-btn {
+  background-color: #333;
+  color: #ffffff;
+  border: 2px solid #333;
+  padding: 5px 10px;
+  font-size: 18px;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: block;
+  margin: 0 auto;
+}
+
+#submit-btn:hover,
+#recurrent-submit-btn:hover,
+#update-total-btn:hover,
+#paiement-xfois-submit-btn:hover {
+  background-color: #555;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+}
+
+.delete-btn:hover,
+.add-btn:hover,
+#submit-btn:hover,
+#recurrent-submit-btn:hover,
+#update-total-btn:hover,
+#paiement-xfois-submit-btn:hover,
+.en-tete #recurrent-item-btn:hover,
+.en-tete #add-item-btn:hover,
+.en-tete #cancel-item-btn:hover,
+.en-tete #sync-btn:hover,
+.en-tete #paiement-xfois-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+}
