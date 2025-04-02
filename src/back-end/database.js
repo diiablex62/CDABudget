@@ -1,8 +1,7 @@
-import dotenv from "dotenv"; // Charge les variables d'environnement
+import dotenv from "dotenv"; 
 import mongoose from "mongoose";
 
-dotenv.config(); // Configure dotenv
-
+dotenv.config(); 
 mongoose.set('strictQuery', true);
 
 const uri = process.env.MONGO_URI;
