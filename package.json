@@ -1,15 +1,20 @@
 {
-  "name": "budget",
+  "name": "cdabudget",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
+  "main": "assets/back-end/server.js",
   "scripts": {
+    "start": "node assets/back-end/server.js",
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview"
   },
   "dependencies": {
+    "dotenv": "^10.0.0",
+    "express": "^4.18.2",
+    "mongoose": "^6.8.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-router-dom": "^7.4.0"
