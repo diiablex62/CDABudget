@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./assets/styles/_login.scss";
-import Header from "./Header";
+import "../assets/styles/_login.scss";
+import Header from "./components/Header";
 
 function Login({ onLogin }) {
   const [isLogin, setIsLogin] = useState(true);

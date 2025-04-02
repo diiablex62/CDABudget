@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import Content from "./Content";
-import Header from "./Header";
-import Top_header from "./Top_Content";
-import Footer from "./Footer";
-import Login from "./Login";
+import Content from "./front-end/components/Content";
+import Header from "./front-end/components/Header";
+import Top_header from "./front-end/components/Top_Content";
+import Footer from "./front-end/components/Footer";
+import Login from "./front-end/Login";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
