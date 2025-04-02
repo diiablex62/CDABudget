@@ -10,4 +10,10 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  server: {
+    proxy: {
+      "/register": "http://localhost:3000", 
+      "/login": "http://localhost:3000", 
+    },
+  },
 });
