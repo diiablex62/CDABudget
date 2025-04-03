@@ -39,7 +39,8 @@ button {
   text-transform: uppercase;
   border-radius: 20px;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: none;
+  /* Retire l'ombre */
 }
 
 .delete-btn:hover {
@@ -133,16 +134,18 @@ button:focus {
 }
 
 .en-tete #sync-btn.syncing svg {
-  animation: rotateAndScale 0.8s linear forwards; 
+  animation: rotateAndScale 0.8s linear forwards;
 }
 
 @keyframes rotateAndScale {
   0% {
     transform: rotate(0deg) scale(1);
   }
+
   50% {
     transform: rotate(180deg) scale(1.2);
   }
+
   100% {
     transform: rotate(360deg) scale(1);
   }

@@ -8,22 +8,29 @@ import Login from "./front-end/Login";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [username, setUsername] = useState("");
 
   useEffect(() => {
     const storedLoginStatus = localStorage.getItem("isLoggedIn");
-    if (storedLoginStatus === "true") {
+    const storedUsername = localStorage.getItem("username");
+    if (storedLoginStatus === "true" && storedUsername) {
       setIsLoggedIn(true);
+      setUsername(storedUsername);
     }
   }, []);
 
-  const handleLogin = () => {
+  const handleLogin = (user) => {
     setIsLoggedIn(true);
+    setUsername(user.username);
     localStorage.setItem("isLoggedIn", "true");
+    localStorage.setItem("username", user.username);
   };
 
   const handleLogout = () => {
     setIsLoggedIn(false);
+    setUsername("");
     localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("username");
   };
 
   return (
@@ -34,7 +41,11 @@ function App() {
           path='/'
           element={
             <>
-              <Header onLogout={handleLogout} isLoggedIn={isLoggedIn} />
+              <Header
+                onLogout={handleLogout}
+                isLoggedIn={isLoggedIn}
+                username={username}
+              />
               <Top_header isLoggedIn={isLoggedIn} />
               <Content />
               <Footer />

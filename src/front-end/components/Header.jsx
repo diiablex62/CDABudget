@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
-export default function Header({ onLogout, isLoggedIn }) {
+export default function Header({ onLogout, isLoggedIn, username }) {
   const navigate = useNavigate();
   const location = useLocation();
   const isLoginPage = location.pathname === "/login";
@@ -19,7 +19,10 @@ export default function Header({ onLogout, isLoggedIn }) {
     <>
       <nav className='navbar'>
         <div className='site-title'>
-          Gestion de budget <span className='reduce'> by Alex</span>
+          Gestion de budget{" "}
+          {isLoggedIn && username && (
+            <span className='reduce'>de {username}</span>
+          )}
         </div>
         {!isLoginPage && (
           <div className='login-container'>

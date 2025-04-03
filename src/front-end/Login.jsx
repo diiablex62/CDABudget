@@ -5,11 +5,48 @@ import Header from "./components/Header";
 
 function Login({ onLogin }) {
   const [isLogin, setIsLogin] = useState(true);
+  const [username, setUsername] = useState("");
   const [errorMessage, setErrorMessage] = useState({ email: "", password: "" });
+  const [modalMessage, setModalMessage] = useState(""); // Nouveau state pour le message de modal
+  const [modalType, setModalType] = useState(""); // Type de modal (success ou error)
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setErrorMessage({ email: "", password: "" });
+
+    const email = event.target.email.value.trim();
+    const password = event.target.password.value.trim();
+
+    if (!email || !password) {
+      setErrorMessage({
+        email: !email ? "L'email est requis." : "",
+        password: !password ? "Le mot de passe est requis." : "",
+      });
+      return;
+    }
+
+    if (!isLogin) {
+      const username = event.target.username.value.trim();
+      const confirmPassword = event.target.confirmPassword.value.trim();
+
+      if (!username) {
+        setErrorMessage({
+          email: "",
+          password: "",
+          username: "Le nom d'utilisateur est requis.",
+        });
+        return;
+      }
+
+      if (password !== confirmPassword) {
+        setErrorMessage({
+          email: "",
+          password: "Les mots de passe ne correspondent pas.",
+        });
+        return;
+      }
+    }
 
     const endpoint = isLogin ? "/login" : "/register";
     const payload = {
@@ -18,10 +55,9 @@ function Login({ onLogin }) {
     };
 
     if (!isLogin) {
-      payload.username = event.target.username?.value;
+      payload.username = event.target.username.value;
       const confirmPassword = event.target.confirmPassword.value;
 
-      // Vérifiez si les mots de passe correspondent
       if (payload.password !== confirmPassword) {
         setErrorMessage({
           ...errorMessage,
@@ -38,51 +74,46 @@ function Login({ onLogin }) {
         body: JSON.stringify(payload),
       });
 
-      console.log("Response status:", response.status); // Ajoutez ceci pour voir le statut de la réponse
-
       if (response.ok) {
+        const data = await response.json();
         if (isLogin) {
-          onLogin();
+          onLogin(data);
           navigate("/");
         } else {
-          alert("Inscription réussie. Vous pouvez maintenant vous connecter.");
-          setIsLogin(true);
+          setModalType("success");
+          setModalMessage(data.message); // Affiche le message de succès
+          setTimeout(() => {
+            setIsLogin(true); // Redirige vers le formulaire de connexion après un délai
+            setModalMessage(""); // Réinitialise le message
+          }, 2000);
         }
       } else {
-        const errorMessage = await response.text();
-        console.log("Error message from backend:", errorMessage); // Ajoutez ceci pour voir le message d'erreur du backend
-        if (isLogin) {
-          const emailError = errorMessage.includes("Email")
-            ? "Cet email n'existe pas."
-            : "";
-          const passwordError =
-            !emailError && errorMessage.includes("mot de passe")
-              ? "Mot de passe incorrect."
-              : "";
-
-          setErrorMessage({
-            email: emailError,
-            password: passwordError,
-          });
-        } else {
-          alert(`Erreur : ${errorMessage}`);
-        }
+        const errorData = await response.json();
+        setModalType("error");
+        setModalMessage(errorData.error); // Affiche le message d'erreur
       }
     } catch (err) {
-      console.error("Erreur lors de la requête :", err);
-      alert("Une erreur est survenue. Veuillez réessayer.");
+      setModalType("error");
+      setModalMessage("Une erreur est survenue. Veuillez réessayer.");
     }
   };
 
   const toggleForm = () => {
     setIsLogin(!isLogin);
-    setErrorMessage({ email: "", password: "" }); // Réinitialiser les messages d'erreur
+    setErrorMessage({ email: "", password: "" });
   };
 
   return (
     <div className='animated-gradient-background'>
       <Header isLoggedIn={false} onLogout={() => {}} />
       <main className='login-page animated-gradient-background'>
+        {/* Modal pour afficher les messages */}
+        {modalMessage && (
+          <div className={`modal ${modalType}`}>
+            <p>{modalMessage}</p>
+          </div>
+        )}
+
         <div className='form-container'>
           <h2 className='form-title'>
             {isLogin ? "Connexion" : "Inscription"}
@@ -93,7 +124,15 @@ function Login({ onLogin }) {
                 <label htmlFor='username'>
                   Nom d'utilisateur <span className='required'>*</span>
                 </label>
-                <input type='text' id='username' name='username' required />
+                <input
+                  type='text'
+                  id='username'
+                  name='username'
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  placeholder='TonyStark' // Ajout du placeholder
+                  required
+                />
               </div>
             )}
             <div className='form-group'>
@@ -135,6 +174,7 @@ function Login({ onLogin }) {
                   type='password'
                   id='confirmPassword'
                   name='confirmPassword'
+                  placeholder='JeSuisIronM@n' // Ajout du placeholder
                   required
                 />
               </div>
