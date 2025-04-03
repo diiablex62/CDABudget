@@ -68,14 +68,12 @@ app.post("/register", async (req, res) => {
         .json({ error: "Un utilisateur avec cet email existe déjà." });
     }
 
-    // Hachez le mot de passe avant de le stocker
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Ajoutez l'utilisateur avec le champ createdAt
     const newUser = {
       username,
       email,
-      password: hashedPassword,
+      password: hashedPassword, 
       createdAt: new Date(),
     };
     await usersCollection.insertOne(newUser);
