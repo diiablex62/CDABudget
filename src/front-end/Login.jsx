@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../assets/styles/_login.scss";
 import Header from "./components/Header";
@@ -7,11 +7,79 @@ function Login({ onLogin }) {
   const [isLogin, setIsLogin] = useState(true);
   const [username, setUsername] = useState("");
   const [errorMessage, setErrorMessage] = useState({ email: "", password: "" });
-  const [modalMessage, setModalMessage] = useState(""); 
-  const [modalType, setModalType] = useState(""); 
-  const [showPassword, setShowPassword] = useState(false); 
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false); 
+  const [modalMessage, setModalMessage] = useState("");
+  const [modalType, setModalType] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const navigate = useNavigate();
+
+  const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+
+  console.log("Google Client ID:", googleClientId);
+
+  if (!googleClientId) {
+    console.error("Google Client ID is not defined. Check your .env file.");
+  }
+
+  useEffect(() => {
+    // Charger dynamiquement le script Google Sign-In
+    const script = document.createElement("script");
+    script.src = "https://accounts.google.com/gsi/client";
+    script.async = true;
+    script.defer = true;
+    script.onload = () => {
+      console.log("Google Sign-In script loaded.");
+    };
+    document.body.appendChild(script);
+
+    // Définir la fonction de rappel dans le contexte global
+    window.handleGoogleSignIn = (response) => {
+      console.log("Google Sign-In Response:", response);
+      const backendUrl = import.meta.env.VITE_BACKEND_URL; // Assurez-vous que cette variable est définie
+      console.log("Backend URL:", import.meta.env.VITE_BACKEND_URL);
+      if (!backendUrl) {
+        console.error("VITE_BACKEND_URL n'est pas défini dans le fichier .env");
+        return;
+      }
+
+      fetch(`${backendUrl}/google-login`, {
+        // Utilisez la variable correctement
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token: response.credential }),
+      })
+        .then((res) => {
+          if (!res.ok) {
+            throw new Error("Erreur lors de la connexion Google.");
+          }
+          return res.json();
+        })
+        .then((data) => {
+          if (data.success) {
+            onLogin(data.user);
+            navigate("/");
+          } else {
+            setModalType("error");
+            setModalMessage(data.error);
+          }
+        })
+        .catch((err) => {
+          console.error("Erreur lors de la connexion Google :", err);
+          setModalType("error");
+          setModalMessage("Une erreur est survenue. Veuillez réessayer.");
+        });
+    };
+
+    return () => {
+      // Nettoyer le script si nécessaire
+      const existingScript = document.querySelector(
+        'script[src="https://accounts.google.com/gsi/client"]'
+      );
+      if (existingScript) {
+        existingScript.remove();
+      }
+    };
+  }, [onLogin, navigate]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -52,21 +120,12 @@ function Login({ onLogin }) {
 
     const endpoint = isLogin ? "/login" : "/register";
     const payload = {
-      email: event.target.email.value,
-      password: event.target.password.value,
+      email,
+      password,
     };
 
     if (!isLogin) {
       payload.username = event.target.username.value;
-      const confirmPassword = event.target.confirmPassword.value;
-
-      if (payload.password !== confirmPassword) {
-        setErrorMessage({
-          ...errorMessage,
-          password: "Les mots de passe ne correspondent pas.",
-        });
-        return;
-      }
     }
 
     try {
@@ -83,21 +142,45 @@ function Login({ onLogin }) {
           navigate("/");
         } else {
           setModalType("success");
-          setModalMessage(data.message); 
+          setModalMessage(data.message);
           setTimeout(() => {
-            setIsLogin(true); 
-            setModalMessage(""); 
+            setIsLogin(true);
+            setModalMessage("");
           }, 2000);
         }
       } else {
         const errorData = await response.json();
         setModalType("error");
-        setModalMessage(errorData.error); 
+        setModalMessage(errorData.error);
       }
     } catch (err) {
       setModalType("error");
       setModalMessage("Une erreur est survenue. Veuillez réessayer.");
     }
+  };
+
+  const handleGoogleSignIn = (response) => {
+    console.log("Google Sign-In Response:", response);
+    fetch("/google-login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ token: response.credential }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          onLogin(data.user);
+          navigate("/");
+        } else {
+          setModalType("error");
+          setModalMessage(data.error);
+        }
+      })
+      .catch((err) => {
+        console.error("Erreur lors de la connexion Google :", err);
+        setModalType("error");
+        setModalMessage("Une erreur est survenue. Veuillez réessayer.");
+      });
   };
 
   const toggleForm = () => {
@@ -117,7 +200,6 @@ function Login({ onLogin }) {
     <div className='animated-gradient-background'>
       <Header isLoggedIn={false} onLogout={() => {}} />
       <main className='login-page animated-gradient-background'>
-        {/* Modal pour les messages */}
         {modalMessage && (
           <div className={`modal ${modalType}`}>
             <p>{modalMessage}</p>
@@ -166,7 +248,7 @@ function Login({ onLogin }) {
               </label>
               <div className='password-container'>
                 <input
-                  type={showPassword ? "text" : "password"} 
+                  type={showPassword ? "text" : "password"}
                   id='password'
                   name='password'
                   placeholder='JeSuisIronM@n'
@@ -195,10 +277,10 @@ function Login({ onLogin }) {
                 </label>
                 <div className='password-container'>
                   <input
-                    type={showConfirmPassword ? "text" : "password"} 
+                    type={showConfirmPassword ? "text" : "password"}
                     id='confirmPassword'
                     name='confirmPassword'
-                    placeholder='JeSuisIronM@n' 
+                    placeholder='JeSuisIronM@n'
                     required
                   />
                   <button
@@ -210,7 +292,7 @@ function Login({ onLogin }) {
                         ? "Masquer le mot de passe"
                         : "Afficher le mot de passe"
                     }>
-                    {showConfirmPassword ? "🙈" : "👁️"} {/* Icône d'œil */}
+                    {showConfirmPassword ? "🙈" : "👁️"}
                   </button>
                 </div>
               </div>
@@ -227,6 +309,20 @@ function Login({ onLogin }) {
               {isLogin ? "S'inscrire" : "Se connecter"}
             </button>
           </p>
+          <p className='or-text'>ou</p>
+          <div
+            id='g_id_onload'
+            data-client_id={googleClientId}
+            data-callback='handleGoogleSignIn'
+            data-auto_prompt='false'></div>
+          <div
+            className='g_id_signin'
+            data-type='standard'
+            data-shape='rectangular'
+            data-theme='outline'
+            data-text='signin_with'
+            data-size='large'
+            data-logo_alignment='left'></div>
         </div>
 
         <div className='back-button-container'>

@@ -2,11 +2,27 @@ import express from "express";
 import { MongoClient, ServerApiVersion } from "mongodb";
 import dotenv from "dotenv";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import cors from "cors";
 
 dotenv.config();
 
 const app = express();
 app.use(express.json());
+app.use(
+  cors({
+    origin: [
+      "http://localhost:5173",
+      "http://localhost:5174",
+      "http://localhost:5175",
+      "http://localhost:5176",
+    ],
+    methods: ["GET", "POST", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
+  })
+);
+app.options("*", cors()); // Répondre aux requêtes prévol
 
 // Configuration MongoDB
 const uri = process.env.MONGO_URI;
@@ -21,7 +37,6 @@ const client = new MongoClient(uri, {
     strict: true,
     deprecationErrors: true,
   },
-  tls: true,
 });
 
 // Fonction pour vérifier la connexion MongoDB
@@ -69,13 +84,13 @@ app.post("/register", async (req, res) => {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-
     const newUser = {
       username,
       email,
-      password: hashedPassword, 
+      password: hashedPassword,
       createdAt: new Date(),
     };
+
     await usersCollection.insertOne(newUser);
     res.status(201).json({ message: "Utilisateur inscrit avec succès." });
   } catch (err) {
@@ -91,7 +106,6 @@ app.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
     if (!email || !password) {
-      console.log("Requête invalide : email ou mot de passe manquant.");
       return res
         .status(400)
         .json({ error: "Email et mot de passe sont requis." });
@@ -104,14 +118,12 @@ app.post("/login", async (req, res) => {
     // Vérifiez si l'utilisateur existe
     const user = await usersCollection.findOne({ email });
     if (!user) {
-      console.log(`Email non trouvé en base de données : ${email}`);
       return res.status(401).json({ error: "Email non trouvé." });
     }
 
     // Vérifiez le mot de passe haché
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
-      console.log(`Mot de passe incorrect pour l'email : ${email}`);
       return res.status(401).json({ error: "Mot de passe incorrect." });
     }
 
@@ -122,6 +134,52 @@ app.post("/login", async (req, res) => {
     });
   } catch (err) {
     console.error("Erreur lors de la connexion :", err);
+    res.status(500).json({ error: "Erreur interne du serveur." });
+  } finally {
+    await client.close();
+  }
+});
+
+// Route pour gérer la connexion Google
+app.post("/google-login", async (req, res) => {
+  try {
+    const { token } = req.body;
+
+    if (!token) {
+      return res.status(400).json({ error: "Token manquant." });
+    }
+
+    // Vérifiez et décodez le token Google
+    const ticket = jwt.decode(token, { complete: true });
+    if (!ticket) {
+      return res.status(401).json({ error: "Token invalide." });
+    }
+
+    const { email, name } = ticket.payload;
+
+    await client.connect();
+    const db = client.db("budget_app");
+    const usersCollection = db.collection("users");
+
+    // Vérifiez si l'utilisateur existe déjà
+    let user = await usersCollection.findOne({ email });
+    if (!user) {
+      // Créez un nouvel utilisateur si non existant
+      user = {
+        username: name,
+        email,
+        createdAt: new Date(),
+      };
+      await usersCollection.insertOne(user);
+    }
+
+    console.log(`Connexion réussie pour l'utilisateur Google : ${email}`);
+    res.status(200).json({
+      message: "Connexion réussie.",
+      username: user.username,
+    });
+  } catch (err) {
+    console.error("Erreur lors de la connexion Google :", err);
     res.status(500).json({ error: "Erreur interne du serveur." });
   } finally {
     await client.close();
