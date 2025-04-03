@@ -39,8 +39,8 @@ button {
   text-transform: uppercase;
   border-radius: 20px;
   transition: all 0.3s ease;
-  box-shadow: none;
-  /* Retire l'ombre */
+  box-shadow: none !important;
+  /* Supprime toute ombre */
 }
 
 .delete-btn:hover {

@@ -7,8 +7,10 @@ function Login({ onLogin }) {
   const [isLogin, setIsLogin] = useState(true);
   const [username, setUsername] = useState("");
   const [errorMessage, setErrorMessage] = useState({ email: "", password: "" });
-  const [modalMessage, setModalMessage] = useState(""); // Nouveau state pour le message de modal
-  const [modalType, setModalType] = useState(""); // Type de modal (success ou error)
+  const [modalMessage, setModalMessage] = useState(""); 
+  const [modalType, setModalType] = useState(""); 
+  const [showPassword, setShowPassword] = useState(false); 
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false); 
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
@@ -81,16 +83,16 @@ function Login({ onLogin }) {
           navigate("/");
         } else {
           setModalType("success");
-          setModalMessage(data.message); // Affiche le message de succès
+          setModalMessage(data.message); 
           setTimeout(() => {
-            setIsLogin(true); // Redirige vers le formulaire de connexion après un délai
-            setModalMessage(""); // Réinitialise le message
+            setIsLogin(true); 
+            setModalMessage(""); 
           }, 2000);
         }
       } else {
         const errorData = await response.json();
         setModalType("error");
-        setModalMessage(errorData.error); // Affiche le message d'erreur
+        setModalMessage(errorData.error); 
       }
     } catch (err) {
       setModalType("error");
@@ -103,11 +105,19 @@ function Login({ onLogin }) {
     setErrorMessage({ email: "", password: "" });
   };
 
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const toggleConfirmPasswordVisibility = () => {
+    setShowConfirmPassword(!showConfirmPassword);
+  };
+
   return (
     <div className='animated-gradient-background'>
       <Header isLoggedIn={false} onLogout={() => {}} />
       <main className='login-page animated-gradient-background'>
-        {/* Modal pour afficher les messages */}
+        {/* Modal pour les messages */}
         {modalMessage && (
           <div className={`modal ${modalType}`}>
             <p>{modalMessage}</p>
@@ -130,7 +140,7 @@ function Login({ onLogin }) {
                   name='username'
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
-                  placeholder='TonyStark' // Ajout du placeholder
+                  placeholder='TonyStark'
                   required
                 />
               </div>
@@ -154,13 +164,26 @@ function Login({ onLogin }) {
               <label htmlFor='password'>
                 Mot de passe <span className='required'>*</span>
               </label>
-              <input
-                type='password'
-                id='password'
-                name='password'
-                placeholder='JeSuisIronM@n'
-                required
-              />
+              <div className='password-container'>
+                <input
+                  type={showPassword ? "text" : "password"} 
+                  id='password'
+                  name='password'
+                  placeholder='JeSuisIronM@n'
+                  required
+                />
+                <button
+                  type='button'
+                  className='toggle-password-btn'
+                  onClick={togglePasswordVisibility}
+                  aria-label={
+                    showPassword
+                      ? "Masquer le mot de passe"
+                      : "Afficher le mot de passe"
+                  }>
+                  {showPassword ? "🙈" : "👁️"}
+                </button>
+              </div>
               {errorMessage.password && (
                 <small className='error-text'>{errorMessage.password}</small>
               )}
@@ -170,13 +193,26 @@ function Login({ onLogin }) {
                 <label htmlFor='confirmPassword'>
                   Confirmer le mot de passe <span className='required'>*</span>
                 </label>
-                <input
-                  type='password'
-                  id='confirmPassword'
-                  name='confirmPassword'
-                  placeholder='JeSuisIronM@n' // Ajout du placeholder
-                  required
-                />
+                <div className='password-container'>
+                  <input
+                    type={showConfirmPassword ? "text" : "password"} 
+                    id='confirmPassword'
+                    name='confirmPassword'
+                    placeholder='JeSuisIronM@n' 
+                    required
+                  />
+                  <button
+                    type='button'
+                    className='toggle-password-btn'
+                    onClick={toggleConfirmPasswordVisibility}
+                    aria-label={
+                      showConfirmPassword
+                        ? "Masquer le mot de passe"
+                        : "Afficher le mot de passe"
+                    }>
+                    {showConfirmPassword ? "🙈" : "👁️"} {/* Icône d'œil */}
+                  </button>
+                </div>
               </div>
             )}
             <button type='submit'>
