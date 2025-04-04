@@ -1,24 +1,54 @@
 // c:\Users\Alex\Desktop\CDA Budget\Budget\src\assets\styles\_global.scss
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  
-  body {
-    font-family: "Open Sans", sans-serif;
-    background-color: #f4f4f4;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-  
-  }
-  
-  #root {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
+body {
+  font-family: "Open Sans", sans-serif;
+  background-color: #f4f4f4;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 
+}
 
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+body.dark-theme {
+  background-color: #121212;
+  color: #ffffff;
+}
+
+body.dark-theme .modal-settings {
+  background: rgba(18, 18, 18, 0.9);
+  color: #ffffff;
+}
+
+body.dark-theme .modal-settings-sidebar {
+  background: #1e1e1e;
+  color: #ffffff;
+}
+
+body.dark-theme .modal-settings-sidebar li:hover {
+  background-color: #333333;
+}
+
+body.dark-theme .modal-settings-sidebar li.active {
+  background-color: #444444;
+  color: #ffffff;
+}
+
+body.dark-theme .theme-toggle-btn {
+  background-color: #444444;
+  color: #ffffff;
+}
+
+body.dark-theme .theme-toggle-btn:hover {
+  background-color: #555555;
+}

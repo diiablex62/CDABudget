@@ -66,6 +66,10 @@
 }
 
 .modal-settings-sidebar li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    /* Espace entre l'icône et le texte */
     padding: 10px 15px;
     cursor: pointer;
     border-radius: 8px;
@@ -82,6 +86,13 @@
     /* Couleur bleue */
     color: white;
     /* Texte en blanc */
+}
+
+.sidebar-icon {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+    /* Utilise la couleur du texte */
 }
 
 .modal-settings-content {
@@ -137,6 +148,11 @@
     /* Couleur bleue */
 }
 
+.modal-settings-body h3.theme-title {
+    margin-top: 30px;
+    /* Ajoute une marge au-dessus du h3 "Thème" */
+}
+
 .connection-options {
     list-style: none;
     padding: 0;
@@ -161,7 +177,13 @@
     overflow: hidden;
     /* Cache le contenu débordant */
     text-overflow: ellipsis;
-    /* Ajoute des points de suspension si le texte dépasse */
+}
+
+.connection-options li:hover {
+    background-color: #f1f1f1;
+    /* Couleur de fond au survol */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    /* Ombre au survol */
 }
 
 .connection-options li strong {
@@ -257,4 +279,186 @@
 .section-spacing {
     margin-top: 30px;
     /* Ajoute un espace au-dessus de la section */
+}
+
+.theme-section {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.theme-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.theme-toggle-label {
+    font-size: 16px;
+    color: #333;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    /* Espace entre le texte et le switch */
+}
+
+.theme-switch-placeholder {
+    width: 40px;
+    /* Largeur approximative pour le futur switch */
+    height: 20px;
+    /* Hauteur approximative pour le futur switch */
+    background-color: #ddd;
+    /* Couleur de fond temporaire */
+    border-radius: 10px;
+    /* Coins arrondis */
+    display: inline-block;
+}
+
+.theme-toggle-btn {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.theme-toggle-btn:hover {
+    background-color: #0056b3;
+}
+
+.theme-options {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.theme-options li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.theme-options li:hover {
+    background-color: #f1f1f1;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.theme-options li strong {
+    flex: 0;
+    font-size: 16px;
+    color: #333;
+    margin-right: 10px;
+}
+
+.theme-switch-placeholder {
+    width: 40px;
+    /* Largeur approximative pour le futur switch */
+    height: 20px;
+    /* Hauteur approximative pour le futur switch */
+    background-color: #ddd;
+    /* Couleur de fond temporaire */
+    border-radius: 10px;
+    /* Coins arrondis */
+    display: inline-block;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    height: 20px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: 0.4s;
+    border-radius: 20px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 14px;
+    width: 14px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: 0.4s;
+    border-radius: 50%;
+}
+
+input:checked+.slider {
+    background-color: #007bff;
+}
+
+input:checked+.slider:before {
+    transform: translateX(20px);
+}
+
+.theme-circles {
+    display: flex;
+    gap: 20px;
+    margin-top: 20px;
+    justify-content: flex-start;
+    /* Aligne les cercles à gauche */
+}
+
+.circle {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Couleurs uniques pour chaque cercle */
+.color1 {
+    background-color: #6bd9a5;
+    /* Vert clair */
+}
+
+.color2 {
+    background-color: #84acf8;
+    /* Bleu clair */
+}
+
+.color3 {
+    background-color: #ff6b6b;
+    /* Rouge clair */
+}
+
+.color4 {
+    background-color: #f0e460;
+    /* Jaune clair */
+}
+
+.color5 {
+    background-color: #79ecfe;
+    /* Cyan clair */
 }
