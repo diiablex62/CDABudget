@@ -146,3 +146,15 @@
   /* Ajoute un espace après le nom d'utilisateur */
   vertical-align: middle;
 }
+
+.auth-logo {
+  display: inline-block;
+  margin-left: 5px;
+  /* Ajoute un espace après le nom d'utilisateur */
+}
+
+.auth-icon {
+  width: 16px;
+  height: 16px;
+  vertical-align: middle;
+}

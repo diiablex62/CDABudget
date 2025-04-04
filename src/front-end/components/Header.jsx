@@ -1,8 +1,9 @@
 import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import googleLogo from "../../assets/img/logo-google.svg";
+import Google from "../icons/Google"; // Import du composant Google
+import Lock from "../icons/Lock"; // Import du composant Lock
 
-export default function Header({ onLogout, isLoggedIn, username }) {
+export default function Header({ onLogout, isLoggedIn, username, authType }) {
   const navigate = useNavigate();
   const location = useLocation();
   const isLoginPage = location.pathname === "/login";
@@ -24,13 +25,16 @@ export default function Header({ onLogout, isLoggedIn, username }) {
           {isLoggedIn && username && (
             <span className='reduce'>
               {username}
-              <span className='google-logo'>
-                {username.startsWith("google_") && (
-                  <img
-                    src={googleLogo}
-                    alt='Google Icon'
-                    className='google-icon'
-                  />
+              <span className='auth-logo'>
+                {authType === "google" && (
+                  <div title='Connecté avec Google'>
+                    <Google className='auth-icon' />
+                  </div>
+                )}
+                {authType === "password" && (
+                  <div title='Connecté avec un mot de passe'>
+                    <Lock className='auth-icon' />
+                  </div>
                 )}
               </span>
             </span>

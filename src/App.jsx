@@ -9,36 +9,18 @@ import Login from "./front-end/Login";
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState("");
+  const [authType, setAuthType] = useState(""); 
 
   useEffect(() => {
-    const storedLoginStatus = localStorage.getItem("isLoggedIn");
-    const storedUsername = localStorage.getItem("username");
+    const storedLoginStatus = sessionStorage.getItem("isLoggedIn");
+    const storedUsername = sessionStorage.getItem("username");
+    const storedAuthType = sessionStorage.getItem("authType");
 
     if (storedLoginStatus === "true" && storedUsername) {
       setIsLoggedIn(true);
       setUsername(storedUsername);
+      setAuthType(storedAuthType || "password");
     }
-
-    // Définir un indicateur pour différencier une actualisation d'une fermeture
-    const handleBeforeUnload = () => {
-      localStorage.setItem("isTabClosed", "true");
-    };
-
-    const handleLoad = () => {
-      if (localStorage.getItem("isTabClosed") === "true") {
-        localStorage.removeItem("isLoggedIn");
-        localStorage.removeItem("username");
-        localStorage.removeItem("isTabClosed");
-      }
-    };
-
-    window.addEventListener("beforeunload", handleBeforeUnload);
-    window.addEventListener("load", handleLoad);
-
-    return () => {
-      window.removeEventListener("beforeunload", handleBeforeUnload);
-      window.removeEventListener("load", handleLoad);
-    };
   }, []);
 
   useEffect(() => {
@@ -51,15 +33,18 @@ function App() {
     console.log("Utilisateur connecté :", user);
     setIsLoggedIn(true);
     setUsername(user?.username || "Utilisateur");
-    localStorage.setItem("isLoggedIn", "true");
-    localStorage.setItem("username", user?.username || "Utilisateur");
+    setAuthType(user?.authType || "password"); 
+    sessionStorage.setItem("isLoggedIn", "true");
+    sessionStorage.setItem("username", user?.username || "Utilisateur");
+    sessionStorage.setItem("authType", user?.authType || "password");
   };
 
   const handleLogout = () => {
     setIsLoggedIn(false);
     setUsername("");
-    localStorage.removeItem("isLoggedIn");
-    localStorage.removeItem("username");
+    sessionStorage.removeItem("isLoggedIn");
+    sessionStorage.removeItem("username");
+    sessionStorage.removeItem("authType");
   };
 
   return (
@@ -68,6 +53,7 @@ function App() {
         onLogout={handleLogout}
         isLoggedIn={isLoggedIn}
         username={username}
+        authType={authType} 
       />
       <Routes>
         <Route path='/login' element={<Login onLogin={handleLogin} />} />

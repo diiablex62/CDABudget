@@ -109,6 +109,7 @@ app.post("/register", async (req, res) => {
       username,
       email,
       password: hashedPassword,
+      authType: "password", // Ajout du champ authType
       createdAt: new Date(),
     };
 
@@ -150,6 +151,7 @@ app.post("/login", async (req, res) => {
     res.status(200).json({
       message: "Login successful.",
       username: user.username,
+      authType: user.authType, // Retourne le type de connexion
     });
   } catch (err) {
     console.error("Error during login:", err);
@@ -189,6 +191,7 @@ app.post("/google-login", async (req, res) => {
       user = {
         username: name,
         email,
+        authType: "google", // Ajout du champ authType
         createdAt: new Date(),
       };
       await usersCollection.insertOne(user);
@@ -200,7 +203,7 @@ app.post("/google-login", async (req, res) => {
     res.status(200).json({
       success: true,
       message: "Connexion réussie.",
-      user: { username: user.username, email: user.email },
+      user: { username: user.username, authType: user.authType }, // Retourne authType
     });
   } catch (err) {
     console.error("Error during Google token validation:", err);
