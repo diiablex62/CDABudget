@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import googleLogo from "../../assets/img/logo-google.svg"; // Import correct de l'image
+import googleLogo from "../../assets/img/logo-google.svg";
 
 export default function Header({ onLogout, isLoggedIn, username }) {
   const navigate = useNavigate();
@@ -24,13 +24,15 @@ export default function Header({ onLogout, isLoggedIn, username }) {
           {isLoggedIn && username && (
             <span className='reduce'>
               {username}
-              {username.startsWith("google_") && (
-                <img
-                  src={googleLogo} 
-                  alt='Google Icon'
-                  className='google-icon'
-                />
-              )}
+              <span className='google-logo'>
+                {username.startsWith("google_") && (
+                  <img
+                    src={googleLogo}
+                    alt='Google Icon'
+                    className='google-icon'
+                  />
+                )}
+              </span>
             </span>
           )}
         </div>

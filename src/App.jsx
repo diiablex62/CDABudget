@@ -13,20 +13,31 @@ function App() {
   useEffect(() => {
     const storedLoginStatus = localStorage.getItem("isLoggedIn");
     const storedUsername = localStorage.getItem("username");
+
     if (storedLoginStatus === "true" && storedUsername) {
       setIsLoggedIn(true);
       setUsername(storedUsername);
     }
 
+    // Définir un indicateur pour différencier une actualisation d'une fermeture
     const handleBeforeUnload = () => {
-      localStorage.removeItem("isLoggedIn");
-      localStorage.removeItem("username");
+      localStorage.setItem("isTabClosed", "true");
+    };
+
+    const handleLoad = () => {
+      if (localStorage.getItem("isTabClosed") === "true") {
+        localStorage.removeItem("isLoggedIn");
+        localStorage.removeItem("username");
+        localStorage.removeItem("isTabClosed");
+      }
     };
 
     window.addEventListener("beforeunload", handleBeforeUnload);
+    window.addEventListener("load", handleLoad);
 
     return () => {
       window.removeEventListener("beforeunload", handleBeforeUnload);
+      window.removeEventListener("load", handleLoad);
     };
   }, []);
 

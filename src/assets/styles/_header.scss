@@ -133,6 +133,12 @@
   white-space: nowrap;
 }
 
+.google-logo {
+  display: inline-block;
+  margin-left: 5px;
+  /* Ajoute un espace après le nom d'utilisateur */
+}
+
 .google-icon {
   width: 16px;
   height: 16px;
