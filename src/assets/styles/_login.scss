@@ -113,12 +113,17 @@
   border-radius: 4px;
   cursor: pointer;
   transition: none;
-  width: 100%;
+  width: auto;
+  /* Ajuste automatiquement la largeur */
+  margin: 0 auto;
+  /* Centre horizontalement */
+  display: block;
+  /* Nécessaire pour que le margin fonctionne */
   box-shadow: none;
 }
 
 .form-container button[type="submit"]:hover {
-  background-color: #333;
+  background-color: #555;
 }
 
 .animated-gradient-background {
@@ -225,10 +230,18 @@
   text-align: center;
   font-size: 14px;
   color: #555;
+  font-weight: 700;
 }
 
 .g_id_signin {
   margin-top: 10px;
   display: flex;
   justify-content: center;
+}
+
+#google-signin-button {
+  display: flex;
+  justify-content: center;
+  margin: 20px auto;
+  /* Centre horizontalement et ajoute un espace au-dessus et en dessous */
 }

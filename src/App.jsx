@@ -4,7 +4,7 @@ import Content from "./front-end/components/Content";
 import Header from "./front-end/components/Header";
 import Top_header from "./front-end/components/Top_Content";
 import Footer from "./front-end/components/Footer";
-import Login from "./front-end/Login"; // Vérifiez que ce chemin est correct
+import Login from "./front-end/Login";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -17,6 +17,17 @@ function App() {
       setIsLoggedIn(true);
       setUsername(storedUsername);
     }
+
+    const handleBeforeUnload = () => {
+      localStorage.removeItem("isLoggedIn");
+      localStorage.removeItem("username");
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
   }, []);
 
   useEffect(() => {
@@ -26,7 +37,7 @@ function App() {
   }, [isLoggedIn, username]);
 
   const handleLogin = (user) => {
-    console.log("Utilisateur connecté :", user); // Vérifiez les informations utilisateur
+    console.log("Utilisateur connecté :", user);
     setIsLoggedIn(true);
     setUsername(user?.username || "Utilisateur");
     localStorage.setItem("isLoggedIn", "true");

@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import googleLogo from "../../assets/img/logo-google.svg"; // Import correct de l'image
 
 export default function Header({ onLogout, isLoggedIn, username }) {
   const navigate = useNavigate();
@@ -21,7 +22,16 @@ export default function Header({ onLogout, isLoggedIn, username }) {
         <div className='site-title'>
           Gestion de budget{" "}
           {isLoggedIn && username && (
-            <span className='reduce'>de {username}</span>
+            <span className='reduce'>
+              {username}
+              {username.startsWith("google_") && (
+                <img
+                  src={googleLogo} 
+                  alt='Google Icon'
+                  className='google-icon'
+                />
+              )}
+            </span>
           )}
         </div>
         {!isLoginPage && (
