@@ -21,29 +21,22 @@ function Login({ onLogin }) {
       console.error("Google Client ID is not defined. Check your .env file.");
       return;
     }
-    console.log("Google Client ID:", googleClientId);
 
     const initializeGoogleSignIn = () => {
-      console.log("Google Sign-In initialization started.");
-      window.google.accounts.id.initialize({
-        client_id: googleClientId,
-        callback: handleGoogleSignIn,
-      });
+      if (window.google) {
+        window.google.accounts.id.initialize({
+          client_id: googleClientId,
+          callback: handleGoogleSignIn,
+        });
 
-      window.google.accounts.id.renderButton(
-        document.getElementById("google-signin-button"),
-        {
-          theme: "outline",
-          size: "large",
-        }
-      );
-      console.log("Google Sign-In button rendered.");
-    };
-
-    const handleGoogleScriptLoad = () => {
-      console.log("Google Sign-In script loaded successfully.");
-      setGoogleScriptLoaded(true);
-      initializeGoogleSignIn();
+        window.google.accounts.id.renderButton(
+          document.getElementById("google-signin-button"),
+          {
+            theme: "outline",
+            size: "large",
+          }
+        );
+      }
     };
 
     if (!window.google) {
@@ -51,16 +44,11 @@ function Login({ onLogin }) {
       script.src = "https://accounts.google.com/gsi/client";
       script.async = true;
       script.defer = true;
-      script.onload = handleGoogleScriptLoad;
+      script.onload = initializeGoogleSignIn;
       document.body.appendChild(script);
     } else {
-      handleGoogleScriptLoad();
+      initializeGoogleSignIn();
     }
-
-    return () => {
-      console.log("Cleaning up Google Sign-In script...");
-      // Clean up if necessary (e.g., remove event listeners)
-    };
   }, [googleClientId]);
 
   const handleGoogleSignIn = async (response) => {
@@ -291,9 +279,7 @@ function Login({ onLogin }) {
                 </div>
               </div>
             )}
-            <button type='submit'>
-              {isLogin ? "Se connecter" : "S'inscrire"}
-            </button>
+            {!isLogin && <button type='submit'>S'inscrire</button>}
           </form>
           <p className='toggle-text'>
             {isLogin

@@ -63,13 +63,9 @@ const client = new MongoClient(uri, {
 
 // MongoDB Connection Function
 async function connectToMongoDB() {
-  try {
+  if (!client.isConnected) {
     await client.connect();
-    await client.db("admin").command({ ping: 1 });
     console.log("Successfully connected to MongoDB!");
-  } catch (err) {
-    console.error("Error connecting to MongoDB:", err);
-    throw err;
   }
 }
 
@@ -80,8 +76,6 @@ app.get("/", async (req, res) => {
     res.send("Server connected to MongoDB successfully!");
   } catch (err) {
     res.status(500).send("Error connecting to MongoDB");
-  } finally {
-    await client.close();
   }
 });
 
@@ -118,8 +112,6 @@ app.post("/register", async (req, res) => {
   } catch (err) {
     console.error("Error during registration:", err);
     res.status(500).json({ error: "Internal server error." });
-  } finally {
-    await client.close();
   }
 });
 

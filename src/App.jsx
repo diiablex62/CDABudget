@@ -9,7 +9,7 @@ import Login from "./front-end/Login";
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState("");
-  const [authType, setAuthType] = useState(""); 
+  const [authType, setAuthType] = useState("");
 
   useEffect(() => {
     const storedLoginStatus = sessionStorage.getItem("isLoggedIn");
@@ -33,7 +33,7 @@ function App() {
     console.log("Utilisateur connecté :", user);
     setIsLoggedIn(true);
     setUsername(user?.username || "Utilisateur");
-    setAuthType(user?.authType || "password"); 
+    setAuthType(user?.authType || "password");
     sessionStorage.setItem("isLoggedIn", "true");
     sessionStorage.setItem("username", user?.username || "Utilisateur");
     sessionStorage.setItem("authType", user?.authType || "password");
@@ -53,7 +53,7 @@ function App() {
         onLogout={handleLogout}
         isLoggedIn={isLoggedIn}
         username={username}
-        authType={authType} 
+        authType={authType}
       />
       <Routes>
         <Route path='/login' element={<Login onLogin={handleLogin} />} />

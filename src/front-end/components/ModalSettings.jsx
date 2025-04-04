@@ -6,7 +6,7 @@ const ModalSettings = ({ isOpen, onClose }) => {
   useEffect(() => {
     const handleKeyDown = (event) => {
       if (event.key === "Escape") {
-        onClose(); 
+        onClose();
       }
     };
 
@@ -18,10 +18,7 @@ const ModalSettings = ({ isOpen, onClose }) => {
 
   return (
     <div className='modal-settings-overlay' onClick={onClose}>
-      <div
-        className='modal-settings'
-        onClick={(e) => e.stopPropagation()} 
-      >
+      <div className='modal-settings' onClick={(e) => e.stopPropagation()}>
         <div className='modal-settings-sidebar'>
           <input
             type='text'
@@ -31,9 +28,8 @@ const ModalSettings = ({ isOpen, onClose }) => {
           <ul>
             <li className='active'>Mon compte</li>
             <li>Profils</li>
-            <li>Contenu et social</li>
-            <li>Données et confidentialité</li>
-            <li>Appareils</li>
+            <li>Thèmes</li>
+         
           </ul>
         </div>
         <div className='modal-settings-content'>
@@ -44,7 +40,29 @@ const ModalSettings = ({ isOpen, onClose }) => {
             </button>
           </div>
           <div className='modal-settings-body'>
-            <p>Contenu des paramètres ici...</p>
+            <h3>Options de connexion</h3>
+            <ul className='connection-options'>
+              <li>
+                <strong>Nom d'utilisateur :</strong> a recuper
+                <button className='edit-btn'>Modifier</button>
+              </li>
+              <li>
+                <strong>E-Mail :</strong> A recuper
+                <button className='edit-btn'>Modifier</button>
+              </li>
+            </ul>
+            <h3 className='section-spacing'>Sécurité</h3>{" "}
+ 
+            <ul className='security-options'>
+              <li>
+                <strong>Changer le mot de passe</strong>
+                <button className='edit-btn'>Modifier</button>
+              </li>
+              <li>
+                <strong>Activer la double authentification</strong>
+                <button className='edit-btn'>Activer</button>
+              </li>
+            </ul>
           </div>
         </div>
       </div>

@@ -6,7 +6,6 @@
   padding: 0 16px;
   height: 80px;
   position: relative;
-  /* Permet de positionner la modale par rapport au header */
 }
 
 .site-title {
@@ -21,11 +20,11 @@
   display: flex;
   align-items: center;
   position: relative;
-  /* Ajuste la position pour la bulle */
   right: 0;
 }
 
 .login-btn {
+  display: inline-block;
   background-color: #555;
   color: white;
   text-decoration: none;
@@ -37,127 +36,17 @@
   transition: background-color 0.3s ease;
   font-weight: bold;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  display: none;
-  /* Supprime le bouton deconnexion */
 }
 
 .login-btn:hover {
   background-color: #333;
-  color: white;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
-.login-container.no-login-btn .login-btn,
-.login-container.on-login-page .login-btn {
-  display: none;
-}
-
-@media (max-width: 1100px) {
-  .site-title {
-    text-align: center;
-    /* Center the title */
-  }
-
-  .navbar {
-    justify-content: center;
-    /* Center the title horizontally */
-  }
-
-  .login-container {
-    position: relative;
-    /* Remove absolute positioning */
-    right: 0;
-    /* Remove right alignment */
-    margin-left: auto;
-    /* Push the login button to the right */
-  }
-}
-
-@media (max-width: 768px) {
-  .site-title {
-    font-size: 20px;
-    text-align: center;
-    /* Center the title */
-  }
-
-  .navbar {
-    justify-content: center;
-    /* Center the title horizontally */
-  }
-
-  .login-container {
-    position: relative;
-    /* Remove absolute positioning */
-    right: 0;
-    /* Remove right alignment */
-    margin-left: auto;
-    /* Push the login button to the right */
-  }
-}
-
-@media (max-width: 500px) {
-  .navbar {
-    flex-direction: column;
-    height: auto;
-    text-align: center;
-    padding: 10px;
-    justify-content: center;
-    /* Center the title horizontally */
-  }
-
-  .site-title {
-    font-size: 18px;
-    text-align: center;
-    width: 100%;
-  }
-
-  .login-container {
-    width: 100%;
-    justify-content: center;
-    margin-top: 10px;
-    position: relative;
-    /* Remove absolute positioning */
-    right: 0;
-    /* Remove right alignment */
-  }
-
-  .login-btn {
-    margin-left: 0;
-    width: 100%;
-  }
-}
-
-#revenue-table .amount-column:nth-child(2) {
-  white-space: nowrap;
-}
-
-.google-logo {
-  display: inline-block;
-  margin-left: 5px;
-  /* Ajoute un espace après le nom d'utilisateur */
-}
-
-.google-icon {
-  width: 16px;
-  height: 16px;
-  margin-left: 5px;
-  /* Ajoute un espace après le nom d'utilisateur */
-  vertical-align: middle;
-}
-
-.auth-logo {
-  display: inline-block;
-  margin-left: 5px;
-  /* Ajoute un espace après le nom d'utilisateur */
-}
-
-.auth-icon {
-  width: 16px;
-  height: 16px;
-  vertical-align: middle;
-}
-
 .account-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   position: relative;
 }
 
@@ -165,25 +54,36 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #555;
+  background-color: #6bd9a5;
+  /* Couleur par défaut */
   color: white;
+  font-size: 18px;
+  font-weight: bold;
   border-radius: 50%;
   width: 40px;
   height: 40px;
   cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.account-bubble:hover {
+  background-color: #84acf8;
+  /* Couleur au survol */
+  transform: scale(1.1);
+  /* Effet d'agrandissement */
 }
 
 .account-initial {
-  font-size: 18px;
-  font-weight: bold;
+  text-transform: uppercase;
+  /* Toujours en majuscule */
 }
 
 .account-modal {
   position: absolute;
-  top: calc(100% + 5px);
-  /* Positionne la modale juste sous la bulle avec un petit espace */
+  top: calc(100% + 10px);
+  /* Positionne la modal juste sous la bulle */
   right: 0;
-  /* Aligne le coin supérieur droit de la modale avec le coin inférieur droit de la bulle */
+  /* Aligne le coin droit de la modal avec la bulle */
   background-color: white;
   color: #333;
   border: 1px solid #ccc;
@@ -193,8 +93,17 @@
   padding: 15px;
   z-index: 1000;
   animation: fadeIn 0.3s ease-in-out;
-  overflow: hidden;
-  /* Empêche le débordement */
+}
+
+.account-modal::before {
+  content: "";
+  position: absolute;
+  top: -10px;
+  right: 20px;
+  /* Décale la flèche pour qu'elle pointe vers la bulle */
+  border-width: 10px;
+  border-style: solid;
+  border-color: transparent transparent white transparent;
 }
 
 @keyframes fadeIn {
@@ -216,16 +125,11 @@
   margin-bottom: 15px;
 }
 
-.account-info strong {
-  font-size: 16px;
-}
-
 .account-option {
   display: flex;
   align-items: center;
   gap: 10px;
   padding: 5px 0;
-  /* Réduit l'espace vertical */
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
@@ -234,17 +138,43 @@
   background-color: #f4f4f4;
 }
 
+.logout-option {
+  color: #f44336;
+}
+
 .option-icon {
   width: 20px;
   height: 20px;
 }
 
-.logout-option {
-  color: #f44336;
+@media (max-width: 1100px) {
+  .site-title {
+    font-size: 24px;
+  }
+
+  .navbar {
+    justify-content: center;
+  }
+
+  .login-container {
+    margin-left: auto;
+  }
 }
 
-hr {
-  border: none;
-  border-top: 1px solid #ddd;
-  margin: 10px 0;
+@media (max-width: 768px) {
+  .site-title {
+    font-size: 20px;
+  }
+
+  .navbar {
+    flex-direction: column;
+    height: auto;
+    text-align: center;
+    padding: 10px;
+  }
+
+  .login-container {
+    margin-top: 10px;
+    justify-content: center;
+  }
 }

@@ -15,6 +15,5 @@ export default defineConfig({
       "/register": "http://localhost:3000",
       "/login": "http://localhost:3000",
     },
-    historyApiFallback: true, // Ajoutez cette ligne pour gérer les routes côté client
   },
 });
