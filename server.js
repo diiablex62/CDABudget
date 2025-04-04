@@ -2,32 +2,54 @@ import express from "express";
 import { MongoClient, ServerApiVersion } from "mongodb";
 import dotenv from "dotenv";
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
 import cors from "cors";
+import { OAuth2Client } from "google-auth-library";
 
 dotenv.config();
 
 const app = express();
 app.use(express.json());
+
+// Middleware pour logger toutes les requêtes
+app.use((req, res, next) => {
+  console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
+  next();
+});
+
+// Middleware pour Cross-Origin-Opener-Policy
+app.use((req, res, next) => {
+  res.setHeader("Cross-Origin-Opener-Policy", "same-origin");
+  res.setHeader("Cross-Origin-Embedder-Policy", "require-corp");
+  next();
+});
+
+// CORS Configuration
+const allowedOrigins = [
+  "http://localhost:5173",
+  "http://localhost:5174",
+  "http://localhost:5175",
+  "http://localhost:5176",
+];
+
 app.use(
   cors({
-    origin: [
-      "http://localhost:5173",
-      "http://localhost:5174",
-      "http://localhost:5175",
-      "http://localhost:5176",
-    ],
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     methods: ["GET", "POST", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
   })
 );
-app.options("*", cors()); // Répondre aux requêtes prévol
 
-// Configuration MongoDB
+// MongoDB Configuration
 const uri = process.env.MONGO_URI;
 if (!uri) {
-  console.error("Erreur : MONGO_URI n'est pas défini dans le fichier .env");
+  console.error("Error: MONGO_URI is not defined in the .env file");
   process.exit(1);
 }
 
@@ -39,48 +61,47 @@ const client = new MongoClient(uri, {
   },
 });
 
-// Fonction pour vérifier la connexion MongoDB
+// MongoDB Connection Function
 async function connectToMongoDB() {
   try {
     await client.connect();
     await client.db("admin").command({ ping: 1 });
-    console.log("Connecté avec succès à MongoDB !");
+    console.log("Successfully connected to MongoDB!");
   } catch (err) {
-    console.error("Erreur de connexion à MongoDB :", err);
+    console.error("Error connecting to MongoDB:", err);
     throw err;
   }
 }
 
-// Route principale
+// Main Route
 app.get("/", async (req, res) => {
   try {
     await connectToMongoDB();
-    res.send("Serveur connecté à MongoDB avec succès !");
+    res.send("Server connected to MongoDB successfully!");
   } catch (err) {
-    res.status(500).send("Erreur de connexion à MongoDB");
+    res.status(500).send("Error connecting to MongoDB");
   } finally {
     await client.close();
   }
 });
 
-// Route pour l'inscription
+// Registration Route
 app.post("/register", async (req, res) => {
   try {
     const { username, email, password } = req.body;
     if (!username || !email || !password) {
-      return res.status(400).json({ error: "Tous les champs sont requis." });
+      return res.status(400).json({ error: "All fields are required." });
     }
 
-    await client.connect();
+    await connectToMongoDB();
     const db = client.db("budget_app");
     const usersCollection = db.collection("users");
 
-    // Vérifiez si l'utilisateur existe déjà
     const existingUser = await usersCollection.findOne({ email });
     if (existingUser) {
       return res
         .status(400)
-        .json({ error: "Un utilisateur avec cet email existe déjà." });
+        .json({ error: "A user with this email already exists." });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -92,100 +113,106 @@ app.post("/register", async (req, res) => {
     };
 
     await usersCollection.insertOne(newUser);
-    res.status(201).json({ message: "Utilisateur inscrit avec succès." });
+    res.status(201).json({ message: "User registered successfully." });
   } catch (err) {
-    console.error("Erreur lors de l'inscription :", err);
-    res.status(500).json({ error: "Erreur interne du serveur." });
+    console.error("Error during registration:", err);
+    res.status(500).json({ error: "Internal server error." });
   } finally {
     await client.close();
   }
 });
 
-// Route pour la connexion
+// Login Route
 app.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
     if (!email || !password) {
       return res
         .status(400)
-        .json({ error: "Email et mot de passe sont requis." });
+        .json({ error: "Email and password are required." });
     }
 
-    await client.connect();
+    await connectToMongoDB();
     const db = client.db("budget_app");
     const usersCollection = db.collection("users");
 
-    // Vérifiez si l'utilisateur existe
     const user = await usersCollection.findOne({ email });
     if (!user) {
-      return res.status(401).json({ error: "Email non trouvé." });
+      return res.status(401).json({ error: "Email not found." });
     }
 
-    // Vérifiez le mot de passe haché
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
-      return res.status(401).json({ error: "Mot de passe incorrect." });
+      return res.status(401).json({ error: "Incorrect password." });
     }
 
-    console.log(`Connexion réussie pour l'email : ${email}`);
+    console.log(`Successful login for email: ${email}`);
     res.status(200).json({
-      message: "Connexion réussie.",
+      message: "Login successful.",
       username: user.username,
     });
   } catch (err) {
-    console.error("Erreur lors de la connexion :", err);
-    res.status(500).json({ error: "Erreur interne du serveur." });
+    console.error("Error during login:", err);
+    res.status(500).json({ error: "Internal server error." });
   } finally {
     await client.close();
   }
 });
 
-// Route pour gérer la connexion Google
+// Google Login Route
+const CLIENT_ID = process.env.VITE_GOOGLE_CLIENT_ID;
+const googleClient = new OAuth2Client(CLIENT_ID);
+
 app.post("/google-login", async (req, res) => {
   try {
+    console.log("Request received on /google-login");
     const { token } = req.body;
+    console.log("Token received:", token);
 
-    if (!token) {
-      return res.status(400).json({ error: "Token manquant." });
-    }
+    const ticket = await googleClient.verifyIdToken({
+      idToken: token,
+      audience: CLIENT_ID,
+    });
 
-    // Vérifiez et décodez le token Google
-    const ticket = jwt.decode(token, { complete: true });
-    if (!ticket) {
-      return res.status(401).json({ error: "Token invalide." });
-    }
+    const payload = ticket.getPayload();
+    console.log("Payload extracted:", payload);
+    const { email, name } = payload;
 
-    const { email, name } = ticket.payload;
-
-    await client.connect();
+    await connectToMongoDB();
+    console.log("Successfully connected to MongoDB.");
     const db = client.db("budget_app");
     const usersCollection = db.collection("users");
 
-    // Vérifiez si l'utilisateur existe déjà
     let user = await usersCollection.findOne({ email });
     if (!user) {
-      // Créez un nouvel utilisateur si non existant
+      console.log("User not found, creating a new user.");
       user = {
         username: name,
         email,
         createdAt: new Date(),
       };
       await usersCollection.insertOne(user);
+    } else {
+      console.log("Existing user found:", user);
     }
 
-    console.log(`Connexion réussie pour l'utilisateur Google : ${email}`);
+    console.log("User found or created:", user);
     res.status(200).json({
+      success: true,
       message: "Connexion réussie.",
-      username: user.username,
+      user: { username: user.username, email: user.email },
     });
   } catch (err) {
-    console.error("Erreur lors de la connexion Google :", err);
-    res.status(500).json({ error: "Erreur interne du serveur." });
+    console.error("Error during Google token validation:", err);
+    res
+      .status(500)
+      .json({ success: false, error: "Erreur interne du serveur." });
   } finally {
+    console.log("Closing MongoDB connection.");
     await client.close();
   }
 });
 
-// Démarrage du serveur
+// Server Startup
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Serveur démarré sur le port ${PORT}`));
+app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
