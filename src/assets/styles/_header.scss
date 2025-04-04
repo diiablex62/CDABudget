@@ -2,27 +2,27 @@
   background-color: #333;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   padding: 0 16px;
   height: 80px;
+  position: relative;
+  /* Permet de positionner la modale par rapport au header */
 }
 
 .site-title {
-  font-size: 24px;
+  font-size: 30px;
   text-align: center;
   margin: 0;
   color: white;
   width: 100%;
-  /* Make the title take up the full width */
 }
 
 .login-container {
   display: flex;
   align-items: center;
-  position: absolute;
-  /* Position the login container absolutely */
-  right: 16px;
-  /* Align it to the right */
+  position: relative;
+  /* Ajuste la position pour la bulle */
+  right: 0;
 }
 
 .login-btn {
@@ -37,6 +37,8 @@
   transition: background-color 0.3s ease;
   font-weight: bold;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  display: none;
+  /* Supprime le bouton deconnexion */
 }
 
 .login-btn:hover {
@@ -125,10 +127,6 @@
   }
 }
 
-.reduce {
-  font-size: 15px;
-}
-
 #revenue-table .amount-column:nth-child(2) {
   white-space: nowrap;
 }
@@ -157,4 +155,95 @@
   width: 16px;
   height: 16px;
   vertical-align: middle;
+}
+
+.account-container {
+  position: relative;
+}
+
+.account-bubble {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #555;
+  color: white;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+}
+
+.account-initial {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.account-modal {
+  position: absolute;
+  top: calc(100% + 5px);
+  /* Positionne la modale juste sous la bulle avec un petit espace */
+  right: 0;
+  /* Aligne le coin supérieur droit de la modale avec le coin inférieur droit de la bulle */
+  background-color: white;
+  color: #333;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 250px;
+  padding: 15px;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease-in-out;
+  overflow: hidden;
+  /* Empêche le débordement */
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.account-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.account-info strong {
+  font-size: 16px;
+}
+
+.account-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 0;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.account-option:hover {
+  background-color: #f4f4f4;
+}
+
+.option-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.logout-option {
+  color: #f44336;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid #ddd;
+  margin: 10px 0;
 }

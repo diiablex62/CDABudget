@@ -1,53 +1,89 @@
-import React from "react";
+import React, { useState, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import Google from "../icons/Google"; // Import du composant Google
-import Lock from "../icons/Lock"; // Import du composant Lock
+import Google from "../icons/Google";
+import Lock from "../icons/Lock";
+import SettingsIcon from "../icons/Settings";
+import LogoutIcon from "../icons/Logout";
 
 export default function Header({ onLogout, isLoggedIn, username, authType }) {
+  const [showAccountModal, setShowAccountModal] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const isLoginPage = location.pathname === "/login";
+  const closeTimeoutRef = useRef(null);
 
   const handleLogoutClick = () => {
     onLogout();
     navigate("/login");
   };
 
-  const handleLoginClick = () => {
-    navigate("/login");
+  const handleMouseEnter = () => {
+    if (closeTimeoutRef.current) {
+      clearTimeout(closeTimeoutRef.current);
+    }
+    setShowAccountModal(true);
+  };
+
+  const handleMouseLeaveBubble = () => {
+    closeTimeoutRef.current = setTimeout(() => {
+      setShowAccountModal(false);
+    }, 1000);
+  };
+
+  const handleMouseLeaveModal = () => {
+    if (closeTimeoutRef.current) {
+      clearTimeout(closeTimeoutRef.current);
+    }
+    setShowAccountModal(false);
   };
 
   return (
     <>
       <nav className='navbar'>
-        <div className='site-title'>
-          Gestion de budget{" "}
-          {isLoggedIn && username && (
-            <span className='reduce'>
-              {username}
-              <span className='auth-logo'>
-                {authType === "google" && (
-                  <div title='Connecté avec Google'>
-                    <Google className='auth-icon' />
-                  </div>
-                )}
-                {authType === "password" && (
-                  <div title='Connecté avec un mot de passe'>
-                    <Lock className='auth-icon' />
-                  </div>
-                )}
-              </span>
-            </span>
-          )}
-        </div>
+        <div className='site-title'>Gestion de budget</div>
         {!isLoginPage && (
           <div className='login-container'>
             {isLoggedIn ? (
-              <button onClick={handleLogoutClick} className='login-btn'>
-                Déconnexion
-              </button>
+              <div
+                className='account-container'
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeaveBubble}>
+                <div className='account-bubble'>
+                  <span className='account-initial'>
+                    {username.charAt(0).toUpperCase()}
+                  </span>
+                </div>
+                {showAccountModal && (
+                  <div
+                    className='account-modal'
+                    onMouseEnter={handleMouseEnter}
+                    onMouseLeave={handleMouseLeaveModal}>
+                    <div className='account-info'>
+                      <strong>{username}</strong>
+                      {authType === "google" && (
+                        <Google className='auth-icon' />
+                      )}
+                      {authType === "password" && (
+                        <Lock className='auth-icon' />
+                      )}
+                    </div>
+                    <hr />
+                    <div className='account-option'>
+                      <SettingsIcon className='option-icon' />
+                      <span>Mes paramètres</span>
+                    </div>
+                    <hr />
+                    <div
+                      className='account-option logout-option'
+                      onClick={handleLogoutClick}>
+                      <LogoutIcon className='option-icon' />
+                      <span>Déconnexion</span>
+                    </div>
+                  </div>
+                )}
+              </div>
             ) : (
-              <button onClick={handleLoginClick} className='login-btn'>
+              <button onClick={() => navigate("/login")} className='login-btn'>
                 Connexion
               </button>
             )}
