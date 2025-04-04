@@ -4,9 +4,11 @@ import Google from "../icons/Google";
 import Lock from "../icons/Lock";
 import SettingsIcon from "../icons/Settings";
 import LogoutIcon from "../icons/Logout";
+import ModalSettings from "./ModalSettings";
 
 export default function Header({ onLogout, isLoggedIn, username, authType }) {
   const [showAccountModal, setShowAccountModal] = useState(false);
+  const [showSettingsModal, setShowSettingsModal] = useState(false); // État pour la modale des paramètres
   const navigate = useNavigate();
   const location = useLocation();
   const isLoginPage = location.pathname === "/login";
@@ -35,6 +37,14 @@ export default function Header({ onLogout, isLoggedIn, username, authType }) {
       clearTimeout(closeTimeoutRef.current);
     }
     setShowAccountModal(false);
+  };
+
+  const openSettingsModal = () => {
+    setShowSettingsModal(true);
+  };
+
+  const closeSettingsModal = () => {
+    setShowSettingsModal(false);
   };
 
   return (
@@ -68,7 +78,10 @@ export default function Header({ onLogout, isLoggedIn, username, authType }) {
                       )}
                     </div>
                     <hr />
-                    <div className='account-option'>
+                    <div
+                      className='account-option'
+                      onClick={openSettingsModal} // Ouvre la modale des paramètres
+                    >
                       <SettingsIcon className='option-icon' />
                       <span>Mes paramètres</span>
                     </div>
@@ -90,6 +103,7 @@ export default function Header({ onLogout, isLoggedIn, username, authType }) {
           </div>
         )}
       </nav>
+      <ModalSettings isOpen={showSettingsModal} onClose={closeSettingsModal} />
     </>
   );
 }
