@@ -8,6 +8,11 @@
   position: relative;
 }
 
+body.dark-theme .navbar {
+  background-color: #000; // Fond noir en mode sombre
+  color: white; // Texte en blanc
+}
+
 .site-title {
   font-size: 30px;
   text-align: center;

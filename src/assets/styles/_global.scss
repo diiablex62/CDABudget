@@ -1,4 +1,3 @@
-// c:\Users\Alex\Desktop\CDA Budget\Budget\src\assets\styles\_global.scss
 * {
   margin: 0;
   padding: 0;
@@ -11,7 +10,6 @@ body {
   height: 100%;
   display: flex;
   flex-direction: column;
-
 }
 
 #root {
@@ -20,41 +18,66 @@ body {
   min-height: 100vh;
 }
 
+// Dark mode
 body.dark-theme {
-  background-color: #121212;
-  color: #ffffff;
-}
+  background-color: #121212; // Fond noir pour le mode sombre
+  color: #ffffff; // Texte en blanc
 
-body.dark-theme .modal-settings {
-  background: rgba(18, 18, 18, 0.9);
-  color: #ffffff;
-}
+  .modal-settings {
+    background: rgba(18, 18, 18, 0.9);
+    color: #ffffff;
+  }
 
-body.dark-theme .modal-settings-sidebar {
-  background: #1e1e1e;
-  color: #ffffff;
-}
+  .modal-settings-sidebar {
+    background: #1e1e1e;
+    color: #ffffff;
 
-body.dark-theme .modal-settings-sidebar li:hover {
-  background-color: #333333;
-}
+    li:hover {
+      background-color: #333333;
+    }
 
-body.dark-theme .modal-settings-sidebar li.active {
-  background-color: #444444;
-  color: #ffffff;
-}
+    li.active {
+      background-color: #444444;
+      color: #ffffff; // Texte en blanc pour l'élément actif
+    }
+  }
 
-body.dark-theme .theme-toggle-btn {
-  background-color: #444444;
-  color: #ffffff;
-}
+  .theme-toggle-btn {
+    background-color: #444444;
+    color: #ffffff;
 
-body.dark-theme .theme-toggle-btn:hover {
-  background-color: #555555;
-}
+    &:hover {
+      background-color: #555555;
+    }
+  }
 
-// Ajout pour la partie droite
-body.dark-theme .modal-settings-content {
-  background: #1e1e1e; // Fond sombre
-  color: #ffffff; // Texte blanc
+  .modal-settings-content {
+    background: #1e1e1e;
+    color: #ffffff;
+  }
+
+  .navbar {
+    background-color: #000; // Fond noir pour la navbar
+    color: #ffffff; // Texte en blanc
+  }
+
+  .en-tete {
+    background-color: #121212; // Fond noir pour l'en-tête
+    color: #ffffff; // Texte en blanc
+  }
+
+  #year,
+  #month {
+    color: #ffffff; // Texte en blanc pour les années et mois
+  }
+
+  button {
+    background-color: #ffffff; // Fond blanc pour les boutons
+    color: #000; // Texte en noir
+    border: 2px solid #000; // Bordure noire
+
+    &:hover {
+      background-color: #e0e0e0; // Fond gris clair au survol
+    }
+  }
 }

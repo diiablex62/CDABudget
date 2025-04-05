@@ -74,6 +74,19 @@ $selected-color: #007bff; // Définir une valeur par défaut pour Sass
     body.dark-theme & {
         color: white; // Texte en blanc en mode sombre
     }
+
+    &.active {
+        background-color: var(--selected-color); // Utilise la couleur sélectionnée
+        color: white;
+
+        // Si la couleur sélectionnée est cercle 4 (jaune) ou cercle 5 (bleu), le texte devient noir
+        &[style*="--selected-color: #f0e460"],
+        // Jaune (cercle 4)
+        &[style*="--selected-color: #79ecfe"] {
+            // Bleu (cercle 5)
+            color: black !important; // Forcer le texte en noir pour une meilleure lisibilité
+        }
+    }
 }
 
 .modal-settings-sidebar li:hover {
@@ -96,6 +109,20 @@ $selected-color: #007bff; // Définir une valeur par défaut pour Sass
 body.dark-theme .modal-settings-sidebar li.active {
     background-color: var(--selected-color); // Assure que la couleur sélectionnée est utilisée en mode sombre
     color: white;
+}
+
+body.dark-theme .modal-settings-sidebar li.active,
+.modal-settings-sidebar li.active {
+    background-color: var(--selected-color); // Assure que la couleur sélectionnée est utilisée
+    color: white;
+
+    // Si la couleur sélectionnée est cercle 4 (jaune) ou cercle 5 (bleu), le texte devient noir
+    &[style*="--selected-color: #f0e460"],
+    // Jaune (cercle 4)
+    &[style*="--selected-color: #79ecfe"] {
+        // Bleu (cercle 5)
+        color: black !important; // Forcer le texte en noir pour une meilleure lisibilité
+    }
 }
 
 .sidebar-icon {
@@ -139,6 +166,10 @@ body.dark-theme .modal-settings-content {
     font-size: 20px;
     cursor: pointer;
     transition: color 0.3s ease;
+
+    body.dark-theme & {
+        color: #fff; // Le bouton devient blanc en mode sombre
+    }
 }
 
 .close-btn:hover {
@@ -513,14 +544,6 @@ body.dark-theme .circle.selected {
 
 .color3 {
     background-color: #ff6b6b;
-}
-
-.color4 {
-    background-color: #f0e460;
-}
-
-.color5 {
-    background-color: #79ecfe;
 }
 
 .theme-color {

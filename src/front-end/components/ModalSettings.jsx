@@ -1,50 +1,51 @@
 import React, { useEffect, useState } from "react";
 import AccountIcon from "../icons/Account";
-import ProfileIcon from "../icons/Profile";
 import ThemeIcon from "../icons/Theme";
 
 const ModalSettings = ({ isOpen, onClose }) => {
   const [activeSection, setActiveSection] = useState("Mon compte");
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [selectedColor, setSelectedColor] = useState("#007bff");
-  const [selectedCircle, setSelectedCircle] = useState("color2"); // Cercle par défaut
+  const [selectedCircle, setSelectedCircle] = useState("color2");
 
   useEffect(() => {
     const handleKeyDown = (event) => {
-      if (event.key === "Escape") {
-        onClose();
-      }
+      if (event.key === "Escape") onClose();
     };
 
     document.addEventListener("keydown", handleKeyDown);
-    return () => {
-      document.removeEventListener("keydown", handleKeyDown);
-    };
+    return () => document.removeEventListener("keydown", handleKeyDown);
   }, [onClose]);
 
   useEffect(() => {
-    const darkModeEnabled = document.body.classList.contains("dark-theme");
-    setIsDarkMode(darkModeEnabled);
+    const savedDarkMode = localStorage.getItem("isDarkMode") === "true";
+    const savedColor = localStorage.getItem("selectedColor") || "#007bff";
+    const savedCircle = localStorage.getItem("selectedCircle") || "color2";
+
+    setIsDarkMode(savedDarkMode);
+    setSelectedColor(savedColor);
+    setSelectedCircle(savedCircle);
+
+    document.body.classList.toggle("dark-theme", savedDarkMode);
+    document.documentElement.style.setProperty("--selected-color", savedColor);
   }, []);
 
-  const handleSectionClick = (section) => {
-    setActiveSection(section);
-  };
-
   const handleDarkModeToggle = () => {
-    setIsDarkMode((prev) => !prev);
-    document.body.classList.toggle("dark-theme");
+    const newDarkMode = !isDarkMode;
+    setIsDarkMode(newDarkMode);
+    localStorage.setItem("isDarkMode", newDarkMode);
+    document.body.classList.toggle("dark-theme", newDarkMode);
   };
 
   const handleColorSelect = (color, circle) => {
     setSelectedColor(color);
-    setSelectedCircle(circle); // Met à jour le cercle sélectionné
+    setSelectedCircle(circle);
+    localStorage.setItem("selectedColor", color);
+    localStorage.setItem("selectedCircle", circle);
     document.documentElement.style.setProperty("--selected-color", color);
   };
 
-  if (!isOpen) {
-    return null;
-  }
+  if (!isOpen) return null;
 
   return (
     <div className='modal-settings-overlay' onClick={onClose}>
@@ -56,18 +57,19 @@ const ModalSettings = ({ isOpen, onClose }) => {
             className='sidebar-search'
           />
           <ul>
-            <li
-              className={activeSection === "Mon compte" ? "active" : ""}
-              onClick={() => handleSectionClick("Mon compte")}>
-              <AccountIcon className='sidebar-icon' />
-              Mon compte
-            </li>
-            <li
-              className={activeSection === "Apparences" ? "active" : ""}
-              onClick={() => handleSectionClick("Apparences")}>
-              <ThemeIcon className='sidebar-icon' />
-              Apparences
-            </li>
+            {["Mon compte", "Apparences"].map((section) => (
+              <li
+                key={section}
+                className={activeSection === section ? "active" : ""}
+                onClick={() => setActiveSection(section)}>
+                {section === "Mon compte" ? (
+                  <AccountIcon className='sidebar-icon' />
+                ) : (
+                  <ThemeIcon className='sidebar-icon' />
+                )}
+                {section}
+              </li>
+            ))}
           </ul>
         </div>
         <div className='modal-settings-content'>
@@ -82,25 +84,26 @@ const ModalSettings = ({ isOpen, onClose }) => {
               <>
                 <h3>Options de connexion</h3>
                 <ul className='connection-options'>
-                  <li>
-                    <strong>Nom d'utilisateur :</strong> a recuper
-                    <button className='edit-btn'>Modifier</button>
-                  </li>
-                  <li>
-                    <strong>E-Mail :</strong> A recuper
-                    <button className='edit-btn'>Modifier</button>
-                  </li>
+                  {["Nom d'utilisateur", "E-Mail"].map((label) => (
+                    <li key={label}>
+                      <strong>{label} :</strong> à récupérer
+                      <button className='edit-btn'>Modifier</button>
+                    </li>
+                  ))}
                 </ul>
                 <h3 className='section-spacing'>Sécurité</h3>
                 <ul className='security-options'>
-                  <li>
-                    <strong>Changer le mot de passe</strong>
-                    <button className='edit-btn'>Modifier</button>
-                  </li>
-                  <li>
-                    <strong>Activer la double authentification</strong>
-                    <button className='edit-btn'>Activer</button>
-                  </li>
+                  {[
+                    "Changer le mot de passe",
+                    "Activer la double authentification",
+                  ].map((option, index) => (
+                    <li key={option}>
+                      <strong>{option}</strong>
+                      <button className='edit-btn'>
+                        {index === 0 ? "Modifier" : "Activer"}
+                      </button>
+                    </li>
+                  ))}
                 </ul>
               </>
             )}
@@ -122,41 +125,18 @@ const ModalSettings = ({ isOpen, onClose }) => {
                 </ul>
                 <h3 className='theme-title'>Thème</h3>
                 <div className='theme-circles'>
-                  <div
-                    className={`circle color1 ${
-                      selectedCircle === "color1" ? "selected" : ""
-                    }`}
-                    onClick={() =>
-                      handleColorSelect("#6bd9a5", "color1")
-                    }></div>
-                  <div
-                    className={`circle color2 ${
-                      selectedCircle === "color2" ? "selected" : ""
-                    }`}
-                    onClick={() =>
-                      handleColorSelect("#007bff", "color2")
-                    }></div>
-                  <div
-                    className={`circle color3 ${
-                      selectedCircle === "color3" ? "selected" : ""
-                    }`}
-                    onClick={() =>
-                      handleColorSelect("#ff6b6b", "color3")
-                    }></div>
-                  <div
-                    className={`circle color4 ${
-                      selectedCircle === "color4" ? "selected" : ""
-                    }`}
-                    onClick={() =>
-                      handleColorSelect("#f0e460", "color4")
-                    }></div>
-                  <div
-                    className={`circle color5 ${
-                      selectedCircle === "color5" ? "selected" : ""
-                    }`}
-                    onClick={() =>
-                      handleColorSelect("#79ecfe", "color5")
-                    }></div>
+                  {[
+                    { color: "#6bd9a5", circle: "color1" },
+                    { color: "#007bff", circle: "color2" },
+                    { color: "#ff6b6b", circle: "color3" },
+                  ].map(({ color, circle }) => (
+                    <div
+                      key={circle}
+                      className={`circle ${circle} ${
+                        selectedCircle === circle ? "selected" : ""
+                      }`}
+                      onClick={() => handleColorSelect(color, circle)}></div>
+                  ))}
                 </div>
               </>
             )}

@@ -64,11 +64,17 @@ async function connectToMongoDB() {
   }
 }
 
+const getUsersCollection = async () => {
+  await connectToMongoDB();
+  return client.db("budget_app").collection("users");
+};
+
 app.get("/", async (req, res) => {
   try {
     await connectToMongoDB();
     res.send("Server connected to MongoDB successfully!");
   } catch (err) {
+    console.error("Error connecting to MongoDB:", err);
     res.status(500).send("Error connecting to MongoDB");
   }
 });
@@ -80,10 +86,7 @@ app.post("/register", async (req, res) => {
       return res.status(400).json({ error: "All fields are required." });
     }
 
-    await connectToMongoDB();
-    const db = client.db("budget_app");
-    const usersCollection = db.collection("users");
-
+    const usersCollection = await getUsersCollection();
     const existingUser = await usersCollection.findOne({ email });
     if (existingUser) {
       return res
@@ -117,10 +120,7 @@ app.post("/login", async (req, res) => {
         .json({ error: "Email and password are required." });
     }
 
-    await connectToMongoDB();
-    const db = client.db("budget_app");
-    const usersCollection = db.collection("users");
-
+    const usersCollection = await getUsersCollection();
     const user = await usersCollection.findOne({ email });
     if (!user) {
       return res.status(401).json({ error: "Email not found." });
@@ -140,8 +140,6 @@ app.post("/login", async (req, res) => {
   } catch (err) {
     console.error("Error during login:", err);
     res.status(500).json({ error: "Internal server error." });
-  } finally {
-    await client.close();
   }
 });
 
@@ -160,10 +158,7 @@ app.post("/google-login", async (req, res) => {
     const payload = ticket.getPayload();
     const { email, name } = payload;
 
-    await connectToMongoDB();
-    const db = client.db("budget_app");
-    const usersCollection = db.collection("users");
-
+    const usersCollection = await getUsersCollection();
     let user = await usersCollection.findOne({ email });
     if (!user) {
       user = {
@@ -185,8 +180,6 @@ app.post("/google-login", async (req, res) => {
     res
       .status(500)
       .json({ success: false, error: "Erreur interne du serveur." });
-  } finally {
-    await client.close();
   }
 });
 
