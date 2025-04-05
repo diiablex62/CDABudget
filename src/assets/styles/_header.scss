@@ -9,9 +9,9 @@
 }
 
 body.dark-theme .navbar {
-  background-color: #000; // Fond noir en mode sombre
-  color: white; // Texte en blanc
-  border-bottom: 1px solid white; // Ajoute une bordure blanche en bas
+  background-color: #000;
+  color: white;
+  border-bottom: 1px solid white;
 }
 
 .site-title {
@@ -69,11 +69,11 @@ body.dark-theme .navbar {
   justify-content: center;
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.3s ease, border 0.3s ease;
-  border: 2px solid white; // Bordure blanche en mode normal
+  border: 2px solid white;
 }
 
 body.dark-theme .account-bubble {
-  border: 2px solid black; // Bordure noire en mode sombre
+  border: 2px solid black;
 }
 
 .account-initial {
@@ -130,20 +130,31 @@ body.dark-theme .account-bubble {
   gap: 10px;
   padding: 5px 0;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  color: #333;
 }
 
-.account-option:hover {
-  background-color: #f4f4f4;
+.account-option:hover,
+body.dark-theme .account-option:hover {
+  background-color: var(--selected-color);
+  color: white;
 }
 
 .logout-option {
   color: #f44336;
 }
 
+.logout-option:hover {
+  background-color: var(--selected-color);
+  color: white;
+}
+
 .option-icon {
   width: 20px;
   height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 @media (max-width: 1100px) {

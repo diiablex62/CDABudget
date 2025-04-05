@@ -22,7 +22,9 @@ const ModalSettings = ({ isOpen, onClose }) => {
     const savedColor = localStorage.getItem("selectedColor") || "#007bff";
     const savedCircle = localStorage.getItem("selectedCircle") || "color2";
 
-    setIsDarkMode(savedDarkMode);
+    setIsDarkMode(
+      document.body.classList.contains("dark-theme") || savedDarkMode
+    );
     setSelectedColor(savedColor);
     setSelectedCircle(savedCircle);
 
@@ -30,11 +32,26 @@ const ModalSettings = ({ isOpen, onClose }) => {
     document.documentElement.style.setProperty("--selected-color", savedColor);
   }, []);
 
+  useEffect(() => {
+    const syncDarkMode = (event) => {
+      setIsDarkMode(event.detail.isDarkMode);
+    };
+
+    window.addEventListener("darkModeToggle", syncDarkMode);
+    return () => {
+      window.removeEventListener("darkModeToggle", syncDarkMode);
+    };
+  }, []);
+
   const handleDarkModeToggle = () => {
     const newDarkMode = !isDarkMode;
     setIsDarkMode(newDarkMode);
     localStorage.setItem("isDarkMode", newDarkMode);
     document.body.classList.toggle("dark-theme", newDarkMode);
+
+    window.dispatchEvent(
+      new CustomEvent("darkModeToggle", { detail: { isDarkMode: newDarkMode } })
+    );
   };
 
   const handleColorSelect = (color, circle) => {
@@ -112,14 +129,20 @@ const ModalSettings = ({ isOpen, onClose }) => {
                 <h3>Dark Mode</h3>
                 <ul className='theme-options'>
                   <li>
-                    <strong>Activer le dark mode :</strong>
+                    <strong>
+                      {isDarkMode
+                        ? "Désactiver le mode sombre"
+                        : "Activer le mode sombre"}{" "}
+                      :
+                    </strong>
                     <label className='switch'>
                       <input
                         type='checkbox'
                         checked={isDarkMode}
                         onChange={handleDarkModeToggle}
+                        style={{ display: "none" }} 
                       />
-                      <span className='slider'></span>
+                      <span className='slider'></span>{" "}
                     </label>
                   </li>
                 </ul>
