@@ -78,7 +78,6 @@
   padding: 0;
 
   box-shadow: none !important;
-  /* Supprime toute ombre */
 }
 
 .toggle-password-btn:hover {
@@ -114,11 +113,8 @@
   cursor: pointer;
   transition: none;
   width: auto;
-  /* Ajuste automatiquement la largeur */
   margin: 0 auto;
-  /* Centre horizontalement */
   display: block;
-  /* Nécessaire pour que le margin fonctionne */
   box-shadow: none;
 }
 
@@ -243,5 +239,4 @@
   display: flex;
   justify-content: center;
   margin: 20px auto;
-  /* Centre horizontalement et ajoute un espace au-dessus et en dessous */
 }

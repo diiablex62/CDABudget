@@ -16,7 +16,7 @@ async function createUser() {
     const newUser = {
       username: "testuser",
       email: "testuser@example.com",
-      password: "password123", // Remplacez par un mot de passe sécurisé
+      password: "password123",
       createdAt: new Date(),
     };
 

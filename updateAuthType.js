@@ -12,10 +12,9 @@ async function updateAuthType() {
     const db = client.db("budget_app");
     const usersCollection = db.collection("users");
 
-    // Ajoute le champ authType avec une valeur par défaut "password" pour les utilisateurs existants
     const result = await usersCollection.updateMany(
-      { authType: { $exists: false } }, // Filtre les utilisateurs sans authType
-      { $set: { authType: "password" } } // Ajoute authType avec la valeur "password"
+      { authType: { $exists: false } }, 
+      { $set: { authType: "password" } } 
     );
 
     console.log(`${result.modifiedCount} utilisateurs mis à jour.`);

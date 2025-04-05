@@ -10,20 +10,17 @@ dotenv.config();
 const app = express();
 app.use(express.json());
 
-// Middleware pour logger toutes les requêtes
 app.use((req, res, next) => {
   console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
   next();
 });
 
-// Middleware pour Cross-Origin-Opener-Policy
 app.use((req, res, next) => {
   res.setHeader("Cross-Origin-Opener-Policy", "same-origin");
   res.setHeader("Cross-Origin-Embedder-Policy", "require-corp");
   next();
 });
 
-// CORS Configuration
 const allowedOrigins = [
   "http://localhost:5173",
   "http://localhost:5174",
@@ -46,7 +43,6 @@ app.use(
   })
 );
 
-// MongoDB Configuration
 const uri = process.env.MONGO_URI;
 if (!uri) {
   console.error("Error: MONGO_URI is not defined in the .env file");
@@ -61,7 +57,6 @@ const client = new MongoClient(uri, {
   },
 });
 
-// MongoDB Connection Function
 async function connectToMongoDB() {
   if (!client.isConnected) {
     await client.connect();
@@ -69,7 +64,6 @@ async function connectToMongoDB() {
   }
 }
 
-// Main Route
 app.get("/", async (req, res) => {
   try {
     await connectToMongoDB();
@@ -79,7 +73,6 @@ app.get("/", async (req, res) => {
   }
 });
 
-// Registration Route
 app.post("/register", async (req, res) => {
   try {
     const { username, email, password } = req.body;
@@ -103,7 +96,7 @@ app.post("/register", async (req, res) => {
       username,
       email,
       password: hashedPassword,
-      authType: "password", // Ajout du champ authType
+      authType: "password",
       createdAt: new Date(),
     };
 
@@ -115,7 +108,6 @@ app.post("/register", async (req, res) => {
   }
 });
 
-// Login Route
 app.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -143,7 +135,7 @@ app.post("/login", async (req, res) => {
     res.status(200).json({
       message: "Login successful.",
       username: user.username,
-      authType: user.authType, // Retourne le type de connexion
+      authType: user.authType,
     });
   } catch (err) {
     console.error("Error during login:", err);
@@ -153,15 +145,12 @@ app.post("/login", async (req, res) => {
   }
 });
 
-// Google Login Route
 const CLIENT_ID = process.env.VITE_GOOGLE_CLIENT_ID;
 const googleClient = new OAuth2Client(CLIENT_ID);
 
 app.post("/google-login", async (req, res) => {
   try {
-    console.log("Request received on /google-login");
     const { token } = req.body;
-    console.log("Token received:", token);
 
     const ticket = await googleClient.verifyIdToken({
       idToken: token,
@@ -169,33 +158,27 @@ app.post("/google-login", async (req, res) => {
     });
 
     const payload = ticket.getPayload();
-    console.log("Payload extracted:", payload);
     const { email, name } = payload;
 
     await connectToMongoDB();
-    console.log("Successfully connected to MongoDB.");
     const db = client.db("budget_app");
     const usersCollection = db.collection("users");
 
     let user = await usersCollection.findOne({ email });
     if (!user) {
-      console.log("User not found, creating a new user.");
       user = {
         username: name,
         email,
-        authType: "google", // Ajout du champ authType
+        authType: "google",
         createdAt: new Date(),
       };
       await usersCollection.insertOne(user);
-    } else {
-      console.log("Existing user found:", user);
     }
 
-    console.log("User found or created:", user);
     res.status(200).json({
       success: true,
       message: "Connexion réussie.",
-      user: { username: user.username, authType: user.authType }, // Retourne authType
+      user: { username: user.username, authType: user.authType },
     });
   } catch (err) {
     console.error("Error during Google token validation:", err);
@@ -203,11 +186,9 @@ app.post("/google-login", async (req, res) => {
       .status(500)
       .json({ success: false, error: "Erreur interne du serveur." });
   } finally {
-    console.log("Closing MongoDB connection.");
     await client.close();
   }
 });
 
-// Server Startup
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));

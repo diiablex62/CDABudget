@@ -8,7 +8,7 @@ import ModalSettings from "./ModalSettings";
 
 export default function Header({ onLogout, isLoggedIn, username, authType }) {
   const [showAccountModal, setShowAccountModal] = useState(false);
-  const [showSettingsModal, setShowSettingsModal] = useState(false); // État pour la modale des paramètres
+  const [showSettingsModal, setShowSettingsModal] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const isLoginPage = location.pathname === "/login";
@@ -92,7 +92,7 @@ export default function Header({ onLogout, isLoggedIn, username, authType }) {
               )}
             </div>
           ) : (
-            !isLoginPage && ( // Ne pas afficher le bouton "Se connecter" sur la page de connexion
+            !isLoginPage && ( 
               <button className='login-btn' onClick={handleLoginClick}>
                 Se connecter
               </button>

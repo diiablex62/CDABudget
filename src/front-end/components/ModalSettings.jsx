@@ -7,7 +7,6 @@ const ModalSettings = ({ isOpen, onClose }) => {
   const [activeSection, setActiveSection] = useState("Mon compte");
   const [isDarkMode, setIsDarkMode] = useState(false);
 
-  // Appeler tous les hooks de manière inconditionnelle
   useEffect(() => {
     const handleKeyDown = (event) => {
       if (event.key === "Escape") {
