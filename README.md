@@ -61,15 +61,6 @@ Cda budget est une application web conçue pour aider les individus à gérer le
     npm run dev
     ```
 
-## Déploiement
-
-1. **Frontend :** Déployez le frontend sur Netlify en connectant votre dépôt GitHub.
-2. **Backend :** Configurez les fonctions serverless sur Netlify pour gérer les requêtes backend.
-
-## Contribution
-
-Les contributions sont les bienvenues ! Si vous souhaitez contribuer, veuillez ouvrir une issue ou soumettre une pull request.
-
 ## Licence
 
 Ce projet est sous licence MIT. Consultez le fichier `LICENSE` pour plus de détails.
