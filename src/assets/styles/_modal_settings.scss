@@ -1,3 +1,9 @@
+:root {
+    --selected-color: #007bff; // Couleur par défaut
+}
+
+$selected-color: #007bff; // Définir une valeur par défaut pour Sass
+
 .modal-settings-overlay {
     position: fixed;
     top: 0;
@@ -63,6 +69,11 @@
     cursor: pointer;
     border-radius: 8px;
     transition: background-color 0.3s ease, color 0.3s ease;
+    color: black; // Texte par défaut en noir
+
+    body.dark-theme & {
+        color: white; // Texte en blanc en mode sombre
+    }
 }
 
 .modal-settings-sidebar li:hover {
@@ -70,7 +81,20 @@
 }
 
 .modal-settings-sidebar li.active {
-    background-color: #007bff;
+    background-color: var(--selected-color); // Utilise la couleur sélectionnée
+    color: white; // Texte par défaut en blanc pour l'élément actif
+
+    // Si la couleur sélectionnée est cercle 4 (jaune) ou cercle 5 (bleu), le texte devient noir
+    &[style*="--selected-color: #f0e460"],
+    /* Jaune (cercle 4) */
+    &[style*="--selected-color: #79ecfe"] {
+        /* Bleu (cercle 5) */
+        color: black !important; // Forcer le texte en noir pour une meilleure lisibilité
+    }
+}
+
+body.dark-theme .modal-settings-sidebar li.active {
+    background-color: var(--selected-color); // Assure que la couleur sélectionnée est utilisée en mode sombre
     color: white;
 }
 
@@ -82,11 +106,16 @@
 
 .modal-settings-content {
     flex: 1;
-    background: #ffffff;
-    color: #333;
+    background: #ffffff; // Fond clair par défaut
+    color: #333; // Texte sombre par défaut
     display: flex;
     flex-direction: column;
     overflow-y: auto;
+}
+
+body.dark-theme .modal-settings-content {
+    background: #1e1e1e; // Fond sombre pour le mode sombre
+    color: #ffffff; // Texte blanc pour le mode sombre
 }
 
 .modal-settings-header {
@@ -100,7 +129,7 @@
 .modal-settings-header h2 {
     margin: 0;
     font-size: 22px;
-    color: #007bff;
+    color: var(--selected-color);
 }
 
 .close-btn {
@@ -125,7 +154,7 @@
 .modal-settings-body h3 {
     margin-bottom: 20px;
     font-size: 18px;
-    color: #007bff;
+    color: var(--selected-color);
 }
 
 .modal-settings-body h3.theme-title {
@@ -160,6 +189,23 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+body.dark-theme .connection-options li {
+    background-color: #333333; // Fond plus foncé en mode sombre
+    border: 1px solid #444444; // Bordure plus foncée en mode sombre
+    color: white; // Texte en blanc en mode sombre
+}
+
+body.dark-theme .connection-options li:hover {
+    background-color: #444444; // Fond encore plus foncé au survol
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    color: white; // Assure que le texte reste blanc au survol
+}
+
+body.dark-theme .connection-options li strong,
+body.dark-theme .theme-options li strong {
+    color: white; // Texte en blanc en mode sombre
+}
+
 .connection-options li strong {
     flex: 0;
     font-size: 16px;
@@ -178,6 +224,22 @@
     cursor: pointer;
     font-size: 14px;
     transition: background-color 0.3s ease;
+}
+
+.edit-btn {
+    margin-left: auto;
+    background-color: var(--selected-color); // Utilise la couleur du thème sélectionné
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+
+    ur &:hover {
+        background-color: darken($selected-color, 10%); // Utilise la variable Sass pour éviter l'erreur
+    }
 }
 
 .edit-btn:hover {
@@ -221,6 +283,23 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+body.dark-theme .security-options li {
+    background-color: #333333; // Fond plus foncé en mode sombre
+    border: 1px solid #444444; // Bordure plus foncée en mode sombre
+    color: white; // Texte en blanc en mode sombre
+}
+
+body.dark-theme .security-options li:hover {
+    background-color: #444444; // Fond encore plus foncé au survol
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    color: white; // Assure que le texte reste blanc au survol
+}
+
+body.dark-theme .security-options li,
+body.dark-theme .security-options li * {
+    color: white; // Texte en blanc en mode sombre
+}
+
 .security-options li strong {
     flex: 0;
     font-size: 16px;
@@ -230,7 +309,7 @@
 
 .edit-btn {
     margin-left: auto;
-    background-color: #007bff;
+    background-color: var(--selected-color); // Utilise la couleur du thème sélectionné
     color: white;
     border: none;
     padding: 8px 12px;
@@ -238,6 +317,10 @@
     cursor: pointer;
     font-size: 14px;
     transition: background-color 0.3s ease;
+
+    &:hover {
+        background-color: darken($selected-color, 10%); // Utilise la variable Sass pour éviter l'erreur
+    }
 }
 
 .edit-btn:hover {
@@ -306,7 +389,7 @@
     justify-content: space-between;
     align-items: center;
     padding: 15px;
-    background-color: #f9f9f9;
+    background-color: #f9f9f9; // Fond clair par défaut
     border-radius: 8px;
     border: 1px solid #ddd;
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
@@ -318,6 +401,22 @@
 .theme-options li:hover {
     background-color: #f1f1f1;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+body.dark-theme .theme-options li {
+    background-color: #333333; // Fond plus foncé en mode sombre
+    border: 1px solid #444444; // Bordure plus foncée en mode sombre
+    color: white; // Texte en blanc en mode sombre
+}
+
+body.dark-theme .theme-options li:hover {
+    background-color: #444444; // Fond encore plus foncé au survol
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    color: white; // Assure que le texte reste blanc au survol
+}
+
+body.dark-theme .theme-options li strong {
+    color: white; // Texte en blanc en mode sombre
 }
 
 .theme-options li strong {
@@ -373,7 +472,7 @@
 }
 
 input:checked+.slider {
-    background-color: #007bff;
+    background-color: var(--selected-color); // Utilise la couleur sélectionnée par le thème
 }
 
 input:checked+.slider:before {
@@ -392,6 +491,16 @@ input:checked+.slider:before {
     height: 50px;
     border-radius: 50%;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: border 0.3s ease;
+}
+
+.circle.selected {
+    border: 3px solid black; // Bordure noire par défaut (mode clair)
+}
+
+body.dark-theme .circle.selected {
+    border: 3px solid white; // Bordure blanche en mode sombre
 }
 
 .color1 {
@@ -399,7 +508,7 @@ input:checked+.slider:before {
 }
 
 .color2 {
-    background-color: #84acf8;
+    background-color: #007bff;
 }
 
 .color3 {
@@ -412,4 +521,14 @@ input:checked+.slider:before {
 
 .color5 {
     background-color: #79ecfe;
+}
+
+.theme-color {
+    background-color: var(--selected-color); // Utilisation directe de la variable CSS
+    color: white;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.theme-color:hover {
+    background-color: rgba(0, 0, 0, 0.1); // Remplacez par une couleur Sass ou une autre valeur CSS valide
 }

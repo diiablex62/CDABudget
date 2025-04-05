@@ -52,3 +52,9 @@ body.dark-theme .theme-toggle-btn {
 body.dark-theme .theme-toggle-btn:hover {
   background-color: #555555;
 }
+
+// Ajout pour la partie droite
+body.dark-theme .modal-settings-content {
+  background: #1e1e1e; // Fond sombre
+  color: #ffffff; // Texte blanc
+}

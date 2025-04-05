@@ -6,6 +6,8 @@ import ThemeIcon from "../icons/Theme";
 const ModalSettings = ({ isOpen, onClose }) => {
   const [activeSection, setActiveSection] = useState("Mon compte");
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const [selectedColor, setSelectedColor] = useState("#007bff");
+  const [selectedCircle, setSelectedCircle] = useState("color2"); // Cercle par défaut
 
   useEffect(() => {
     const handleKeyDown = (event) => {
@@ -32,6 +34,12 @@ const ModalSettings = ({ isOpen, onClose }) => {
   const handleDarkModeToggle = () => {
     setIsDarkMode((prev) => !prev);
     document.body.classList.toggle("dark-theme");
+  };
+
+  const handleColorSelect = (color, circle) => {
+    setSelectedColor(color);
+    setSelectedCircle(circle); // Met à jour le cercle sélectionné
+    document.documentElement.style.setProperty("--selected-color", color);
   };
 
   if (!isOpen) {
@@ -114,11 +122,41 @@ const ModalSettings = ({ isOpen, onClose }) => {
                 </ul>
                 <h3 className='theme-title'>Thème</h3>
                 <div className='theme-circles'>
-                  <div className='circle color1'></div>
-                  <div className='circle color2'></div>
-                  <div className='circle color3'></div>
-                  <div className='circle color4'></div>
-                  <div className='circle color5'></div>
+                  <div
+                    className={`circle color1 ${
+                      selectedCircle === "color1" ? "selected" : ""
+                    }`}
+                    onClick={() =>
+                      handleColorSelect("#6bd9a5", "color1")
+                    }></div>
+                  <div
+                    className={`circle color2 ${
+                      selectedCircle === "color2" ? "selected" : ""
+                    }`}
+                    onClick={() =>
+                      handleColorSelect("#007bff", "color2")
+                    }></div>
+                  <div
+                    className={`circle color3 ${
+                      selectedCircle === "color3" ? "selected" : ""
+                    }`}
+                    onClick={() =>
+                      handleColorSelect("#ff6b6b", "color3")
+                    }></div>
+                  <div
+                    className={`circle color4 ${
+                      selectedCircle === "color4" ? "selected" : ""
+                    }`}
+                    onClick={() =>
+                      handleColorSelect("#f0e460", "color4")
+                    }></div>
+                  <div
+                    className={`circle color5 ${
+                      selectedCircle === "color5" ? "selected" : ""
+                    }`}
+                    onClick={() =>
+                      handleColorSelect("#79ecfe", "color5")
+                    }></div>
                 </div>
               </>
             )}
