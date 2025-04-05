@@ -279,15 +279,26 @@ function Login({ onLogin }) {
                 </div>
               </div>
             )}
-            {!isLogin && <button type='submit'>S'inscrire</button>}
+            <button type='submit'>
+              {isLogin ? "Se connecter" : "S'inscrire"}
+            </button>
           </form>
           <p className='toggle-text'>
-            {isLogin
-              ? "Vous n'avez pas de compte ?"
-              : "Vous avez déjà un compte ?"}
-            <button className='toggle-btn' onClick={toggleForm}>
-              {isLogin ? "S'inscrire" : "Se connecter"}
-            </button>
+            {isLogin ? (
+              <>
+                Vous n'avez pas de compte ?{" "}
+                <button className='toggle-btn' onClick={toggleForm}>
+                  S'inscrire
+                </button>
+              </>
+            ) : (
+              <>
+                Vous avez déjà un compte ?{" "}
+                <button className='toggle-btn' onClick={toggleForm}>
+                  Se connecter
+                </button>
+              </>
+            )}
           </p>
           <p className='or-text'>ou</p>
           <div id='google-signin-button'></div>

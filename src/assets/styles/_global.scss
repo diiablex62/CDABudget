@@ -18,13 +18,13 @@ body {
   min-height: 100vh;
 }
 
-// Dark mode
 body.dark-theme {
-  background-color: #121212; // Fond noir pour le mode sombre
-  color: #ffffff; // Texte en blanc
+  background-color: #121212;
+  color: #ffffff;
 
-  .modal-settings {
-    background: rgba(18, 18, 18, 0.9);
+  .modal-settings,
+  .modal-settings-content {
+    background: #1e1e1e;
     color: #ffffff;
   }
 
@@ -38,7 +38,7 @@ body.dark-theme {
 
     li.active {
       background-color: #444444;
-      color: #ffffff; // Texte en blanc pour l'élément actif
+      color: #ffffff;
     }
   }
 
@@ -51,33 +51,24 @@ body.dark-theme {
     }
   }
 
-  .modal-settings-content {
-    background: #1e1e1e;
-    color: #ffffff;
-  }
-
-  .navbar {
-    background-color: #000; // Fond noir pour la navbar
-    color: #ffffff; // Texte en blanc
-  }
-
+  .navbar,
   .en-tete {
-    background-color: #121212; // Fond noir pour l'en-tête
-    color: #ffffff; // Texte en blanc
+    background-color: #121212;
+    color: #ffffff;
   }
 
   #year,
   #month {
-    color: #ffffff; // Texte en blanc pour les années et mois
+    color: #ffffff;
   }
 
   button {
-    background-color: #ffffff; // Fond blanc pour les boutons
-    color: #000; // Texte en noir
-    border: 2px solid #000; // Bordure noire
+    background-color: #ffffff;
+    color: #000;
+    border: 2px solid #000;
 
     &:hover {
-      background-color: #e0e0e0; // Fond gris clair au survol
+      background-color: #e0e0e0;
     }
   }
 }

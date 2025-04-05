@@ -20,6 +20,8 @@ function App() {
       setIsLoggedIn(true);
       setUsername(storedUsername);
       setAuthType(storedAuthType || "password");
+    } else {
+      document.body.classList.remove("dark-theme"); // Supprime la classe dark-theme si personne n'est connecté
     }
   }, []);
 
@@ -45,6 +47,7 @@ function App() {
     sessionStorage.removeItem("isLoggedIn");
     sessionStorage.removeItem("username");
     sessionStorage.removeItem("authType");
+    document.body.classList.remove("dark-theme"); // Supprime la classe dark-theme lors de la déconnexion
   };
 
   return (

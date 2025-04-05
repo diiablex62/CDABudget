@@ -11,6 +11,7 @@
 body.dark-theme .navbar {
   background-color: #000; // Fond noir en mode sombre
   color: white; // Texte en blanc
+  border-bottom: 1px solid white; // Ajoute une bordure blanche en bas
 }
 
 .site-title {
@@ -56,23 +57,23 @@ body.dark-theme .navbar {
 }
 
 .account-bubble {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #6bd9a5;
+  background-color: var(--selected-color);
   color: white;
   font-size: 18px;
   font-weight: bold;
   border-radius: 50%;
   width: 40px;
   height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.3s ease, border 0.3s ease;
+  border: 2px solid white; // Bordure blanche en mode normal
 }
 
-.account-bubble:hover {
-  background-color: #84acf8;
-  transform: scale(1.1);
+body.dark-theme .account-bubble {
+  border: 2px solid black; // Bordure noire en mode sombre
 }
 
 .account-initial {

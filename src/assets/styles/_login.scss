@@ -88,19 +88,26 @@
 .toggle-text {
   margin-top: 20px;
   color: #555;
+  display: flex;
+  /* Aligne le texte et le bouton sur la même ligne */
+  justify-content: center;
+  align-items: center;
 }
 
 .toggle-btn {
   background: none;
+  /* Retire le fond */
   border: none;
   cursor: pointer;
   text-decoration: underline;
   padding: 0;
   margin-left: 5px;
+  color: black;
+  /* Texte en noir */
 
   &:hover {
-    transform: none;
-    box-shadow: none;
+    color: #333;
+    /* Assombrit le texte au survol */
   }
 }
 

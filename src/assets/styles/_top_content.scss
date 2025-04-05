@@ -46,7 +46,7 @@ button {
   font-weight: bold;
   text-transform: uppercase;
   border-radius: 20px;
-  transition: all 0.3s ease;
+  transition: transform 0.3s ease; 
   box-shadow: none !important;
 
   body.dark-theme & {
@@ -64,8 +64,7 @@ button {
 }
 
 button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+  transform: translateY(-2px); // Conserve uniquement l'effet de translation
 }
 
 button:active {
