@@ -2,10 +2,13 @@ import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import AccountIcon from "../icons/Account";
 import ThemeIcon from "../icons/Theme";
+import FranceFlag from "../../assets/img/france.png";
+import UKFlag from "../../assets/img/royaume-uni.png";
+import SpainFlag from "../../assets/img/espagne.png";
 
 const ModalSettings = ({ isOpen, onClose }) => {
   const { t, i18n } = useTranslation();
-  const [activeSection, setActiveSection] = useState(t("myAccount")); // Définit la section active par défaut
+  const [activeSection, setActiveSection] = useState("myAccount"); 
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [selectedColor, setSelectedColor] = useState("#007bff");
   const [selectedCircle, setSelectedCircle] = useState("color2");
@@ -45,11 +48,6 @@ const ModalSettings = ({ isOpen, onClose }) => {
     };
   }, []);
 
-  // Met à jour la section active lorsque la langue change
-  useEffect(() => {
-    setActiveSection(t("myAccount"));
-  }, [i18n.language, t]);
-
   const handleDarkModeToggle = () => {
     const newDarkMode = !isDarkMode;
     setIsDarkMode(newDarkMode);
@@ -69,6 +67,11 @@ const ModalSettings = ({ isOpen, onClose }) => {
     document.documentElement.style.setProperty("--selected-color", color);
   };
 
+  const handleLanguageChange = (lang) => {
+    i18n.changeLanguage(lang); 
+    localStorage.setItem("language", lang);
+  };
+
   if (!isOpen) return null;
 
   return (
@@ -81,7 +84,7 @@ const ModalSettings = ({ isOpen, onClose }) => {
             className='sidebar-search'
           />
           <ul>
-            {[t("myAccount"), t("appearances")].map((section, index) => (
+            {["myAccount", "appearances"].map((section, index) => (
               <li
                 key={section}
                 className={activeSection === section ? "active" : ""}
@@ -91,7 +94,7 @@ const ModalSettings = ({ isOpen, onClose }) => {
                 ) : (
                   <ThemeIcon className='sidebar-icon' />
                 )}
-                {section}
+                {t(section)}
               </li>
             ))}
           </ul>
@@ -104,13 +107,13 @@ const ModalSettings = ({ isOpen, onClose }) => {
             </button>
           </div>
           <div className='modal-settings-body'>
-            {activeSection === t("myAccount") && (
+            {activeSection === "myAccount" && (
               <>
                 <h3>{t("connectionOptions")}</h3>
                 <ul className='connection-options'>
                   {[t("username"), t("email")].map((label) => (
                     <li key={label}>
-                      <strong>{label} :</strong> {/* Texte traduit */}
+                      <strong>{label} :</strong>
                       <button className='edit-btn'>{t("edit")}</button>
                     </li>
                   ))}
@@ -130,7 +133,7 @@ const ModalSettings = ({ isOpen, onClose }) => {
                 </ul>
               </>
             )}
-            {activeSection === t("appearances") && (
+            {activeSection === "appearances" && (
               <>
                 <h3>{t("darkMode")}</h3>{" "}
                 {/* Utilisation de la clé mise à jour */}
@@ -175,6 +178,25 @@ const ModalSettings = ({ isOpen, onClose }) => {
                           selectedCircle === circle ? "selected" : ""
                         }`}
                         onClick={() => handleColorSelect(color, circle)}></div>
+                      <span className='circle-label'>{label}</span>
+                    </div>
+                  ))}
+                </div>
+                <h3 className='language-title'>{t("languageTitle")}</h3>
+                <div className='language-circles'>
+                  {[
+                    { lang: "fr", flag: FranceFlag, label: "Français" },
+                    { lang: "en", flag: UKFlag, label: "English" },
+                    { lang: "es", flag: SpainFlag, label: "Español" },
+                  ].map(({ lang, flag, label }) => (
+                    <div key={lang} className='language-circle-container'>
+                      <div
+                        className={`circle ${
+                          i18n.language === lang ? "selected" : ""
+                        }`}
+                        onClick={() => handleLanguageChange(lang)}>
+                        <img src={flag} alt={label} />
+                      </div>
                       <span className='circle-label'>{label}</span>
                     </div>
                   ))}

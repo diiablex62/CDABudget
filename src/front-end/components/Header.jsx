@@ -8,7 +8,7 @@ import LogoutIcon from "../icons/Logout";
 import ModalSettings from "./ModalSettings";
 import FranceFlag from "../../assets/img/france.png";
 import UKFlag from "../../assets/img/royaume-uni.png";
-import SpainFlag from "../../assets/img/espagne.png"; // Import du drapeau espagnol
+import SpainFlag from "../../assets/img/espagne.png"; 
 
 export default function Header({ onLogout, isLoggedIn, username, authType }) {
   const { t, i18n } = useTranslation();

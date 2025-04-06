@@ -50,6 +50,7 @@ const resources = {
       colorGreen: "Vert",
       colorBlue: "Bleu",
       colorRed: "Rouge",
+      languageTitle: "Langue",
     },
   },
   en: {
@@ -99,6 +100,7 @@ const resources = {
       colorGreen: "Green",
       colorBlue: "Blue",
       colorRed: "Red",
+      languageTitle: "Language",
     },
   },
   es: {
@@ -148,6 +150,7 @@ const resources = {
       colorGreen: "Verde",
       colorBlue: "Azul",
       colorRed: "Rojo",
+      languageTitle: "Idioma",
     },
   },
 };
