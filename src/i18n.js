@@ -47,6 +47,9 @@ const resources = {
       email: "E-Mail",
       changePassword: "Changer le mot de passe",
       enable2FA: "Activer la double authentification",
+      colorGreen: "Vert",
+      colorBlue: "Bleu",
+      colorRed: "Rouge",
     },
   },
   en: {
@@ -93,6 +96,9 @@ const resources = {
       email: "E-Mail",
       changePassword: "Change Password",
       enable2FA: "Enable Two-Factor Authentication",
+      colorGreen: "Green",
+      colorBlue: "Blue",
+      colorRed: "Red",
     },
   },
   es: {
@@ -139,6 +145,9 @@ const resources = {
       email: "Correo electrónico",
       changePassword: "Cambiar la contraseña",
       enable2FA: "Activar la autenticación de dos factores",
+      colorGreen: "Verde",
+      colorBlue: "Azul",
+      colorRed: "Rojo",
     },
   },
 };

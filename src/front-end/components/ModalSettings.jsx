@@ -153,16 +153,30 @@ const ModalSettings = ({ isOpen, onClose }) => {
                 <h3 className='theme-title'>{t("theme")}</h3>
                 <div className='theme-circles'>
                   {[
-                    { color: "#6bd9a5", circle: "color1" },
-                    { color: "#007bff", circle: "color2" },
-                    { color: "#ff6b6b", circle: "color3" },
-                  ].map(({ color, circle }) => (
-                    <div
-                      key={circle}
-                      className={`circle ${circle} ${
-                        selectedCircle === circle ? "selected" : ""
-                      }`}
-                      onClick={() => handleColorSelect(color, circle)}></div>
+                    {
+                      color: "#6bd9a5",
+                      circle: "color1",
+                      label: t("colorGreen"),
+                    },
+                    {
+                      color: "#007bff",
+                      circle: "color2",
+                      label: t("colorBlue"),
+                    },
+                    {
+                      color: "#ff6b6b",
+                      circle: "color3",
+                      label: t("colorRed"),
+                    },
+                  ].map(({ color, circle, label }) => (
+                    <div key={circle} className='theme-circle-container'>
+                      <div
+                        className={`circle ${circle} ${
+                          selectedCircle === circle ? "selected" : ""
+                        }`}
+                        onClick={() => handleColorSelect(color, circle)}></div>
+                      <span className='circle-label'>{label}</span>
+                    </div>
                   ))}
                 </div>
               </>
