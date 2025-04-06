@@ -156,7 +156,7 @@
     }
 
     .close-btn {
-        background: none;
+        background: none; // Ajout pour le mode sombre
         border: none;
         color: #333;
         font-size: 20px;
@@ -168,6 +168,7 @@
         }
 
         body.dark-theme & {
+            background: none; // Ajout pour le mode sombre
             color: white;
 
             &:hover {

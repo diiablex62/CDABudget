@@ -1,7 +1,9 @@
 import React, { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 export default function Top_header({ isLoggedIn }) {
+  const { t } = useTranslation();
   const [category, setCategory] = useState("");
   const [status, setStatus] = useState("past");
   const syncButtonRef = useRef(null);
@@ -41,39 +43,39 @@ export default function Top_header({ isLoggedIn }) {
       <section className='en-tete'>
         <div id='year-selector'>
           <button id='prev-year' onClick={handleButtonClick}>
-            ←
+            {t("previous")}
           </button>
           <span id='year'>2025</span>
           <button id='next-year' onClick={handleButtonClick}>
-            →
+            {t("next")}
           </button>
         </div>
         <div id='month-selector'>
           <button id='prev-month' onClick={handleButtonClick}>
-            ←
+            {t("previous")}
           </button>
-          <span id='month'>Mars</span>
+          <span id='month'>{t("month")}</span>
           <button id='next-month' onClick={handleButtonClick}>
-            →
+            {t("next")}
           </button>
         </div>
 
         <div className='boutons'>
           <button id='add-item-btn' onClick={handleButtonClick}>
-            Ajouter un item
+            {t("addItem")}
           </button>
           <button id='paiement-xfois-btn' onClick={handleButtonClick}>
-            Paiement X fois
+            {t("paymentXTimes")}
           </button>
           <button id='recurrent-item-btn' onClick={handleButtonClick}>
-            Récurrent
+            {t("recurring")}
           </button>
           <button
             id='sync-btn'
-            aria-label='Mettre à jour'
+            aria-label={t("update")}
             onClick={handleSyncClick}
             ref={syncButtonRef}>
-            Mettre à jour
+            {t("update")}
             <svg
               id='sync-icon'
               clipRule='evenodd'

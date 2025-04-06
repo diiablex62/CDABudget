@@ -1,17 +1,20 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 export default function Content() {
+  const { t } = useTranslation();
+
   return (
     <>
       <main>
         <div className='table-container'>
           <table id='revenue-table'>
-            <caption>Revenus</caption>
+            <caption>{t("revenues")}</caption>
             <thead className='revenu-thread'>
               <tr>
-                <th className='label-column'>Libellé</th>
-                <th className='amount-column'>Perçu</th>
-                <th className='amount-column'>A venir</th>
+                <th className='label-column'>{t("label")}</th>
+                <th className='amount-column'>{t("received")}</th>
+                <th className='amount-column'>{t("upcoming")}</th>
                 <th className='suppr-column'></th>
               </tr>
             </thead>
@@ -21,12 +24,12 @@ export default function Content() {
           </table>
 
           <table id='depense-table'>
-            <caption>Dépenses</caption>
+            <caption>{t("expenses")}</caption>
             <thead className='depense-thread'>
               <tr>
-                <th className='label-column'>Libellé</th>
-                <th className='amount-column'>Perçu</th>
-                <th className='amount-column'>A venir</th>
+                <th className='label-column'>{t("label")}</th>
+                <th className='amount-column'>{t("received")}</th>
+                <th className='amount-column'>{t("upcoming")}</th>
                 <th></th>
               </tr>
             </thead>
@@ -36,30 +39,30 @@ export default function Content() {
           </table>
 
           <table id='calcul-table'>
-            <caption>Calculs</caption>
+            <caption>{t("calculations")}</caption>
             <tbody>
               <tr className='revenue-section'>
-                <td>Revenus actuels</td>
+                <td>{t("currentRevenues")}</td>
                 <td id='revenue-current-value'></td>
               </tr>
               <tr className='revenue-section'>
-                <td>Revenus prévisionnels</td>
+                <td>{t("forecastRevenues")}</td>
                 <td id='revenue-forecast-value'></td>
               </tr>
               <tr className='expenses-section'>
-                <td>Dépenses actuelles</td>
+                <td>{t("currentExpenses")}</td>
                 <td id='expenses-current-value'></td>
               </tr>
               <tr className='expenses-section'>
-                <td>Dépenses prévisionnelles</td>
+                <td>{t("forecastExpenses")}</td>
                 <td id='expenses-forecast-value'></td>
               </tr>
               <tr>
-                <td>Total actuel</td>
+                <td>{t("currentTotal")}</td>
                 <td id='total-current-value'></td>
               </tr>
               <tr>
-                <td>Total prévisionnel</td>
+                <td>{t("forecastTotal")}</td>
                 <td id='total-forecast-value'></td>
               </tr>
             </tbody>

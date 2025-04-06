@@ -8,6 +8,7 @@ import LogoutIcon from "../icons/Logout";
 import ModalSettings from "./ModalSettings";
 import FranceFlag from "../../assets/img/france.png";
 import UKFlag from "../../assets/img/royaume-uni.png";
+import SpainFlag from "../../assets/img/espagne.png"; // Import du drapeau espagnol
 
 export default function Header({ onLogout, isLoggedIn, username, authType }) {
   const { t, i18n } = useTranslation();
@@ -92,6 +93,34 @@ export default function Header({ onLogout, isLoggedIn, username, authType }) {
     localStorage.setItem("language", lang);
   };
 
+  const getFlag = () => {
+    switch (i18n.language) {
+      case "fr":
+        return <img src={FranceFlag} alt='Français' width='24' height='24' />;
+      case "en":
+        return <img src={UKFlag} alt='English' width='24' height='24' />;
+      case "es":
+        return <img src={SpainFlag} alt='Español' width='24' height='24' />;
+      default:
+        return <img src={FranceFlag} alt='Français' width='24' height='24' />;
+    }
+  };
+
+  const getNextLanguage = () => {
+    switch (i18n.language) {
+      case "fr":
+        return { lang: "en", label: "English", flag: UKFlag };
+      case "en":
+        return { lang: "es", label: "Español", flag: SpainFlag };
+      case "es":
+        return { lang: "fr", label: "Français", flag: FranceFlag };
+      default:
+        return { lang: "fr", label: "Français", flag: FranceFlag };
+    }
+  };
+
+  const nextLanguage = getNextLanguage();
+
   return (
     <>
       <nav className='navbar'>
@@ -125,29 +154,16 @@ export default function Header({ onLogout, isLoggedIn, username, authType }) {
                   <hr />
                   <div
                     className='account-option'
-                    onClick={() =>
-                      changeLanguage(i18n.language === "fr" ? "en" : "fr")
-                    }>
+                    onClick={() => changeLanguage(nextLanguage.lang)}>
                     <span className='option-icon'>
-                      {i18n.language === "fr" ? (
-                        <img
-                          src={UKFlag}
-                          alt='English'
-                          width='24'
-                          height='24'
-                        />
-                      ) : (
-                        <img
-                          src={FranceFlag}
-                          alt='Français'
-                          width='24'
-                          height='24'
-                        />
-                      )}
+                      <img
+                        src={nextLanguage.flag}
+                        alt={nextLanguage.label}
+                        width='24'
+                        height='24'
+                      />
                     </span>
-                    <span>
-                      {i18n.language === "fr" ? "English" : "Français"}
-                    </span>
+                    <span>{nextLanguage.label}</span>
                   </div>
                   <hr />
                   <div
@@ -155,7 +171,8 @@ export default function Header({ onLogout, isLoggedIn, username, authType }) {
                     onClick={handleDarkModeToggle}>
                     <span className='option-icon'>🌓</span>
                     <span>
-                      {!isDarkMode ? t("dark_mode") : t("light_mode")}
+                      {isDarkMode ? t("darkMode") : t("light_mode")}{" "}
+                      {/* Utilisation des traductions correctes */}
                     </span>
                   </div>
                   <hr />

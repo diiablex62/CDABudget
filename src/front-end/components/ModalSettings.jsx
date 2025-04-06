@@ -4,11 +4,11 @@ import AccountIcon from "../icons/Account";
 import ThemeIcon from "../icons/Theme";
 
 const ModalSettings = ({ isOpen, onClose }) => {
-  const [activeSection, setActiveSection] = useState("Mon compte");
+  const { t, i18n } = useTranslation();
+  const [activeSection, setActiveSection] = useState(t("myAccount")); // Définit la section active par défaut
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [selectedColor, setSelectedColor] = useState("#007bff");
   const [selectedCircle, setSelectedCircle] = useState("color2");
-  const { t } = useTranslation();
 
   useEffect(() => {
     const handleKeyDown = (event) => {
@@ -45,6 +45,11 @@ const ModalSettings = ({ isOpen, onClose }) => {
     };
   }, []);
 
+  // Met à jour la section active lorsque la langue change
+  useEffect(() => {
+    setActiveSection(t("myAccount"));
+  }, [i18n.language, t]);
+
   const handleDarkModeToggle = () => {
     const newDarkMode = !isDarkMode;
     setIsDarkMode(newDarkMode);
@@ -76,53 +81,59 @@ const ModalSettings = ({ isOpen, onClose }) => {
             className='sidebar-search'
           />
           <ul>
-            {["Mon compte", "Apparences"].map((section) => (
+            {[t("myAccount"), t("appearances")].map((section, index) => (
               <li
                 key={section}
                 className={activeSection === section ? "active" : ""}
                 onClick={() => setActiveSection(section)}>
-                {section === "Mon compte" ? (
+                {index === 0 ? (
                   <AccountIcon className='sidebar-icon' />
                 ) : (
                   <ThemeIcon className='sidebar-icon' />
                 )}
-                {t(section)}
+                {section}
               </li>
             ))}
           </ul>
         </div>
         <div className='modal-settings-content'>
+          <div className='modal-settings-header'>
+            <h2>{t("settingsTitle")}</h2>
+            <button className='close-btn' onClick={onClose}>
+              ✖
+            </button>
+          </div>
           <div className='modal-settings-body'>
-            {activeSection === "Mon compte" && (
+            {activeSection === t("myAccount") && (
               <>
                 <h3>{t("connectionOptions")}</h3>
                 <ul className='connection-options'>
-                  {["Nom d'utilisateur", "E-Mail"].map((label) => (
+                  {[t("username"), t("email")].map((label) => (
                     <li key={label}>
-                      <strong>{t(label)} :</strong> à récupérer
+                      <strong>{label} :</strong> {/* Texte traduit */}
                       <button className='edit-btn'>{t("edit")}</button>
                     </li>
                   ))}
                 </ul>
                 <h3 className='section-spacing'>{t("security")}</h3>
                 <ul className='security-options'>
-                  {[
-                    "Changer le mot de passe",
-                    "Activer la double authentification",
-                  ].map((option, index) => (
-                    <li key={option}>
-                      <strong>{t(option)}</strong>
-                      <button className='edit-btn'>
-                        {index === 0 ? t("edit") : t("activate")}
-                      </button>
-                    </li>
-                  ))}
+                  {[t("changePassword"), t("enable2FA")].map(
+                    (option, index) => (
+                      <li key={option}>
+                        <strong>{option}</strong> {/* Texte traduit */}
+                        <button className='edit-btn'>
+                          {index === 0 ? t("edit") : t("activate")}
+                        </button>
+                      </li>
+                    )
+                  )}
                 </ul>
               </>
             )}
-            {activeSection === "Apparences" && (
+            {activeSection === t("appearances") && (
               <>
-                <h3>{t("darkMode")}</h3>
+                <h3>{t("darkMode")}</h3>{" "}
+                {/* Utilisation de la clé mise à jour */}
                 <ul className='theme-options'>
                   <li>
                     <strong>
