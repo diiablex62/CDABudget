@@ -1,13 +1,19 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 export default function Top_header({ isLoggedIn }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [category, setCategory] = useState("");
   const [status, setStatus] = useState("past");
+  const [currentDate, setCurrentDate] = useState(new Date()); // Initialisation avec la date actuelle
   const syncButtonRef = useRef(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // Met à jour la date sur le mois et l'année actuels à l'ouverture de la page
+    setCurrentDate(new Date());
+  }, []);
 
   const handleCategoryChange = (event) => {
     setCategory(event.target.value);
@@ -38,24 +44,58 @@ export default function Top_header({ isLoggedIn }) {
     }
   };
 
+  const handleNextMonth = () => {
+    setCurrentDate((prevDate) => {
+      const nextMonth = new Date(prevDate);
+      nextMonth.setMonth(nextMonth.getMonth() + 1);
+      return nextMonth;
+    });
+  };
+
+  const handlePreviousMonth = () => {
+    setCurrentDate((prevDate) => {
+      const prevMonth = new Date(prevDate);
+      prevMonth.setMonth(prevMonth.getMonth() - 1);
+      return prevMonth;
+    });
+  };
+
+  const handleNextYear = () => {
+    setCurrentDate((prevDate) => {
+      const nextYear = new Date(prevDate);
+      nextYear.setFullYear(nextYear.getFullYear() + 1);
+      return nextYear;
+    });
+  };
+
+  const handlePreviousYear = () => {
+    setCurrentDate((prevDate) => {
+      const prevYear = new Date(prevDate);
+      prevYear.setFullYear(prevYear.getFullYear() - 1);
+      return prevYear;
+    });
+  };
+
   return (
     <>
       <section className='en-tete'>
         <div id='year-selector'>
-          <button id='prev-year' onClick={handleButtonClick}>
+          <button id='prev-year' onClick={handlePreviousYear}>
             {t("previous")}
           </button>
-          <span id='year'>2025</span>
-          <button id='next-year' onClick={handleButtonClick}>
+          <span id='year'>{currentDate.getFullYear()}</span>
+          <button id='next-year' onClick={handleNextYear}>
             {t("next")}
           </button>
         </div>
         <div id='month-selector'>
-          <button id='prev-month' onClick={handleButtonClick}>
+          <button id='prev-month' onClick={handlePreviousMonth}>
             {t("previous")}
           </button>
-          <span id='month'>{t("month")}</span>
-          <button id='next-month' onClick={handleButtonClick}>
+          <span id='month'>
+            {currentDate.toLocaleString(i18n.language, { month: "long" })}
+          </span>
+          <button id='next-month' onClick={handleNextMonth}>
             {t("next")}
           </button>
         </div>
