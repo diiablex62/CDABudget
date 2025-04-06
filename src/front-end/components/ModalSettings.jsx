@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import AccountIcon from "../icons/Account";
 import ThemeIcon from "../icons/Theme";
 
@@ -7,6 +8,7 @@ const ModalSettings = ({ isOpen, onClose }) => {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [selectedColor, setSelectedColor] = useState("#007bff");
   const [selectedCircle, setSelectedCircle] = useState("color2");
+  const { t } = useTranslation();
 
   useEffect(() => {
     const handleKeyDown = (event) => {
@@ -70,7 +72,7 @@ const ModalSettings = ({ isOpen, onClose }) => {
         <div className='modal-settings-sidebar'>
           <input
             type='text'
-            placeholder='Rechercher un paramètre'
+            placeholder={t("searchSettings")}
             className='sidebar-search'
           />
           <ul>
@@ -84,40 +86,34 @@ const ModalSettings = ({ isOpen, onClose }) => {
                 ) : (
                   <ThemeIcon className='sidebar-icon' />
                 )}
-                {section}
+                {t(section)}
               </li>
             ))}
           </ul>
         </div>
         <div className='modal-settings-content'>
-          <div className='modal-settings-header'>
-            <h2>{activeSection}</h2>
-            <button className='close-btn' onClick={onClose}>
-              ✕
-            </button>
-          </div>
           <div className='modal-settings-body'>
             {activeSection === "Mon compte" && (
               <>
-                <h3>Options de connexion</h3>
+                <h3>{t("connectionOptions")}</h3>
                 <ul className='connection-options'>
                   {["Nom d'utilisateur", "E-Mail"].map((label) => (
                     <li key={label}>
-                      <strong>{label} :</strong> à récupérer
-                      <button className='edit-btn'>Modifier</button>
+                      <strong>{t(label)} :</strong> à récupérer
+                      <button className='edit-btn'>{t("edit")}</button>
                     </li>
                   ))}
                 </ul>
-                <h3 className='section-spacing'>Sécurité</h3>
+                <h3 className='section-spacing'>{t("security")}</h3>
                 <ul className='security-options'>
                   {[
                     "Changer le mot de passe",
                     "Activer la double authentification",
                   ].map((option, index) => (
                     <li key={option}>
-                      <strong>{option}</strong>
+                      <strong>{t(option)}</strong>
                       <button className='edit-btn'>
-                        {index === 0 ? "Modifier" : "Activer"}
+                        {index === 0 ? t("edit") : t("activate")}
                       </button>
                     </li>
                   ))}
@@ -126,13 +122,11 @@ const ModalSettings = ({ isOpen, onClose }) => {
             )}
             {activeSection === "Apparences" && (
               <>
-                <h3>Dark Mode</h3>
+                <h3>{t("darkMode")}</h3>
                 <ul className='theme-options'>
                   <li>
                     <strong>
-                      {isDarkMode
-                        ? "Désactiver le mode sombre"
-                        : "Activer le mode sombre"}{" "}
+                      {isDarkMode ? t("disableDarkMode") : t("enableDarkMode")}{" "}
                       :
                     </strong>
                     <label className='switch'>
@@ -141,12 +135,11 @@ const ModalSettings = ({ isOpen, onClose }) => {
                         checked={isDarkMode}
                         onChange={handleDarkModeToggle}
                       />
-                      <span className='slider'></span>{" "}
-                      {/* Slider visuel pour le switch */}
+                      <span className='slider'></span>
                     </label>
                   </li>
                 </ul>
-                <h3 className='theme-title'>Thème</h3>
+                <h3 className='theme-title'>{t("theme")}</h3>
                 <div className='theme-circles'>
                   {[
                     { color: "#6bd9a5", circle: "color1" },

@@ -1,16 +1,19 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import Google from "../icons/Google";
 import Lock from "../icons/Lock";
 import SettingsIcon from "../icons/Settings";
 import LogoutIcon from "../icons/Logout";
 import ModalSettings from "./ModalSettings";
+import FranceFlag from "../../assets/img/france.png";
+import UKFlag from "../../assets/img/royaume-uni.png";
 
 export default function Header({ onLogout, isLoggedIn, username, authType }) {
+  const { t, i18n } = useTranslation();
   const [showAccountModal, setShowAccountModal] = useState(false);
   const [showSettingsModal, setShowSettingsModal] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(() => {
-    // Vérifie si le mode sombre est activé dans le localStorage ou sur le body
     return (
       localStorage.getItem("isDarkMode") === "true" ||
       document.body.classList.contains("dark-theme")
@@ -22,7 +25,6 @@ export default function Header({ onLogout, isLoggedIn, username, authType }) {
   const closeTimeoutRef = useRef(null);
 
   useEffect(() => {
-    // Synchronise l'état initial avec le mode sombre actuel
     const savedDarkMode = localStorage.getItem("isDarkMode") === "true";
     setIsDarkMode(savedDarkMode);
     document.body.classList.toggle("dark-theme", savedDarkMode);
@@ -80,16 +82,20 @@ export default function Header({ onLogout, isLoggedIn, username, authType }) {
     document.body.classList.toggle("dark-theme", newDarkMode);
     localStorage.setItem("isDarkMode", newDarkMode);
 
-    // Émet un événement global pour synchroniser les boutons
     window.dispatchEvent(
       new CustomEvent("darkModeToggle", { detail: { isDarkMode: newDarkMode } })
     );
   };
 
+  const changeLanguage = (lang) => {
+    i18n.changeLanguage(lang);
+    localStorage.setItem("language", lang);
+  };
+
   return (
     <>
       <nav className='navbar'>
-        <div className='site-title'>Gestion de budget</div>
+        <div className='site-title'>{t("welcome")}</div>
         <div className='login-container'>
           {isLoggedIn ? (
             <div
@@ -114,7 +120,34 @@ export default function Header({ onLogout, isLoggedIn, username, authType }) {
                   <hr />
                   <div className='account-option' onClick={openSettingsModal}>
                     <SettingsIcon className='option-icon' />
-                    <span>Mes paramètres</span>
+                    <span>{t("settings")}</span>
+                  </div>
+                  <hr />
+                  <div
+                    className='account-option'
+                    onClick={() =>
+                      changeLanguage(i18n.language === "fr" ? "en" : "fr")
+                    }>
+                    <span className='option-icon'>
+                      {i18n.language === "fr" ? (
+                        <img
+                          src={UKFlag}
+                          alt='English'
+                          width='24'
+                          height='24'
+                        />
+                      ) : (
+                        <img
+                          src={FranceFlag}
+                          alt='Français'
+                          width='24'
+                          height='24'
+                        />
+                      )}
+                    </span>
+                    <span>
+                      {i18n.language === "fr" ? "English" : "Français"}
+                    </span>
                   </div>
                   <hr />
                   <div
@@ -122,16 +155,15 @@ export default function Header({ onLogout, isLoggedIn, username, authType }) {
                     onClick={handleDarkModeToggle}>
                     <span className='option-icon'>🌓</span>
                     <span>
-                      {!isDarkMode ? "Mode sombre" : "Mode clair"}
-                    </span>{" "}
-                    {/* Texte dynamique */}
+                      {!isDarkMode ? t("dark_mode") : t("light_mode")}
+                    </span>
                   </div>
                   <hr />
                   <div
                     className='account-option logout-option'
                     onClick={handleLogoutClick}>
                     <LogoutIcon className='option-icon' />
-                    <span>Déconnexion</span>
+                    <span>{t("logout")}</span>
                   </div>
                 </div>
               )}
@@ -139,7 +171,7 @@ export default function Header({ onLogout, isLoggedIn, username, authType }) {
           ) : (
             !isLoginPage && (
               <button className='login-btn' onClick={handleLoginClick}>
-                Se connecter
+                {t("login")}
               </button>
             )
           )}

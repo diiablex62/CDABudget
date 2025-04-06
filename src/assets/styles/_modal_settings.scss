@@ -79,6 +79,10 @@
             }
         }
     }
+
+    button.close-btn {
+        display: none; // Cache le bouton "Close" dans la barre latérale
+    }
 }
 
 .sidebar-icon {
@@ -165,7 +169,6 @@
 
         body.dark-theme & {
             color: white;
-            background: none;
 
             &:hover {
                 color: var(--selected-color);
