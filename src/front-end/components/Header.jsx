@@ -171,8 +171,7 @@ export default function Header({ onLogout, isLoggedIn, username, authType }) {
                     onClick={handleDarkModeToggle}>
                     <span className='option-icon'>🌓</span>
                     <span>
-                      {isDarkMode ? t("darkMode") : t("light_mode")}{" "}
-                      {/* Utilisation des traductions correctes */}
+                      {isDarkMode ? t("light_mode") : t("darkMode")} {/* Affiche le texte approprié */}
                     </span>
                   </div>
                   <hr />
