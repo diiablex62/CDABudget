@@ -71,4 +71,36 @@ body.dark-theme {
       background-color: #e0e0e0;
     }
   }
+
+  .edit-btn,
+  .delete-btn {
+    background-color: var(--selected-color); // Conserve la couleur sélectionnée
+    color: white; // Assure que le texte reste blanc
+    border: none; // Supprime la bordure noire
+  }
+}
+
+button {
+  background-color: #ffffff;
+  border: 2px solid #333;
+  color: #333;
+  padding: 1px 5px;
+  margin: 0 5px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  text-transform: uppercase;
+  border-radius: 20px;
+  transition: transform 0.3s ease;
+  box-shadow: none !important;
+}
+
+.edit-btn,
+.delete-btn {
+  background-color: var(--selected-color); // Conserve la couleur sélectionnée
+  color: white; // Assure que le texte reste blanc
+  border: none; // Supprime la bordure noire
+  padding: 8px 12px; // Spécifique pour ces boutons
+  font-size: 14px; // Spécifique pour ces boutons
+  margin: 0; // Supprime les marges globales
 }

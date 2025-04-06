@@ -130,8 +130,8 @@ body.dark-theme .modal-settings-content {
 }
 
 .close-btn {
-    background: none;
-    border: none;
+    background: none; // Supprime l'arrière-plan
+    border: none; // Supprime la bordure
     color: #333;
     font-size: 20px;
     cursor: pointer;
@@ -140,10 +140,15 @@ body.dark-theme .modal-settings-content {
 
 body.dark-theme .close-btn {
     color: #fff;
+    background: none; // Assure qu'il n'y a pas d'arrière-plan au survol
+    border: none; // Supprime toute bordure au survol
 }
 
-.close-btn:hover {
-    color: #007bff;
+.close-btn:hover,
+body.dark-theme .close-btn:hover {
+    color: var(--selected-color); // Utilise la couleur sélectionnée au survol
+    background: none; // Assure qu'il n'y a pas d'arrière-plan au survol
+    border: none; // Supprime toute bordure au survol
 }
 
 .modal-settings-body {
@@ -159,6 +164,10 @@ body.dark-theme .close-btn {
 }
 
 .modal-settings-body h3.theme-title {
+    margin-top: 30px;
+}
+
+.modal-settings-body h3.section-spacing {
     margin-top: 30px;
 }
 
@@ -214,7 +223,7 @@ body.dark-theme .theme-options li:hover {
 .edit-btn,
 .delete-btn {
     margin-left: auto;
-    background-color: #007bff;
+    background-color: var(--selected-color);
     color: white;
     border: none;
     padding: 8px 12px;
@@ -222,10 +231,6 @@ body.dark-theme .theme-options li:hover {
     cursor: pointer;
     font-size: 14px;
     transition: background-color 0.3s ease;
-}
-
-.edit-btn:hover {
-    background-color: #0056b3;
 }
 
 .delete-btn {
