@@ -59,20 +59,15 @@ export default function Top_header({ isLoggedIn }) {
         </div>
 
         <div className='boutons'>
-          {/* bouton ajouter element  */}
           <button id='add-item-btn' onClick={handleButtonClick}>
             Ajouter un item
           </button>
-          {/* bouton paiement x fois */}
           <button id='paiement-xfois-btn' onClick={handleButtonClick}>
             Paiement X fois
           </button>
-          {/* bouton ajouter element recurrent  */}
           <button id='recurrent-item-btn' onClick={handleButtonClick}>
             Récurrent
           </button>
-
-          {/* bouton synchro */}
           <button
             id='sync-btn'
             aria-label='Mettre à jour'
@@ -96,7 +91,6 @@ export default function Top_header({ isLoggedIn }) {
           </button>
         </div>
 
-        {/* modal ajouter element  */}
         <div id='form-container' style={{ display: "none" }}>
           <button id='close-modal-btn' onClick={handleButtonClick}>
             ✖

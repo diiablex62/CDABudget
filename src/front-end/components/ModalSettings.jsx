@@ -70,7 +70,7 @@ const ModalSettings = ({ isOpen, onClose }) => {
         <div className='modal-settings-sidebar'>
           <input
             type='text'
-            placeholder='Rechercher'
+            placeholder='Rechercher un paramètre'
             className='sidebar-search'
           />
           <ul>
@@ -140,9 +140,9 @@ const ModalSettings = ({ isOpen, onClose }) => {
                         type='checkbox'
                         checked={isDarkMode}
                         onChange={handleDarkModeToggle}
-                        style={{ display: "none" }} 
                       />
                       <span className='slider'></span>{" "}
+                      {/* Slider visuel pour le switch */}
                     </label>
                   </li>
                 </ul>

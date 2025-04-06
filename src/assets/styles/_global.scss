@@ -74,9 +74,9 @@ body.dark-theme {
 
   .edit-btn,
   .delete-btn {
-    background-color: var(--selected-color); // Conserve la couleur sélectionnée
-    color: white; // Assure que le texte reste blanc
-    border: none; // Supprime la bordure noire
+    background-color: var(--selected-color);
+    color: white;
+    border: none;
   }
 }
 
@@ -97,10 +97,10 @@ button {
 
 .edit-btn,
 .delete-btn {
-  background-color: var(--selected-color); // Conserve la couleur sélectionnée
-  color: white; // Assure que le texte reste blanc
-  border: none; // Supprime la bordure noire
-  padding: 8px 12px; // Spécifique pour ces boutons
-  font-size: 14px; // Spécifique pour ces boutons
-  margin: 0; // Supprime les marges globales
+  background-color: var(--selected-color);
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  font-size: 14px;
+  margin: 0;
 }
