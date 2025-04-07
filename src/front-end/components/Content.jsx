@@ -1,99 +1,125 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 export default function Content() {
-  const { t, i18n } = useTranslation();
-  const [currentTime, setCurrentTime] = useState(new Date());
+  const { t } = useTranslation();
+  const [revenues, setRevenues] = useState([
+    { id: 1, name: t("salary"), past: 1000, upcoming: 500 },
+  ]);
 
-  useEffect(() => {
-    // Met à jour l'heure toutes les secondes
-    const interval = setInterval(() => {
-      setCurrentTime(new Date());
-    }, 1000);
+  const handleRevenueChange = (id, field, value) => {
+    setRevenues((prevRevenues) =>
+      prevRevenues.map((revenue) =>
+        revenue.id === id ? { ...revenue, [field]: value } : revenue
+      )
+    );
+  };
 
-    return () => clearInterval(interval);
-  }, []);
+  const handleRevenueDelete = (id) => {
+    setRevenues((prevRevenues) =>
+      prevRevenues.filter((revenue) => revenue.id !== id)
+    );
+  };
+
+  const handleAddRevenue = () => {
+    setRevenues((prevRevenues) => [
+      ...prevRevenues,
+      { id: Date.now(), name: "", past: 0, upcoming: 0 },
+    ]);
+  };
+
+  const handleDragStart = (e, index) => {
+    e.dataTransfer.setData("draggedIndex", index);
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+  };
+
+  const handleDrop = (e, index) => {
+    const draggedIndex = parseInt(e.dataTransfer.getData("draggedIndex"), 10);
+    if (draggedIndex === index) return;
+
+    setRevenues((prevRevenues) => {
+      const updatedRevenues = [...prevRevenues];
+      const [draggedItem] = updatedRevenues.splice(draggedIndex, 1);
+      updatedRevenues.splice(index, 0, draggedItem);
+      return updatedRevenues;
+    });
+  };
+
+  const totalPast = revenues.reduce(
+    (sum, revenue) => sum + Number(revenue.past),
+    0
+  );
+  const totalUpcoming = revenues.reduce(
+    (sum, revenue) => sum + Number(revenue.upcoming),
+    0
+  );
 
   return (
-    <>
-      <main>
-        <div className='table-container'>
-          <table id='revenue-table'>
-            <caption>{t("revenues")}</caption>
-            <thead className='revenu-thread'>
-              <tr>
-                <th className='label-column'>{t("label")}</th>
-                <th className='amount-column'>{t("received")}</th>
-                <th className='amount-column'>{t("upcoming")}</th>
-                <th className='suppr-column'></th>
-              </tr>
-            </thead>
-            <tbody>
-              {/* Les lignes de données pour les revenus à mettre à partir d'ici */}
-            </tbody>
-          </table>
-
-          <table id='depense-table'>
-            <caption>{t("expenses")}</caption>
-            <thead className='depense-thread'>
-              <tr>
-                <th className='label-column'>{t("label")}</th>
-                <th className='amount-column'>{t("received")}</th>
-                <th className='amount-column'>{t("upcoming")}</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              {/* Les lignes de données pour les dépenses à mettre à partir d'ici */}
-            </tbody>
-          </table>
-
-          <table id='calcul-table'>
-            <caption>{t("calculations")}</caption>
-            <tbody>
-              <tr className='revenue-section'>
-                <td>{t("currentRevenues")}</td>
-                <td id='revenue-current-value'></td>
-              </tr>
-              <tr className='revenue-section'>
-                <td>{t("forecastRevenues")}</td>
-                <td id='revenue-forecast-value'></td>
-              </tr>
-              <tr className='expenses-section'>
-                <td>{t("currentExpenses")}</td>
-                <td id='expenses-current-value'></td>
-              </tr>
-              <tr className='expenses-section'>
-                <td>{t("forecastExpenses")}</td>
-                <td id='expenses-forecast-value'></td>
-              </tr>
-              <tr>
-                <td>{t("currentTotal")}</td>
-                <td id='total-current-value'></td>
-              </tr>
-              <tr>
-                <td>{t("forecastTotal")}</td>
-                <td id='total-forecast-value'></td>
-              </tr>
-            </tbody>
-          </table>
+    <main>
+      <div className='revenues-container'>
+        <h2>{t("revenues")}</h2>
+        <div className='revenue-lines'>
+          <div className='revenue-header'>
+            <label htmlFor='label-input'>{t("label")}</label>
+            <label htmlFor='past-input'>
+              {t("past")} ({totalPast})
+            </label>
+            <label htmlFor='upcoming-input'>
+              {t("upcoming")} ({totalUpcoming})
+            </label>
+            <span></span>
+          </div>
+          {revenues.map((revenue, index) => (
+            <div
+              key={revenue.id}
+              className='revenue-line'
+              draggable
+              onDragStart={(e) => handleDragStart(e, index)}
+              onDragOver={handleDragOver}
+              onDrop={(e) => handleDrop(e, index)}>
+              <span className='drag-indicator'>⋮⋮</span>
+              <input
+                id='label-input'
+                type='text'
+                value={revenue.name}
+                onChange={(e) =>
+                  handleRevenueChange(revenue.id, "name", e.target.value)
+                }
+                placeholder={t("label")}
+              />
+              <input
+                id='past-input'
+                type='number'
+                value={revenue.past}
+                onChange={(e) =>
+                  handleRevenueChange(revenue.id, "past", e.target.value)
+                }
+                placeholder={t("past")}
+              />
+              <input
+                id='upcoming-input'
+                type='number'
+                value={revenue.upcoming}
+                onChange={(e) =>
+                  handleRevenueChange(revenue.id, "upcoming", e.target.value)
+                }
+                placeholder={t("upcoming")}
+              />
+              <button
+                className='delete-btn'
+                onClick={() => handleRevenueDelete(revenue.id)}>
+                ✖
+              </button>
+            </div>
+          ))}
         </div>
-        <div className='overlay-date-time'>
-          <p className='overlay-date'>
-            {currentTime
-              .toLocaleDateString(i18n.language, {
-                weekday: "long",
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-              })
-              .replace(/^\w/, (c) => c.toUpperCase())}
-          </p>
-          <p className='overlay-time'>
-            {currentTime.toLocaleTimeString(i18n.language)}
-          </p>
-        </div>
-      </main>
-    </>
+        <button className='add-revenue-btn' onClick={handleAddRevenue}>
+          {t("Addrevenu")}
+        </button>
+      </div>
+    </main>
   );
 }

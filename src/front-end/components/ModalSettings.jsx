@@ -123,7 +123,7 @@ const ModalSettings = ({ isOpen, onClose }) => {
                   {[t("changePassword"), t("enable2FA")].map(
                     (option, index) => (
                       <li key={option}>
-                        <strong>{option}</strong> {/* Texte traduit */}
+                        <strong>{option}</strong> 
                         <button className='edit-btn'>
                           {index === 0 ? t("edit") : t("activate")}
                         </button>
@@ -136,7 +136,6 @@ const ModalSettings = ({ isOpen, onClose }) => {
             {activeSection === "appearances" && (
               <>
                 <h3>{t("darkMode")}</h3>{" "}
-                {/* Utilisation de la clé mise à jour */}
                 <ul className='theme-options'>
                   <li>
                     <strong>

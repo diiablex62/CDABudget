@@ -56,7 +56,10 @@ const resources = {
       currentTime: "Heure actuelle",
       saintOfTheDay: "Fête du jour",
       noSaint: "Aucune fête aujourd'hui",
-      reviewApi: "Revoir Api",
+      salary: "Salaire",
+      past: "Déjà passé",
+      Addrevenu : "Ajouter un revenu",
+
     },
   },
   en: {
@@ -112,7 +115,9 @@ const resources = {
       currentTime: "Current Time",
       saintOfTheDay: "Saint of the Day",
       noSaint: "No saint today",
-      reviewApi: "Review API",
+      salary: "Salary",
+      past: "Already Passed",
+      Addrevenu : "Add a revenue",
     },
   },
   es: {
@@ -168,7 +173,9 @@ const resources = {
       currentTime: "Hora actual",
       saintOfTheDay: "Santo del día",
       noSaint: "No hay santo hoy",
-      reviewApi: "Revisar API",
+      salary: "Salario",
+      past: "Ya pasado",
+      Addrevenu : "Agregar un ingreso",
     },
   },
 };

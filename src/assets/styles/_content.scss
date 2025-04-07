@@ -57,7 +57,7 @@ table {
 }
 
 table tr {
-  color: black; 
+  color: black;
 }
 
 #revenue-table,
@@ -132,8 +132,8 @@ table tr {
 
 #calcul-table tr:last-child,
 #calcul-table tr:nth-last-child(2) {
-  background-color: white; 
-  color: black; 
+  background-color: white;
+  color: black;
 }
 
 main {
@@ -183,7 +183,7 @@ main {
 
 .overlay-date-time {
   position: absolute;
-  bottom:70px;
+  bottom: 70px;
   right: 20px;
   text-align: right;
   opacity: 0.2;
@@ -208,4 +208,200 @@ main {
   body.dark-theme & {
     color: white;
   }
+}
+
+.revenues-container {
+  margin: 20px auto;
+  max-width: 800px;
+  background-color: #f9f9f9;
+  color: #333;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.revenues-container h2 {
+  margin-bottom: 20px;
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+.revenue-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.revenue-line {
+  display: grid;
+  grid-template-columns: auto 3fr 2fr 2fr 1fr;
+  align-items: center;
+  gap: 10px;
+  background-color: #fff;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  cursor: grab;
+  /* Indique que l'élément est déplaçable */
+}
+
+.revenue-line:active {
+  cursor: grabbing;
+  /* Change le curseur pendant le déplacement */
+  opacity: 0.8;
+  /* Réduit l'opacité pour indiquer le déplacement */
+}
+
+.revenue-line.drag-over {
+  border: 2px dashed #6bd9a5;
+  /* Indique la zone de dépôt */
+}
+
+.revenue-line input {
+  padding: 8px;
+  height: 40px;
+  /* Fixe une hauteur uniforme pour correspondre aux labels */
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+  color: #333;
+}
+
+.revenue-line input:focus {
+  outline: none;
+  border-color: #6bd9a5;
+  box-shadow: 0 0 5px rgba(107, 217, 165, 0.5);
+}
+
+.drag-indicator {
+  cursor: grab;
+  font-size: 18px;
+  color: #888;
+  text-align: center;
+}
+
+.drag-indicator:hover {
+  color: #555;
+}
+
+.delete-btn {
+  background-color: #ff6b6b;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #e63946;
+  }
+}
+
+.add-revenue-btn {
+  display: block;
+  margin: 20px auto 0;
+  padding: 10px 20px;
+  background-color: #6bd9a5;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #5ac491;
+  }
+}
+
+.revenue-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.revenue-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: #444;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.revenue-card input[type="text"],
+.revenue-card input[type="number"] {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #555;
+  border-radius: 4px;
+  background-color: #222;
+  color: white;
+}
+
+.revenue-card span {
+  color: #ccc;
+}
+
+.revenue-card .delete-btn {
+  background-color: #ff6b6b;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #e63946;
+  }
+}
+
+.add-revenue-btn {
+  display: block;
+  margin: 20px auto 0;
+  padding: 10px 20px;
+  background-color: #6bd9a5;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #5ac491;
+  }
+}
+
+.revenue-header {
+  display: grid;
+  grid-template-columns: 3fr 2fr 2fr 1fr;
+  /* Ajuste les colonnes pour inclure le bouton supprimer */
+  align-items: center;
+  background-color: #6bd9a5;
+  color: white;
+  padding: 10px;
+  border-radius: 8px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.revenue-header label {
+  text-align: center;
+}
+
+.revenue-header label,
+.revenue-line input {
+  flex: 1;
+  /* Assure que les colonnes ont la même largeur */
+  text-align: center;
+}
+
+.revenue-header span {
+  flex: 1;
+  text-align: center;
 }
