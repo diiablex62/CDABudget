@@ -57,7 +57,7 @@ table {
 }
 
 table tr {
-  color: black; // Assure que le texte des lignes est en noir
+  color: black; 
 }
 
 #revenue-table,
@@ -132,8 +132,8 @@ table tr {
 
 #calcul-table tr:last-child,
 #calcul-table tr:nth-last-child(2) {
-  background-color: white; // Fond blanc pour les deux dernières lignes
-  color: black; // Assure que le texte reste lisible
+  background-color: white; 
+  color: black; 
 }
 
 main {
@@ -178,5 +178,34 @@ main {
         color: var(--selected-color);
       }
     }
+  }
+}
+
+.overlay-date-time {
+  position: absolute;
+  bottom:70px;
+  right: 20px;
+  text-align: right;
+  opacity: 0.2;
+  z-index: -1;
+}
+
+.overlay-date {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #333;
+
+  body.dark-theme & {
+    color: white;
+  }
+}
+
+.overlay-time {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #555;
+
+  body.dark-theme & {
+    color: white;
   }
 }
