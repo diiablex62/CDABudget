@@ -5,7 +5,7 @@ export default function Footer() {
     <>
       <footer>
         <p>
-          © 2025
+          © 2025 
           <a
             href='https://salutalex.fr'
             target='_blank'

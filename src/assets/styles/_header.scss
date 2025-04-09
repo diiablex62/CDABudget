@@ -1,110 +1,174 @@
+// Variables
+$navbar-bg: #333;
+$navbar-dark-bg: #000;
+$navbar-height: 80px;
+$text-white: white;
+$border-radius: 5px;
+$transition-speed: 0.3s;
+$box-shadow-light: 0 2px 4px rgba(0, 0, 0, 0.2);
+$box-shadow-dark: 0 4px 8px rgba(0, 0, 0, 0.3);
+
+// Header styles
 .navbar {
-  background-color: #333;
+  background-color: $navbar-bg;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 16px;
-  height: 80px;
+  height: $navbar-height;
   position: relative;
-}
 
-body.dark-theme .navbar {
-  background-color: #000;
-  color: white;
-  border-bottom: 1px solid white;
+  // Dark theme variant
+  body.dark-theme & {
+    background-color: $navbar-dark-bg;
+    color: $text-white;
+    border-bottom: 1px solid $text-white;
+  }
 }
 
 .site-title {
   font-size: 30px;
   text-align: center;
   margin: 0;
-  color: white;
+  color: $text-white;
   width: 100%;
 }
 
-.login-container {
-  display: flex;
-  align-items: center;
-  position: relative;
-  right: 0;
+// Login section
+.login {
+  &-container {
+    display: flex;
+    align-items: center;
+    position: relative;
+    right: 0;
+  }
+
+  &-btn {
+    display: inline-block;
+    background-color: #555;
+    color: $text-white;
+    text-decoration: none;
+    padding: 10px 20px;
+    margin-left: 10px;
+    white-space: nowrap;
+    border: none;
+    border-radius: $border-radius;
+    transition: background-color $transition-speed ease, box-shadow $transition-speed ease;
+    font-weight: bold;
+    box-shadow: $box-shadow-light;
+
+    &:hover {
+      background-color: $navbar-bg;
+      box-shadow: $box-shadow-dark;
+    }
+  }
 }
 
-.login-btn {
-  display: inline-block;
-  background-color: #555;
-  color: white;
-  text-decoration: none;
-  padding: 10px 20px;
-  margin-left: 10px;
-  white-space: nowrap;
-  border: none;
-  border-radius: 5px;
-  transition: background-color 0.3s ease;
-  font-weight: bold;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+// Account section
+.account {
+  &-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  &-bubble {
+    background-color: var(--selected-color);
+    color: $text-white;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color $transition-speed ease,
+      transform $transition-speed ease,
+      border $transition-speed ease;
+    border: 2px solid $text-white;
+
+    body.dark-theme & {
+      border: 2px solid black;
+    }
+  }
+
+  &-initial {
+    text-transform: uppercase;
+  }
+
+  &-modal {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    background-color: $text-white;
+    color: $navbar-bg;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 250px;
+    padding: 15px;
+    z-index: 1000;
+    animation: fadeIn $transition-speed ease-in-out;
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: -10px;
+      right: 20px;
+      border-width: 10px;
+      border-style: solid;
+      border-color: transparent transparent $text-white transparent;
+    }
+  }
+
+  &-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+  }
+
+  &-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 5px 0;
+    cursor: pointer;
+    transition: background-color $transition-speed ease,
+      color $transition-speed ease;
+    color: $navbar-bg;
+
+    &:hover,
+    body.dark-theme &:hover {
+      background-color: var(--selected-color);
+      color: $text-white;
+    }
+  }
 }
 
-.login-btn:hover {
-  background-color: #333;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+// Logout specific styling
+.logout-option {
+  color: #f44336;
+
+  &:hover {
+    background-color: var(--selected-color);
+    color: $text-white;
+  }
 }
 
-.account-container {
+// Icon styling
+.option-icon {
+  width: 20px;
+  height: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative;
 }
 
-.account-bubble {
-  background-color: var(--selected-color);
-  color: white;
-  font-size: 18px;
-  font-weight: bold;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.3s ease, border 0.3s ease;
-  border: 2px solid white;
-}
-
-body.dark-theme .account-bubble {
-  border: 2px solid black;
-}
-
-.account-initial {
-  text-transform: uppercase;
-}
-
-.account-modal {
-  position: absolute;
-  top: calc(100% + 10px);
-  right: 0;
-  background-color: white;
-  color: #333;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  width: 250px;
-  padding: 15px;
-  z-index: 1000;
-  animation: fadeIn 0.3s ease-in-out;
-}
-
-.account-modal::before {
-  content: "";
-  position: absolute;
-  top: -10px;
-  right: 20px;
-  border-width: 10px;
-  border-style: solid;
-  border-color: transparent transparent white transparent;
-}
-
+// Animation
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -117,46 +181,7 @@ body.dark-theme .account-bubble {
   }
 }
 
-.account-info {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 15px;
-}
-
-.account-option {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 5px 0;
-  cursor: pointer;
-  transition: background-color 0.3s ease, color 0.3s ease;
-  color: #333;
-}
-
-.account-option:hover,
-body.dark-theme .account-option:hover {
-  background-color: var(--selected-color);
-  color: white;
-}
-
-.logout-option {
-  color: #f44336;
-}
-
-.logout-option:hover {
-  background-color: var(--selected-color);
-  color: white;
-}
-
-.option-icon {
-  width: 20px;
-  height: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
+// Responsive styles
 @media (max-width: 1100px) {
   .site-title {
     font-size: 24px;

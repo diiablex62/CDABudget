@@ -14,6 +14,34 @@
 }
 
 table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  font-size: 14px;
+  text-align: left;
+  background-color: #fff; // Utilisation de la couleur blanche
+  border: 1px solid #ddd;
+
+  th,
+  td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    color: black;
+  }
+
+  th {
+    background-color: #f4f4f4; // Couleur claire pour les en-têtes
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #f9f9f9; // Couleur alternée pour les lignes
+  }
+
+  tr:hover {
+    background-color: #f4f4f4; // Couleur au survol
+  }
+
   margin: 0 10px 20px 0;
   width: 33.33%;
   border-collapse: collapse;
@@ -137,7 +165,25 @@ table tr {
 }
 
 main {
-  flex-grow: 1;
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  gap: 20px;
+  padding: 20px;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+footer {
+  margin-top: auto;
+  background-color: #333;
+  color: white;
+  text-align: center;
+  padding: 10px 0;
 }
 
 .memo-container {
@@ -210,29 +256,64 @@ main {
   }
 }
 
-.revenues-container {
+.table-container-common {
   margin: 20px auto;
-  max-width: 800px;
-  background-color: #f9f9f9;
-  color: #333;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  width: calc(42.5% - 10px);
+  max-width: 600px;
 }
 
-.revenues-container h2 {
+.revenues-container h2,
+.expenses-container h2 {
+  text-align: center;
   margin-bottom: 20px;
   font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.table-header-common {
+  display: grid;
+  grid-template-columns: 3fr 2fr 2fr 1fr;
+  align-items: center;
+  padding: 10px;
+  border-radius: 8px;
+  font-weight: bold;
+  text-transform: uppercase;
   text-align: center;
+  justify-items: center;
 }
 
-.revenue-lines {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+.revenue-header {
+  @extend .table-header-common;
+  background-color: #6bd9a5; // Ajoute un fond vert pour le header des revenus
+  color: white; // Définit la couleur du texte en blanc
 }
 
-.revenue-line {
+.expense-header {
+  @extend .table-header-common;
+  background-color: #ff6b6b; // Fond rouge uniquement pour les headers des colonnes
+  color: white; // Texte en blanc
+
+  label {
+    color: white; // Assure que les titres des colonnes restent en blanc
+  }
+}
+
+.expense-category-header {
+  color: black; // Texte en noir
+  font-weight: bold;
+  margin: 0;
+  background-color: transparent; // Pas de fond
+  padding: 5px 0; // Ajoute un peu d'espace vertical
+  white-space: nowrap; // Empêche le texte d'aller à la ligne
+  overflow: hidden; // Cache le débordement si nécessaire
+  text-overflow: ellipsis; // Ajoute des points de suspension si le texte est trop long
+}
+
+.table-line-common {
   display: grid;
   grid-template-columns: auto 3fr 2fr 2fr 1fr;
   align-items: center;
@@ -242,36 +323,115 @@ main {
   border-radius: 8px;
   border: 1px solid #ddd;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  cursor: grab;
-  /* Indique que l'élément est déplaçable */
+  overflow: hidden;
 }
 
-.revenue-line:active {
-  cursor: grabbing;
-  /* Change le curseur pendant le déplacement */
-  opacity: 0.8;
-  /* Réduit l'opacité pour indiquer le déplacement */
+.revenue-line,
+.expense-line {
+  @extend .table-line-common;
 }
 
-.revenue-line.drag-over {
-  border: 2px dashed #6bd9a5;
-  /* Indique la zone de dépôt */
-}
-
-.revenue-line input {
+.table-input-common {
   padding: 8px;
   height: 40px;
-  /* Fixe une hauteur uniforme pour correspondre aux labels */
   border: 1px solid #ccc;
   border-radius: 4px;
   background-color: #f9f9f9;
   color: #333;
+  text-align: center;
+  font-size: 14px;
+  box-shadow: none;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  width: 100%;
 }
 
-.revenue-line input:focus {
+.revenue-line input,
+.expense-line input {
+  @extend .table-input-common;
+}
+
+.revenue-line input:focus,
+.expense-line input:focus {
   outline: none;
   border-color: #6bd9a5;
   box-shadow: 0 0 5px rgba(107, 217, 165, 0.5);
+}
+
+.expense-line input:focus {
+  border-color: #ff6b6b;
+  box-shadow: 0 0 5px rgba(255, 107, 107, 0.5);
+}
+
+.add-btn-common {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 10px 0 0;
+  padding: 4px 8px;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.add-revenue-btn {
+  @extend .add-btn-common;
+  background-color: #6bd9a5;
+
+  &:hover {
+    background-color: #5ac491;
+    transform: translateY(-1px);
+  }
+}
+
+.add-expense-btn {
+  @extend .add-btn-common;
+  background-color: #ff6b6b;
+  margin: 10px auto; // Centre le bouton horizontalement
+  display: block; // Assure que le bouton est centré en tant qu'élément de bloc
+
+  &:hover {
+    background-color: #e63946;
+    transform: translateY(-1px);
+  }
+}
+
+.expense-category {
+  margin-top: 20px; // Ajout d'espace au-dessus du tableau
+}
+
+.expense-category h3 {
+  color: black; // Définit la couleur du texte des catégories en noir
+  font-weight: bold;
+  margin: 0;
+  background-color: transparent; // Supprime le fond
+}
+
+.expense-category {
+  color: black; // Texte en noir
+  font-weight: bold;
+  background-color: transparent; // Pas de fond
+  margin: 0;
+  padding: 5px 0; // Ajoute un peu d'espace vertical
+  white-space: nowrap; // Empêche le texte d'aller à la ligne
+  overflow: hidden; // Cache le débordement si nécessaire
+  text-overflow: ellipsis; // Ajoute des points de suspension si le texte est trop long
+}
+
+.expense-header {
+  background-color: #ff6b6b; // Fond rouge uniquement pour les headers
+  color: white; // Texte en blanc
+  font-weight: bold;
+  padding: 10px;
+  display: grid;
+  grid-template-columns: 3fr 2fr 2fr 1fr;
+
+  label {
+    color: white; // Assure que les titres des colonnes restent en blanc
+  }
 }
 
 .drag-indicator {
@@ -279,10 +439,10 @@ main {
   font-size: 18px;
   color: #888;
   text-align: center;
-}
 
-.drag-indicator:hover {
-  color: #555;
+  &:hover {
+    color: #555;
+  }
 }
 
 .delete-btn {
@@ -297,111 +457,4 @@ main {
   &:hover {
     background-color: #e63946;
   }
-}
-
-.add-revenue-btn {
-  display: block;
-  margin: 20px auto 0;
-  padding: 10px 20px;
-  background-color: #6bd9a5;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 1rem;
-  transition: background-color 0.3s ease;
-
-  &:hover {
-    background-color: #5ac491;
-  }
-}
-
-.revenue-cards {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-.revenue-card {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  background-color: #444;
-  padding: 10px;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-.revenue-card input[type="text"],
-.revenue-card input[type="number"] {
-  flex: 1;
-  padding: 8px;
-  border: 1px solid #555;
-  border-radius: 4px;
-  background-color: #222;
-  color: white;
-}
-
-.revenue-card span {
-  color: #ccc;
-}
-
-.revenue-card .delete-btn {
-  background-color: #ff6b6b;
-  color: white;
-  border: none;
-  padding: 5px 10px;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-
-  &:hover {
-    background-color: #e63946;
-  }
-}
-
-.add-revenue-btn {
-  display: block;
-  margin: 20px auto 0;
-  padding: 10px 20px;
-  background-color: #6bd9a5;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 1rem;
-  transition: background-color 0.3s ease;
-
-  &:hover {
-    background-color: #5ac491;
-  }
-}
-
-.revenue-header {
-  display: grid;
-  grid-template-columns: 3fr 2fr 2fr 1fr;
-  /* Ajuste les colonnes pour inclure le bouton supprimer */
-  align-items: center;
-  background-color: #6bd9a5;
-  color: white;
-  padding: 10px;
-  border-radius: 8px;
-  font-weight: bold;
-  text-transform: uppercase;
-}
-
-.revenue-header label {
-  text-align: center;
-}
-
-.revenue-header label,
-.revenue-line input {
-  flex: 1;
-  /* Assure que les colonnes ont la même largeur */
-  text-align: center;
-}
-
-.revenue-header span {
-  flex: 1;
-  text-align: center;
 }

@@ -1,12 +1,25 @@
+$font-family-base: 'Open Sans', sans-serif;
+$color-light-bg: #f4f4f4;
+$color-dark-bg: #121212;
+$color-dark-component: #1e1e1e;
+$color-dark-hover: #333333;
+$color-dark-active: #444444;
+$color-white: #ffffff;
+$color-black: #000;
+$border-radius-button: 20px;
+$transition-speed: 0.3s;
+
+// Reset global
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+// Styles de base
 body {
-  font-family: "Open Sans", sans-serif;
-  background-color: #f4f4f4;
+  font-family: $font-family-base;
+  background-color: $color-light-bg;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -18,57 +31,61 @@ body {
   min-height: 100vh;
 }
 
-// dark mode
+// Boutons communs
+button {
+  background-color: $color-white;
+  border: 2px solid #333;
+  color: #333;
+  padding: 1px 5px;
+  margin: 0 5px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  text-transform: uppercase;
+  border-radius: $border-radius-button;
+  transition: transform $transition-speed ease, background-color $transition-speed ease;
+  box-shadow: none !important;
+}
 
+.edit-btn,
+.delete-btn {
+  background-color: var(--selected-color);
+  color: $color-white;
+  border: none;
+  padding: 8px 12px;
+  font-size: 14px;
+  margin: 0;
+}
+
+// Mode sombre
 body.dark-theme {
-  background-color: #121212;
-  color: #ffffff;
-
-  .modal-settings,
-  .modal-settings-content {
-    background: #1e1e1e;
-    color: #ffffff;
-  }
-
-  .modal-settings-sidebar {
-    background: #1e1e1e;
-    color: #ffffff;
-
-    li:hover {
-      background-color: #333333;
-    }
-
-    li.active {
-      background-color: #444444;
-      color: #ffffff;
-    }
-  }
+  background-color: $color-dark-bg;
+  color: $color-white;
 
   .theme-toggle-btn {
-    background-color: #444444;
-    color: #ffffff;
+    background-color: $color-dark-active;
+    color: $color-white;
 
     &:hover {
       background-color: #555555;
     }
   }
 
-  // En-tête
   .navbar,
   .en-tete {
-    background-color: #121212;
-    color: #ffffff;
+    background-color: $color-dark-bg;
+    color: $color-white;
   }
 
   #year,
   #month {
-    color: #ffffff;
+    color: $color-white;
   }
 
   button {
-    background-color: #ffffff;
-    color: #000;
-    border: 2px solid #000;
+    background-color: $color-white;
+    color: $color-black;
+    border: 2px solid $color-black;
 
     &:hover {
       background-color: #e0e0e0;
@@ -78,32 +95,7 @@ body.dark-theme {
   .edit-btn,
   .delete-btn {
     background-color: var(--selected-color);
-    color: white;
+    color: $color-white;
     border: none;
   }
-}
-
-button {
-  background-color: #ffffff;
-  border: 2px solid #333;
-  color: #333;
-  padding: 1px 5px;
-  margin: 0 5px;
-  cursor: pointer;
-  font-size: 16px;
-  font-weight: bold;
-  text-transform: uppercase;
-  border-radius: 20px;
-  transition: transform 0.3s ease;
-  box-shadow: none !important;
-}
-
-.edit-btn,
-.delete-btn {
-  background-color: var(--selected-color);
-  color: white;
-  border: none;
-  padding: 8px 12px;
-  font-size: 14px;
-  margin: 0;
 }

@@ -59,7 +59,7 @@ const resources = {
       salary: "Salaire",
       past: "Déjà passé",
       Addrevenu : "Ajouter un revenu",
-
+      Addexpense : "Ajouter une dépense",
     },
   },
   en: {
@@ -118,6 +118,7 @@ const resources = {
       salary: "Salary",
       past: "Already Passed",
       Addrevenu : "Add a revenue",
+      Addexpense : "Add an expense",
     },
   },
   es: {
@@ -176,6 +177,7 @@ const resources = {
       salary: "Salario",
       past: "Ya pasado",
       Addrevenu : "Agregar un ingreso",
+      Addexpense : "Agregar un gasto",
     },
   },
 };
