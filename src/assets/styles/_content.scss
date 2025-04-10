@@ -1,4 +1,9 @@
 .table-container {
+  width: 80%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
   margin: 20px 15px 15px;
   display: flex;
   flex-wrap: nowrap;
@@ -6,6 +11,7 @@
   justify-content: space-around;
   flex-grow: 1;
   width: 100%;
+  align-items: stretch;
 
   @media (max-width: 768px) {
     flex-direction: column;
@@ -19,7 +25,7 @@ table {
   margin: 20px 0;
   font-size: 14px;
   text-align: left;
-  background-color: #fff; // Utilisation de la couleur blanche
+  background-color: #fff;
   border: 1px solid #ddd;
 
   th,
@@ -30,16 +36,16 @@ table {
   }
 
   th {
-    background-color: #f4f4f4; // Couleur claire pour les en-têtes
+    background-color: #f4f4f4;
     font-weight: bold;
   }
 
   tr:nth-child(even) {
-    background-color: #f9f9f9; // Couleur alternée pour les lignes
+    background-color: #f9f9f9;
   }
 
   tr:hover {
-    background-color: #f4f4f4; // Couleur au survol
+    background-color: #f4f4f4;
   }
 
   margin: 0 10px 20px 0;
@@ -82,10 +88,31 @@ table {
   th:last-child {
     width: auto;
   }
+
+  flex-grow: 1;
+  height: 100%;
 }
 
 table tr {
   color: black;
+}
+
+table th,
+table td {
+  width: 25%;
+  min-width: 100px;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+table td {
+  min-height: 40px;
+}
+
+table td input {
+  width: 100%;
+  min-width: 100px;
+  box-sizing: border-box;
 }
 
 #revenue-table,
@@ -166,10 +193,18 @@ table tr {
 
 main {
   display: flex;
-  flex: 1;
-  justify-content: center;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: stretch;
   gap: 20px;
   padding: 20px;
+  width: 100%;
+  box-sizing: border-box;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: center;
+  }
 }
 
 body {
@@ -274,6 +309,55 @@ footer {
   font-weight: bold;
 }
 
+.revenues-container,
+.expenses-container {
+  width: 100%;
+  min-width: 400px;
+  max-width: 600px;
+  box-sizing: border-box;
+  flex: 1 1 calc(50% - 20px);
+  max-width: 600px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: stretch;
+  flex: 1;
+
+  @media (max-width: 768px) {
+    flex: 1 1 100%;
+    max-width: none;
+  }
+}
+
+.revenue-category-header,
+.expense-category-header {
+  margin: 0;
+  font-size: 1rem;
+  text-align: center;
+  font-weight: bold;
+  background-color: transparent;
+  box-sizing: border-box;
+  border-bottom: 1px solid #ddd;
+}
+
+.revenue-header,
+.expense-header {
+  margin: 0;
+  padding: 10px;
+  display: grid;
+  grid-template-columns: 3fr 2fr 2fr 1fr;
+  align-items: center;
+  text-align: center;
+  font-weight: bold;
+  border-radius: 8px;
+  box-sizing: border-box;
+  background-color: #f8f8f8;
+}
+
 .table-header-common {
   display: grid;
   grid-template-columns: 3fr 2fr 2fr 1fr;
@@ -288,29 +372,59 @@ footer {
 
 .revenue-header {
   @extend .table-header-common;
-  background-color: #6bd9a5; // Ajoute un fond vert pour le header des revenus
-  color: white; // Définit la couleur du texte en blanc
+  background-color: #6bd9a5;
+  color: white;
 }
 
 .expense-header {
   @extend .table-header-common;
-  background-color: #ff6b6b; // Fond rouge uniquement pour les headers des colonnes
-  color: white; // Texte en blanc
+  background-color: #ff6b6b;
+  color: white;
 
   label {
-    color: white; // Assure que les titres des colonnes restent en blanc
+    color: white;
   }
 }
 
 .expense-category-header {
-  color: black; // Texte en noir
+  color: black;
   font-weight: bold;
   margin: 0;
-  background-color: transparent; // Pas de fond
-  padding: 5px 0; // Ajoute un peu d'espace vertical
-  white-space: nowrap; // Empêche le texte d'aller à la ligne
-  overflow: hidden; // Cache le débordement si nécessaire
-  text-overflow: ellipsis; // Ajoute des points de suspension si le texte est trop long
+  background-color: transparent;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.revenue-category-header {
+  margin: 0;
+  padding: 10px 0;
+  font-size: 1rem;
+  background-color: transparent;
+  border-bottom: none;
+}
+
+.revenue-category-header,
+.expense-category-header {
+  margin: 0;
+  font-size: 1rem;
+  text-align: center;
+  font-weight: bold;
+  background-color: transparent;
+  box-sizing: border-box;
+}
+
+.revenue-header,
+.expense-header {
+  margin: 0;
+  padding: 10px;
+  display: grid;
+  grid-template-columns: 3fr 2fr 2fr 1fr;
+  align-items: center;
+  text-align: center;
+  font-weight: bold;
+  border-radius: 8px;
+  box-sizing: border-box;
 }
 
 .table-line-common {
@@ -379,58 +493,54 @@ footer {
 
 .add-revenue-btn {
   @extend .add-btn-common;
-  background-color: #6bd9a5;
+  background-color: transparent;
+  color: black;
+  text-transform: math-auto;
+  text-align: left;
+  margin-left: 0;
+  justify-content: flex-start;
 
   &:hover {
-    background-color: #5ac491;
+    color: #5ac491;
     transform: translateY(-1px);
   }
 }
 
 .add-expense-btn {
   @extend .add-btn-common;
-  background-color: #ff6b6b;
-  margin: 10px auto; // Centre le bouton horizontalement
-  display: block; // Assure que le bouton est centré en tant qu'élément de bloc
+  color: black;
+  background-color: transparent;
+  margin: 10px auto;
+  text-transform: math-auto;
+  text-align: center;
 
   &:hover {
-    background-color: #e63946;
+    color: #e63946;
     transform: translateY(-1px);
   }
 }
 
 .expense-category {
-  margin-top: 20px; // Ajout d'espace au-dessus du tableau
+  margin-top: 20px;
+  padding: 0;
+  background-color: transparent;
+  border: none;
 }
 
 .expense-category h3 {
-  color: black; // Définit la couleur du texte des catégories en noir
-  font-weight: bold;
-  margin: 0;
-  background-color: transparent; // Supprime le fond
-}
-
-.expense-category {
-  color: black; // Texte en noir
-  font-weight: bold;
-  background-color: transparent; // Pas de fond
-  margin: 0;
-  padding: 5px 0; // Ajoute un peu d'espace vertical
-  white-space: nowrap; // Empêche le texte d'aller à la ligne
-  overflow: hidden; // Cache le débordement si nécessaire
-  text-overflow: ellipsis; // Ajoute des points de suspension si le texte est trop long
+  display: none;
 }
 
 .expense-header {
-  background-color: #ff6b6b; // Fond rouge uniquement pour les headers
-  color: white; // Texte en blanc
+  background-color: #ff6b6b;
+  color: white;
   font-weight: bold;
   padding: 10px;
   display: grid;
   grid-template-columns: 3fr 2fr 2fr 1fr;
 
   label {
-    color: white; // Assure que les titres des colonnes restent en blanc
+    color: white;
   }
 }
 
@@ -446,8 +556,8 @@ footer {
 }
 
 .delete-btn {
-  background-color: #ff6b6b;
-  color: white;
+  color: black;
+  background: none;
   border: none;
   padding: 5px 10px;
   border-radius: 4px;
@@ -457,4 +567,25 @@ footer {
   &:hover {
     background-color: #e63946;
   }
+}
+
+.table-delete-btn {
+  color: black;
+  background: none;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    color: #e63946;
+  }
+}
+
+.revenue-lines {
+  width: 100%;
+  min-width: 400px;
+  max-width: 600px;
+  box-sizing: border-box;
 }
