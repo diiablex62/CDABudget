@@ -1,5 +1,6 @@
 import React, { useState, useCallback, memo } from "react";
 import { useTranslation } from "react-i18next";
+import Category from "./Category"; // Mise à jour du chemin
 
 // Composant pour une ligne de revenu
 const RevenueLine = memo(({ revenue, onUpdate, onDelete }) => {

@@ -1,17 +1,12 @@
 .table-container {
   width: 80%;
-  margin: 0 auto;
-  display: flex;
-  justify-content: space-between;
-  gap: 20px;
-  margin: 20px 15px 15px;
+  margin: 20px auto 15px;
   display: flex;
   flex-wrap: nowrap;
-  align-items: flex-start;
   justify-content: space-around;
-  flex-grow: 1;
-  width: 100%;
   align-items: stretch;
+  gap: 20px;
+  flex-grow: 1;
 
   @media (max-width: 768px) {
     flex-direction: column;
@@ -24,13 +19,16 @@ table {
   border-collapse: collapse;
   margin: 20px 0;
   font-size: 14px;
-  text-align: left;
   background-color: #fff;
   border: 1px solid #ddd;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  border-radius: 8px;
+  overflow: hidden;
 
   th,
   td {
-    padding: 10px;
+    padding: 12px;
+    text-align: center;
     border: 1px solid #ddd;
     color: black;
   }
@@ -48,19 +46,6 @@ table {
     background-color: #f4f4f4;
   }
 
-  margin: 0 10px 20px 0;
-  width: 33.33%;
-  border-collapse: collapse;
-  border-spacing: 0;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-  border-radius: 8px;
-  overflow: hidden;
-  border: none;
-
-  &:last-child {
-    margin-right: 0;
-  }
-
   caption {
     font-weight: 600;
     text-align: center;
@@ -68,51 +53,7 @@ table {
     padding: 12px;
     font-size: 1.1em;
     text-transform: uppercase;
-    border: none;
   }
-
-  th,
-  td {
-    padding: 12px;
-    text-align: center;
-    border-bottom: 1px solid #eee;
-  }
-
-  th {
-    font-weight: 600;
-  }
-
-  td:first-child,
-  th:first-child,
-  td:last-child,
-  th:last-child {
-    width: auto;
-  }
-
-  flex-grow: 1;
-  height: 100%;
-}
-
-table tr {
-  color: black;
-}
-
-table th,
-table td {
-  width: 25%;
-  min-width: 100px;
-  text-align: center;
-  box-sizing: border-box;
-}
-
-table td {
-  min-height: 40px;
-}
-
-table td input {
-  width: 100%;
-  min-width: 100px;
-  box-sizing: border-box;
 }
 
 #revenue-table,
@@ -146,8 +87,6 @@ table td input {
     min-width: 400px;
     max-width: calc(50% - 20px);
   }
-
-  @media (max-width: 650px) {}
 
   caption {
     background-color: #6bd9a5;
@@ -304,7 +243,6 @@ footer {
 .revenues-container h2,
 .expenses-container h2 {
   text-align: center;
-  margin-bottom: 20px;
   font-size: 1.5rem;
   font-weight: bold;
 }
@@ -316,16 +254,10 @@ footer {
   max-width: 600px;
   box-sizing: border-box;
   flex: 1 1 calc(50% - 20px);
-  max-width: 600px;
-  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   min-height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: stretch;
-  flex: 1;
 
   @media (max-width: 768px) {
     flex: 1 1 100%;
@@ -355,7 +287,6 @@ footer {
   font-weight: bold;
   border-radius: 8px;
   box-sizing: border-box;
-  background-color: #f8f8f8;
 }
 
 .table-header-common {
@@ -479,69 +410,73 @@ footer {
 .add-btn-common {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  margin: 10px 0 0;
+  justify-content: flex-start;
+  margin: 10px 0;
   padding: 4px 8px;
-  color: white;
+  color: black;
+  background-color: transparent;
   border: none;
   border-radius: 3px;
   cursor: pointer;
   font-size: 0.85rem;
   font-weight: 500;
   transition: background-color 0.3s ease, transform 0.2s ease;
+
+  &:hover {
+    transform: translateY(-1px);
+  }
 }
 
 .add-revenue-btn {
   @extend .add-btn-common;
-  background-color: transparent;
-  color: black;
-  text-transform: math-auto;
-  text-align: left;
-  margin-left: 0;
-  justify-content: flex-start;
 
   &:hover {
     color: #5ac491;
-    transform: translateY(-1px);
   }
 }
 
 .add-expense-btn {
   @extend .add-btn-common;
-  color: black;
-  background-color: transparent;
-  margin: 10px auto;
-  text-transform: math-auto;
-  text-align: center;
+  align-self: flex-start;
 
   &:hover {
     color: #e63946;
-    transform: translateY(-1px);
   }
 }
 
 .expense-category {
-  margin-top: 20px;
-  padding: 0;
-  background-color: transparent;
-  border: none;
-}
+  margin: 0;
+  padding: 10px;
+  background-color: #f9f9f9;
+  font-weight: bold;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+  border-radius: 10px;
 
-.expense-category h3 {
-  display: none;
+  h3 {
+    margin: 0;
+    font-size: 1rem;
+    color: black;
+  }
 }
 
 .expense-header {
-  background-color: #ff6b6b;
-  color: white;
-  font-weight: bold;
-  padding: 10px;
   display: grid;
   grid-template-columns: 3fr 2fr 2fr 1fr;
+  align-items: center;
+  padding: 10px;
+  background-color: #ff6b6b;
+  font-weight: bold;
+  color: white;
 
   label {
     color: white;
   }
+}
+
+.expense-line {
+  @extend .table-line-common;
+  grid-template-columns: auto 3fr 2fr 2fr 1fr;
 }
 
 .drag-indicator {
