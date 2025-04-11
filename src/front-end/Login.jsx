@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { AppContext } from "../context/AppContext";
 import "../assets/styles/_login.scss";
 
-function Login({ onLogin }) {
+function Login() {
+  const { handleLogin } = useContext(AppContext); 
   const [isLogin, setIsLogin] = useState(true);
   const [username, setUsername] = useState("");
   const [errorMessage, setErrorMessage] = useState({});
@@ -72,7 +74,7 @@ function Login({ onLogin }) {
       console.log("Données reçues du backend :", data);
       if (data.success) {
         console.log("Connexion réussie avec Google :", data.user);
-        onLogin(data.user);
+        handleLogin(data.user); // Utilisez handleLogin au lieu de onLogin
         navigate("/");
       } else {
         console.error("Erreur lors de la connexion Google :", data.error);
@@ -142,7 +144,7 @@ function Login({ onLogin }) {
       if (response.ok) {
         const data = await response.json();
         if (isLogin) {
-          onLogin(data || {});
+          handleLogin(data || {}); // Utilisez handleLogin au lieu de onLogin
           navigate("/");
         } else {
           setModalType("success");

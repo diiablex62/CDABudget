@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import Google from "../icons/Google";
@@ -9,8 +9,11 @@ import ModalSettings from "./ModalSettings";
 import FranceFlag from "../../assets/img/france.png";
 import UKFlag from "../../assets/img/royaume-uni.png";
 import SpainFlag from "../../assets/img/espagne.png";
+import { AppContext } from "../../context/AppContext";
 
-export default function Header({ onLogout, isLoggedIn, username, authType }) {
+export default function Header() {
+  const { isLoggedIn, username, authType, handleLogout } =
+    useContext(AppContext);
   const { t, i18n } = useTranslation();
   const [showAccountModal, setShowAccountModal] = useState(false);
   const [showSettingsModal, setShowSettingsModal] = useState(false);
@@ -45,7 +48,7 @@ export default function Header({ onLogout, isLoggedIn, username, authType }) {
   };
 
   const handleLogoutClick = () => {
-    onLogout();
+    handleLogout();
     navigate("/login");
   };
 
