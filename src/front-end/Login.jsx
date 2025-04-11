@@ -12,7 +12,6 @@ function Login() {
   const [modalType, setModalType] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [googleScriptLoaded, setGoogleScriptLoaded] = useState(false);
   const navigate = useNavigate();
 
   const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
@@ -144,7 +143,7 @@ function Login() {
       if (response.ok) {
         const data = await response.json();
         if (isLogin) {
-          handleLogin(data || {}); // Utilisez handleLogin au lieu de onLogin
+          handleLogin(data || {}); 
           navigate("/");
         } else {
           setModalType("success");
@@ -159,7 +158,7 @@ function Login() {
         setModalType("error");
         setModalMessage(errorData.error);
       }
-    } catch (err) {
+    } catch {
       setModalType("error");
       setModalMessage("Une erreur est survenue. Veuillez réessayer.");
     }

@@ -96,19 +96,6 @@ export default function Header() {
     localStorage.setItem("language", lang);
   };
 
-  const getFlag = () => {
-    switch (i18n.language) {
-      case "fr":
-        return <img src={FranceFlag} alt='Français' width='24' height='24' />;
-      case "en":
-        return <img src={UKFlag} alt='English' width='24' height='24' />;
-      case "es":
-        return <img src={SpainFlag} alt='Español' width='24' height='24' />;
-      default:
-        return <img src={FranceFlag} alt='Français' width='24' height='24' />;
-    }
-  };
-
   const getNextLanguage = () => {
     switch (i18n.language) {
       case "fr":
@@ -175,7 +162,6 @@ export default function Header() {
                     <span className='option-icon'>🌓</span>
                     <span>
                       {isDarkMode ? t("light_mode") : t("darkMode")}{" "}
-                      {/* Affiche le texte approprié */}
                     </span>
                   </div>
                   <hr />
