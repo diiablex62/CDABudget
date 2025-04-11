@@ -8,7 +8,9 @@ function App() {
   return (
     <AppProvider>
       <BrowserRouter>
+        {/* En-tête de l'application */}
         <Header />
+        {/* Routes principales */}
         <AppRoutes />
       </BrowserRouter>
     </AppProvider>

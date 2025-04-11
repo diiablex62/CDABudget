@@ -4,9 +4,7 @@ import { AppContext } from "../context/AppContext";
 const Dashboard = () => {
   const { isLoggedIn, username } = useContext(AppContext);
 
-  console.log("Dashboard: isLoggedIn =", isLoggedIn, "username =", username); // Log pour vérifier l'état
-
-  return <div>Bienvenue, {username} !</div>;
+  return <div>Bienvenue, {isLoggedIn ? username : "visiteur"} !</div>;
 };
 
 export default Dashboard;

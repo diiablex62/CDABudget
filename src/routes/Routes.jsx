@@ -8,21 +8,19 @@ import Login from "../front-end/Login";
 const AppRoutes = () => {
   return (
     <Routes>
-      <Route path='/login' element={<Login />} />{" "}
-      {/* Route pour la page de connexion */}
+      <Route path='/login' element={<Login />} />
       <Route
         path='/'
         element={
           <>
-            <Top_header />
+            <Top_header />{" "}
+            {/* Assurez-vous que ce composant est rendu une seule fois */}
             <Content />
             <Footer />
           </>
         }
-      />{" "}
-      {/* Route pour la page principale */}
-      <Route path='*' element={<div>404 Not Found</div>} />{" "}
-      {/* Route pour les pages non trouvées */}
+      />
+      <Route path='*' element={<div>404 Not Found</div>} />
     </Routes>
   );
 };

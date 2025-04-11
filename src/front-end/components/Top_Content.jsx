@@ -15,6 +15,16 @@ export default function Top_header() {
     setCurrentDate(new Date());
   }, [isLoggedIn]);
 
+  useEffect(() => {
+    if (process.env.NODE_ENV === "development") {
+      console.log(
+        `Mois actuel : ${
+          currentDate.getMonth() + 1
+        }, Année actuelle : ${currentDate.getFullYear()}`
+      );
+    }
+  }, [currentDate]);
+
   const handleSyncClick = () => {
     if (!isLoggedIn) {
       navigate("/login");
@@ -56,6 +66,7 @@ export default function Top_header() {
     setCurrentDate((prevDate) => {
       const nextYear = new Date(prevDate);
       nextYear.setFullYear(nextYear.getFullYear() + 1);
+      console.log(`Année actuelle : ${nextYear.getFullYear()}`); // Log après mise à jour
       return nextYear;
     });
   };
@@ -64,6 +75,7 @@ export default function Top_header() {
     setCurrentDate((prevDate) => {
       const prevYear = new Date(prevDate);
       prevYear.setFullYear(prevYear.getFullYear() - 1);
+      console.log(`Année actuelle : ${prevYear.getFullYear()}`); // Log après mise à jour
       return prevYear;
     });
   };

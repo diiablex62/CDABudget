@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { AppContext } from "./AppContextInstance";
 export { AppContext };
 
+// Fournit le contexte de l'application à ses enfants
 export const AppProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState("");
@@ -14,50 +15,15 @@ export const AppProvider = ({ children }) => {
     const storedAuthType = sessionStorage.getItem("authType");
 
     if (storedLoginStatus === "true" && storedUsername) {
-      if (!isLoggedIn) {
-        setIsLoggedIn(true);
-        setUsername(storedUsername);
-        setAuthType(storedAuthType || "password");
-      }
+      setIsLoggedIn(true);
+      setUsername(storedUsername);
+      setAuthType(storedAuthType || "password");
     } else {
-      if (isLoggedIn) {
-        setIsLoggedIn(false);
-        setUsername("");
-        setAuthType("");
-        document.body.classList.remove("dark-theme");
-      }
+      setIsLoggedIn(false);
+      setUsername("");
+      setAuthType("");
     }
-  }, [isLoggedIn]);
-
-  // Effet pour mettre à jour le titre de la page en fonction de l'état de connexion
-  useEffect(() => {
-    document.title = isLoggedIn
-      ? `Gestion de budget - ${username}`
-      : "Gestion de budget";
-  }, [isLoggedIn, username]);
-
-  // Fonction pour gérer la connexion
-  const handleLogin = (user) => {
-    if (isLoggedIn) {
-      return;
-    }
-    setIsLoggedIn(true);
-    setUsername(user?.username || "Utilisateur");
-    setAuthType(user?.authType || "password");
-    sessionStorage.setItem("isLoggedIn", "true");
-    sessionStorage.setItem("username", user?.username || "Utilisateur");
-    sessionStorage.setItem("authType", user?.authType || "password");
-  };
-
-  // Fonction pour gérer la déconnexion
-  const handleLogout = () => {
-    setIsLoggedIn(false);
-    setUsername("");
-    sessionStorage.removeItem("isLoggedIn");
-    sessionStorage.removeItem("username");
-    sessionStorage.removeItem("authType");
-    document.body.classList.remove("dark-theme");
-  };
+  }, []);
 
   return (
     <AppContext.Provider
@@ -65,8 +31,19 @@ export const AppProvider = ({ children }) => {
         isLoggedIn,
         username,
         authType,
-        handleLogin,
-        handleLogout,
+        handleLogin: (user) => {
+          setIsLoggedIn(true);
+          setUsername(user?.username || "Utilisateur");
+          setAuthType(user?.authType || "password");
+          sessionStorage.setItem("isLoggedIn", "true");
+          sessionStorage.setItem("username", user?.username || "Utilisateur");
+          sessionStorage.setItem("authType", user?.authType || "password");
+        },
+        handleLogout: () => {
+          setIsLoggedIn(false);
+          setUsername("");
+          sessionStorage.clear();
+        },
       }}>
       {children}
     </AppContext.Provider>

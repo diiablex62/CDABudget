@@ -1,4 +1,4 @@
-import React, { useState, useCallback, memo } from "react";
+import React, { useState, useCallback, memo, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 
 // Composant pour une ligne de revenu
@@ -236,23 +236,33 @@ export default function Content() {
   // Calculs mémorisés pour les totaux
   const calculateTotalByCategory = useCallback(
     (category, field) =>
-      expenses[category].reduce((sum, item) => sum + Number(item[field]), 0),
+      expenses[category]?.reduce((sum, item) => sum + Number(item[field]), 0) ||
+      0,
     [expenses]
   );
 
-  const totalExpenses = Object.keys(expenses).reduce(
-    (sum, category) =>
-      sum +
-      expenses[category].reduce(
-        (catSum, item) => catSum + Number(item.past) + Number(item.upcoming),
+  const totalExpenses = useMemo(
+    () =>
+      Object.keys(expenses).reduce(
+        (sum, category) =>
+          sum +
+          expenses[category]?.reduce(
+            (catSum, item) =>
+              catSum + Number(item.past) + Number(item.upcoming),
+            0
+          ),
         0
       ),
-    0
+    [expenses]
   );
 
-  const totalRevenues = revenues.reduce(
-    (sum, revenue) => sum + Number(revenue.past) + Number(revenue.upcoming),
-    0
+  const totalRevenues = useMemo(
+    () =>
+      revenues.reduce(
+        (sum, revenue) => sum + Number(revenue.past) + Number(revenue.upcoming),
+        0
+      ),
+    [revenues]
   );
 
   return (
