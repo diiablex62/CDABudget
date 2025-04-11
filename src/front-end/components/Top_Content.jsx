@@ -1,26 +1,19 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useContext, useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { AppContext } from "../../context/AppContext";
 
-export default function Top_header({ isLoggedIn }) {
+export default function Top_header() {
+  const { isLoggedIn } = useContext(AppContext);
   const { t, i18n } = useTranslation();
-  const [category, setCategory] = useState("");
-  const [status, setStatus] = useState("past");
+  const [_CATEGORY] = useState("");
   const [currentDate, setCurrentDate] = useState(new Date());
   const syncButtonRef = useRef(null);
   const navigate = useNavigate();
 
   useEffect(() => {
     setCurrentDate(new Date());
-  }, []);
-
-  const handleCategoryChange = (event) => {
-    setCategory(event.target.value);
-  };
-
-  const handleStatusChange = (event) => {
-    setStatus(event.target.value);
-  };
+  }, [isLoggedIn]);
 
   const handleSyncClick = () => {
     if (!isLoggedIn) {

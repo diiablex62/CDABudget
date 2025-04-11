@@ -9,7 +9,7 @@ function App() {
     <AppProvider>
       <BrowserRouter>
         <Header />
-        <AppRoutes /> 
+        <AppRoutes />
       </BrowserRouter>
     </AppProvider>
   );

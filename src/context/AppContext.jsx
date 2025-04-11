@@ -14,13 +14,20 @@ export const AppProvider = ({ children }) => {
     const storedAuthType = sessionStorage.getItem("authType");
 
     if (storedLoginStatus === "true" && storedUsername) {
-      setIsLoggedIn(true);
-      setUsername(storedUsername);
-      setAuthType(storedAuthType || "password");
+      if (!isLoggedIn) {
+        setIsLoggedIn(true);
+        setUsername(storedUsername);
+        setAuthType(storedAuthType || "password");
+      }
     } else {
-      document.body.classList.remove("dark-theme");
+      if (isLoggedIn) {
+        setIsLoggedIn(false);
+        setUsername("");
+        setAuthType("");
+        document.body.classList.remove("dark-theme");
+      }
     }
-  }, []);
+  }, [isLoggedIn]);
 
   // Effet pour mettre à jour le titre de la page en fonction de l'état de connexion
   useEffect(() => {
@@ -31,6 +38,9 @@ export const AppProvider = ({ children }) => {
 
   // Fonction pour gérer la connexion
   const handleLogin = (user) => {
+    if (isLoggedIn) {
+      return;
+    }
     setIsLoggedIn(true);
     setUsername(user?.username || "Utilisateur");
     setAuthType(user?.authType || "password");
@@ -52,11 +62,11 @@ export const AppProvider = ({ children }) => {
   return (
     <AppContext.Provider
       value={{
-        isLoggedIn, // État de connexion
-        username, // Nom d'utilisateur
-        authType, // Type d'authentification
-        handleLogin, // Fonction pour se connecter
-        handleLogout, // Fonction pour se déconnecter
+        isLoggedIn,
+        username,
+        authType,
+        handleLogin,
+        handleLogout,
       }}>
       {children}
     </AppContext.Provider>
