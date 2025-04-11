@@ -1,6 +1,5 @@
 import React, { useState, useCallback, memo } from "react";
 import { useTranslation } from "react-i18next";
-import Category from "./Category"; // Mise à jour du chemin
 
 // Composant pour une ligne de revenu
 const RevenueLine = memo(({ revenue, onUpdate, onDelete }) => {
@@ -8,6 +7,9 @@ const RevenueLine = memo(({ revenue, onUpdate, onDelete }) => {
 
   const handleChange = useCallback(
     (field, value) => {
+      console.log(
+        `Changement dans RevenueLine : field=${field}, value=${value}`
+      ); // Log des changements
       onUpdate(revenue.id, field, value);
     },
     [revenue.id, onUpdate]
@@ -88,9 +90,56 @@ const ExpenseLine = memo(({ expense, category, onUpdate, onDelete }) => {
   );
 });
 
+const saveFinanceData = async (data) => {
+  console.log("Envoi des données au backend :", data); // Log des données envoyées
+  try {
+    const response = await fetch("http://localhost:3000/finance", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+
+    console.log("Réponse brute du backend :", response); // Log de la réponse brute
+
+    if (!response.ok) {
+      const error = await response.json();
+      console.error("Erreur reçue du backend :", error); // Log des erreurs reçues
+      throw new Error(error.error || "Erreur lors de l'enregistrement.");
+    }
+
+    const result = await response.json();
+    console.log("Donnée enregistrée avec succès :", result); // Log des données enregistrées
+  } catch (err) {
+    console.error("Erreur lors de l'enregistrement :", err.message); // Log des erreurs
+  }
+};
+
 // Composant principal Content
 export default function Content() {
   const { t } = useTranslation();
+
+  // État pour l'année et le mois
+  const [year, setYear] = useState(new Date().getFullYear());
+  const [month, setMonth] = useState(new Date().getMonth() + 1); // Les mois commencent à 0 en JS
+
+  // Gestionnaires pour changer l'année et le mois
+  const handleYearChange = (direction) => {
+    setYear((prevYear) => prevYear + direction);
+  };
+
+  const handleMonthChange = (direction) => {
+    setMonth((prevMonth) => {
+      const newMonth = prevMonth + direction;
+      if (newMonth < 1) {
+        setYear((prevYear) => prevYear - 1);
+        return 12;
+      } else if (newMonth > 12) {
+        setYear((prevYear) => prevYear + 1);
+        return 1;
+      }
+      return newMonth;
+    });
+  };
 
   // État initial
   const [revenues, setRevenues] = useState([
@@ -105,6 +154,9 @@ export default function Content() {
 
   // Gestionnaires d'événements mémorisés
   const handleRevenueUpdate = useCallback((id, field, value) => {
+    console.log(
+      `Mise à jour du revenu : id=${id}, field=${field}, value=${value}`
+    ); // Log des données mises à jour
     setRevenues((prevRevenues) =>
       prevRevenues.map((item) =>
         item.id === id ? { ...item, [field]: value } : item
@@ -119,6 +171,9 @@ export default function Content() {
   }, []);
 
   const handleExpenseChange = useCallback((category, id, field, value) => {
+    console.log(
+      `Mise à jour de la dépense : category=${category}, id=${id}, field=${field}, value=${value}`
+    ); // Log des données mises à jour
     setExpenses((prevExpenses) => ({
       ...prevExpenses,
       [category]: prevExpenses[category].map((item) =>
@@ -134,22 +189,49 @@ export default function Content() {
     }));
   }, []);
 
-  const handleAddExpense = useCallback((category) => {
-    setExpenses((prevExpenses) => ({
-      ...prevExpenses,
-      [category]: [
-        ...prevExpenses[category],
-        { id: Date.now(), name: "", past: 0, upcoming: 0 },
-      ],
-    }));
-  }, []);
+  const handleAddExpense = useCallback(
+    (category) => {
+      const newExpense = { id: Date.now(), name: "", past: 0, upcoming: 0 };
+      console.log("Ajout d'une nouvelle dépense :", newExpense); // Log de la dépense ajoutée
+      setExpenses((prevExpenses) => {
+        const updatedExpenses = {
+          ...prevExpenses,
+          [category]: [...prevExpenses[category], newExpense],
+        };
+        saveFinanceData({
+          userId: "64a7f2b8e4b0f5c3d2e1a123", // Remplacez par l'ID utilisateur réel
+          type: "expense",
+          category,
+          name: newExpense.name,
+          past: newExpense.past,
+          upcoming: newExpense.upcoming,
+          year,
+          month,
+        });
+        return updatedExpenses;
+      });
+    },
+    [year, month]
+  );
 
   const handleAddRevenue = useCallback(() => {
-    setRevenues((prevRevenues) => [
-      ...prevRevenues,
-      { id: Date.now(), name: "", past: 0, upcoming: 0 },
-    ]);
-  }, []);
+    const newRevenue = { id: Date.now(), name: "", past: 0, upcoming: 0 };
+    console.log("Ajout d'un nouveau revenu :", newRevenue); // Log du revenu ajouté
+    setRevenues((prevRevenues) => {
+      const updatedRevenues = [...prevRevenues, newRevenue];
+      saveFinanceData({
+        userId: "64a7f2b8e4b0f5c3d2e1a123", // Remplacez par l'ID utilisateur réel
+        type: "revenue",
+        category: "Revenus",
+        name: newRevenue.name,
+        past: newRevenue.past,
+        upcoming: newRevenue.upcoming,
+        year,
+        month,
+      });
+      return updatedRevenues;
+    });
+  }, [year, month]);
 
   // Calculs mémorisés pour les totaux
   const calculateTotalByCategory = useCallback(

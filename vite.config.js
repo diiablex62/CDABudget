@@ -11,8 +11,7 @@ export default defineConfig({
   },
   server: {
     proxy: {
-      "/register": "http://localhost:3000",
-      "/login": "http://localhost:3000",
+      "/finance": "http://localhost:3000", // Assurez-vous que le proxy pour /finance est configuré
     },
   },
 });

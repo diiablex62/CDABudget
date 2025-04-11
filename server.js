@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import bcrypt from "bcrypt";
 import cors from "cors";
 import { OAuth2Client } from "google-auth-library";
+import Finance from "./src/back-end/models/Finance.js"; // Import du modèle Finance
 
 dotenv.config();
 
@@ -180,6 +181,80 @@ app.post("/google-login", async (req, res) => {
     res
       .status(500)
       .json({ success: false, error: "Erreur interne du serveur." });
+  }
+});
+
+// Route temporaire pour insérer une donnée dans la collection finance
+app.post("/test-finance", async (req, res) => {
+  try {
+    const finance = new Finance({
+      userId: "64a7f2b8e4b0f5c3d2e1a123", // Remplacez par un ID utilisateur valide
+      type: "revenue",
+      category: "Salaire",
+      name: "Salaire mensuel",
+      past: 2000,
+      upcoming: 0,
+    });
+
+    await finance.save();
+    res.status(201).json({ message: "Donnée insérée avec succès.", finance });
+  } catch (err) {
+    console.error("Erreur lors de l'insertion :", err);
+    res.status(500).json({ error: "Erreur interne du serveur." });
+  }
+});
+
+// Route pour ajouter un revenu ou une dépense
+app.post("/finance", async (req, res) => {
+  console.log("Requête POST reçue sur /finance avec les données :", req.body); // Log des données reçues
+  try {
+    const { userId, type, category, name, past, upcoming } = req.body;
+
+    if (!userId || !type || !category || !name) {
+      console.error("Erreur : Champs requis manquants.");
+      return res
+        .status(400)
+        .json({ error: "Tous les champs requis ne sont pas remplis." });
+    }
+
+    const finance = new Finance({
+      userId,
+      type,
+      category,
+      name,
+      past,
+      upcoming,
+      date: new Date(),
+    });
+
+    await finance.save();
+    console.log("Donnée enregistrée avec succès :", finance); // Log des données enregistrées
+    res
+      .status(201)
+      .json({ message: "Donnée enregistrée avec succès.", finance });
+  } catch (err) {
+    console.error("Erreur lors de l'enregistrement :", err); // Log des erreurs
+    res.status(500).json({ error: "Erreur interne du serveur." });
+  }
+});
+
+// Route pour récupérer les revenus et dépenses d'un utilisateur
+app.get("/finance/:userId", async (req, res) => {
+  console.log(
+    "Requête GET reçue sur /finance/:userId avec userId :",
+    req.params.userId
+  ); // Log de l'ID utilisateur
+  try {
+    const { userId } = req.params;
+    const finances = await Finance.find({ userId });
+    console.log("Données récupérées :", finances); // Log des données récupérées
+    res.status(200).json(finances);
+  } catch (err) {
+    console.error(
+      "Erreur lors de la récupération des données financières :",
+      err
+    ); // Log des erreurs
+    res.status(500).json({ error: "Erreur interne du serveur." });
   }
 });
 
